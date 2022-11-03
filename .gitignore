@@ -1,3 +1,5 @@
+/game_rules/
+/game_structure/
 *.gem
 *.rbc
 /.config

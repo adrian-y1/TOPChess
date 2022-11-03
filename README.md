@@ -1,1 +1,1 @@
-# TOPChess
+# The Odin Project's Chess
