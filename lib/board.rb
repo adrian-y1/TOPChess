@@ -15,11 +15,10 @@ class Board
     @board.each_index do |r|
       print "#{8 - r} "
       @board[r].each_index do |c|
-        square = @board[r][c] == ' ' ? "#{@board[r][c]}  " : @board[r][c]
+        square = @board[r][c] == ' ' ? "#{@board[r][c]}  " : @board[r][c].colored_symbol
         change_square_bg(r, c, square)
       end
-      print " #{8 - r}"
-      puts "\n"
+      print " #{8 - r}\n"
     end
     puts letters
   end
@@ -32,31 +31,3 @@ class Board
     end
   end
 end
-
-board = Board.new
-king = " \u265A "
-queen = " \u265B "
-rook = " \u265C "
-bishop = " \u265D "
-knight = " \u265E "
-pawn = " \u265F "
-board.board[0][0] = rook.blue
-board.board[0][7] = rook.blue
-board.board[0][1] = knight.blue
-board.board[0][6] = knight.blue
-board.board[0][2] = bishop.blue
-board.board[0][5] = bishop.blue
-board.board[0][3] = queen.blue
-board.board[0][4] = king.blue
-(0..7).each {|i| board.board[1][i] = pawn.blue}
-
-board.board[7][0] = rook.red
-board.board[7][7] = rook.red
-board.board[7][1] = knight.red
-board.board[7][6] = knight.red
-board.board[7][2] = bishop.red
-board.board[7][5] = bishop.red
-board.board[7][3] = queen.red
-board.board[7][4] = king.red
-(0..7).each {|i| board.board[6][i] = pawn.red}
-board.display
