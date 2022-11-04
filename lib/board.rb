@@ -8,6 +8,7 @@ class Board
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
+    @removed_pieces = []
   end
 
   # Given the piece position of a piece, move that piece to the given destination
@@ -16,9 +17,10 @@ class Board
     piece_square = find_coordinates_index(piece)
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[piece_square[0]][piece_square[1]]
-    @board[piece_square[0]][piece_square[1]] = ' '
+    remove_piece(piece_square)
   end
 
+  # Checks if a given square can be moved to
   def free?(square, current_player)
     sq_index = find_coordinates_index(square)
     @board[sq_index[0]][sq_index[1]] == ' ' || @board[sq_index[0]][sq_index[1]].color != current_player.color 
@@ -29,6 +31,11 @@ class Board
     letter_to_number = ('a'..'h').zip(0..7)
     column = letter_to_number.select { |i| i[0] == square.split('')[0] }.flatten
     [8 - square.split('')[1].to_i, column[1]]
+  end
+
+  def remove_piece(index)
+    @removed_pieces.push(@board[index[0]][index[1]])
+    @board[index[0]][index[1]] = ' '
   end
 
   def display
