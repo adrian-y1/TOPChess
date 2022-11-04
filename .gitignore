@@ -1,5 +1,6 @@
 /game_rules/
 /game_structure/
+project_time.txt
 *.gem
 *.rbc
 /.config
