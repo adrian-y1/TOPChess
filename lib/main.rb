@@ -25,4 +25,14 @@ board_setup.pawn_setup(game_board.board)
 if game_board.free?('b6', player1)
     game_board.move('b8', 'b6')
 end
-game_board.display
+# game_board.display
+
+new_knight = Knight.new(:blue)
+temp_board = Board.new
+temp_board.board[3][7] = new_knight
+
+moves = new_knight.find_valid_moves([3, 7])
+moves.each {|i| temp_board.board[i[0]][i[1]] = new_knight}
+
+temp_board.display
+p moves

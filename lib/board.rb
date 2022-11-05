@@ -33,6 +33,7 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(index)
     @removed_pieces.push(@board[index[0]][index[1]])
     @board[index[0]][index[1]] = ' '
