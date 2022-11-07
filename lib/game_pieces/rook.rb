@@ -12,10 +12,9 @@ class Rook
   end
 
   # Creates all the possible moves the Rook can move to in
-  # the row of it's current square.
-  # The 2nd arg is how the Rook moves to a nearby square in a certain direction
-  # If the column of the move is a positive integer, move up to the next column
-  # Else, move down to the column before
+  # the row of a given square and direction (left or right).
+  # If the column of the move is a positive integer, move up to the next column,
+  # Else, move down the column before
   def create_row_moves(square, moves)
     loop do
       column = square[1] + moves[1]
@@ -28,8 +27,7 @@ class Rook
   end
 
   # Creates all the possible moves the Rook can move to in
-  # the column of it's current square.
-  # The 2nd arg is how the Rook moves to a nearby square in a certain direction
+  # the column of a given square and direction (top or bottom).
   # If the row of the move is a positive integer, move up to the next row,
   # Else, move down the row before
   def create_column_moves(square, moves)
@@ -43,8 +41,8 @@ class Rook
     end
   end
 
-  # Creates the left, right, top and bottom possible moves for the Rook
-  def create_valid_moves(square)
+  # Creates the left, right, top and bottom moves for the Rook
+  def create_all_moves(square)
     left_moves = create_row_moves(square, [0, -1])
     right_moves = create_row_moves(square, [0, 1])
     top_moves = create_column_moves(square, [-1, 0])

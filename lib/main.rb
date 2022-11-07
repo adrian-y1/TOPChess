@@ -23,14 +23,14 @@ board_setup.pawn_setup(game_board.board)
 game_board.move('b8', 'b6') if game_board.free?('b6', player1)
 # game_board.display
 
-square = [3, 4]
 
-new_bishop = Bishop.new(:blue)
+square = [5, 7]
+new_king = King.new(:blue)
 temp_board = Board.new
-temp_board.board[square[0]][square[1]] = Bishop.new(:red)
+temp_board.board[square[0]][square[1]] = King.new(:red)
 
-left = new_bishop.create_valid_moves([square[0], square[1]])
-
-left.each { |i| temp_board.board[i[0]][i[1]] = new_bishop }
+moves = new_king.create_all_moves([square[0], square[1]])
+p moves
+moves.each { |i| temp_board.board[i[0]][i[1]] = new_king }
 
 temp_board.display

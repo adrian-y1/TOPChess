@@ -12,10 +12,10 @@ class Bishop
   end
 
   # Creates all the possible valid moves the Bishop can move to 
-  # given a square and directional movement.
+  # given a square and directional movement (top left, bottom left, bottom right, top right).
   # If the row is a positive integer, move up to the next row,
   # Else, move down to the row before. Same rules apply for the column
-  def create_possible_moves(square, moves)
+  def create_diagonal_moves(square, moves)
     loop do
       row = square[0] + moves[0]
       column = square[1] + moves[1]
@@ -28,11 +28,12 @@ class Bishop
     end
   end
 
-  def create_valid_moves(square)
-    top_left = create_possible_moves(square, [-1, -1])
-    bottom_left = create_possible_moves(square, [1, -1])
-    top_right = create_possible_moves(square, [-1, 1])
-    bottom_right = create_possible_moves(square, [1, 1])
+  # Creates all the diagonal moves the Bishop can make
+  def create_all_moves(square)
+    top_left = create_diagonal_moves(square, [-1, -1])
+    bottom_left = create_diagonal_moves(square, [1, -1])
+    top_right = create_diagonal_moves(square, [-1, 1])
+    bottom_right = create_diagonal_moves(square, [1, 1])
     @valid_moves
   end
 end

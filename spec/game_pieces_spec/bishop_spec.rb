@@ -6,12 +6,12 @@ require 'colorize'
 describe Bishop do
   subject(:bishop) { described_class.new(:blue) }
 
-  describe '#create_possible_moves' do
-    context 'when the square is out of bounds' do
+  describe '#create_diagonal_moves' do
+    context 'when the square is out of bounds (not between 0 & 7)' do
       it 'stops loop' do
         square = [9, 9] 
         top_left = [-1, -1]
-        create_moves = bishop.create_possible_moves(square, top_left)
+        create_moves = bishop.create_diagonal_moves(square, top_left)
         expect(create_moves).to eq([])
       end
     end
@@ -21,7 +21,7 @@ describe Bishop do
         square = [3, 4]
         top_left = [-1, -1]
         valid_moves = [[2, 3], [1, 2], [0, 1]]
-        create_moves = bishop.create_possible_moves(square, top_left)
+        create_moves = bishop.create_diagonal_moves(square, top_left)
         expect(create_moves).to eq(valid_moves)
       end
     end
@@ -31,7 +31,7 @@ describe Bishop do
         square = [3, 4]
         bottom_left = [1, -1]
         valid_moves = [[4, 3], [5, 2], [6, 1], [7, 0]]
-        create_moves = bishop.create_possible_moves(square, bottom_left)
+        create_moves = bishop.create_diagonal_moves(square, bottom_left)
         expect(create_moves).to eq(valid_moves)
       end
     end
@@ -41,7 +41,7 @@ describe Bishop do
         square = [3, 4]
         top_right = [-1, 1]
         valid_moves = [[2, 5], [1, 6], [0, 7]]
-        create_moves = bishop.create_possible_moves(square, top_right)
+        create_moves = bishop.create_diagonal_moves(square, top_right)
         expect(create_moves).to eq(valid_moves)
       end
     end
@@ -51,7 +51,7 @@ describe Bishop do
         square = [3, 4]
         bottom_right = [1, 1]
         valid_moves = [[4, 5], [5, 6], [6, 7]]
-        create_moves = bishop.create_possible_moves(square, bottom_right)
+        create_moves = bishop.create_diagonal_moves(square, bottom_right)
         expect(create_moves).to eq(valid_moves)
       end
     end
