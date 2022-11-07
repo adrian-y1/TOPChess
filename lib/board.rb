@@ -23,7 +23,7 @@ class Board
   # Checks if a given square can be moved to
   def free?(square, current_player)
     sq_index = find_coordinates_index(square)
-    @board[sq_index[0]][sq_index[1]] == ' ' || @board[sq_index[0]][sq_index[1]].color != current_player.color 
+    @board[sq_index[0]][sq_index[1]] == ' ' || @board[sq_index[0]][sq_index[1]].color != current_player.color
   end
 
   # Returns the row and column of a given square (e.g. a4 = [4, 0])

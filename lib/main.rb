@@ -12,7 +12,6 @@ require 'colorize'
 game_board = Board.new
 board_setup = BoardSetup.new
 player1 = Player.new(:blue)
-player2 = Player.new(:red)
 
 board_setup.rook_setup(Rook.new(:blue), Rook.new(:red), game_board.board)
 board_setup.knight_setup(Knight.new(:blue), Knight.new(:red), game_board.board)
@@ -21,10 +20,7 @@ board_setup.queen_setup(Queen.new(:blue), Queen.new(:red), game_board.board)
 board_setup.king_setup(King.new(:blue), King.new(:red), game_board.board)
 board_setup.pawn_setup(game_board.board)
 
-
-if game_board.free?('b6', player1)
-    game_board.move('b8', 'b6')
-end
+game_board.move('b8', 'b6') if game_board.free?('b6', player1)
 # game_board.display
 
 square = [0, 0]
@@ -38,7 +34,7 @@ left = new_rook.create_valid_moves([square[0], square[1]])
 # top = new_rook.create_top_moves([square[0], square[1]])
 # bottom = new_rook.create_bottom_moves([square[0], square[1]])
 
-left.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
+left.each { |i| temp_board.board[i[0]][i[1]] = new_rook }
 # right.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
 # top.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
 # bottom.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
