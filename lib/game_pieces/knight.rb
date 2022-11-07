@@ -19,9 +19,9 @@ class Knight
     possible_moves
   end
 
-  # Finds all the moves from #create_possibile_moves that do not go out of bounds, given a square
+  # Finds all the moves from #create_possible_moves that do not go out of bounds, given a square
   def find_valid_moves(square)
     possible_moves = create_possible_moves(square)
-    valid_moves = possible_moves.select {|x,y| [x,y] if x >= 0 && x <= 7 && y >= 0 && y <=7 }
+    valid_moves = possible_moves.select {|x,y| [x,y] if x.between?(0, 7) && y.between?(0, 7) }
   end
 end

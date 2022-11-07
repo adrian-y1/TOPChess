@@ -27,12 +27,20 @@ if game_board.free?('b6', player1)
 end
 # game_board.display
 
-new_knight = Knight.new(:blue)
-temp_board = Board.new
-temp_board.board[3][7] = new_knight
+square = [0, 0]
 
-moves = new_knight.find_valid_moves([3, 7])
-moves.each {|i| temp_board.board[i[0]][i[1]] = new_knight}
+new_rook = Rook.new(:blue)
+temp_board = Board.new
+temp_board.board[square[0]][square[1]] = Rook.new(:red)
+
+left = new_rook.create_valid_moves([square[0], square[1]])
+# right = new_rook.create_right_moves([square[0], square[1]])
+# top = new_rook.create_top_moves([square[0], square[1]])
+# bottom = new_rook.create_bottom_moves([square[0], square[1]])
+
+left.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
+# right.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
+# top.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
+# bottom.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
 
 temp_board.display
-p moves
