@@ -18,11 +18,12 @@ class Rook
   # Else, move down to the column before
   def create_row_moves(square, moves)
     loop do
-      return @valid_moves unless (square[1] + moves[1]).between?(0, 7)
+      column = square[1] + moves[1]
+      return @valid_moves unless column.between?(0, 7)
 
-      new_square = [moves[0] + square[0], moves[1] + square[1]]
+      next_square = [moves[0] + square[0], moves[1] + square[1]]
       moves[1].positive? ? moves[1] += 1 : moves[1] -= 1
-      @valid_moves.push(new_square)
+      @valid_moves.push(next_square)
     end
   end
 
@@ -33,11 +34,12 @@ class Rook
   # Else, move down the row before
   def create_column_moves(square, moves)
     loop do
-      return @valid_moves unless (square[0] + moves[0]).between?(0, 7)
+      row = square[0] + moves[0]
+      return @valid_moves unless row.between?(0, 7)
 
-      new_square = [moves[0] + square[0], moves[1] + square[1]]
+      next_square = [moves[0] + square[0], moves[1] + square[1]]
       moves[0].positive? ? moves[0] += 1 : moves[0] -= 1
-      @valid_moves.push(new_square)
+      @valid_moves.push(next_square)
     end
   end
 

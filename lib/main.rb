@@ -23,20 +23,14 @@ board_setup.pawn_setup(game_board.board)
 game_board.move('b8', 'b6') if game_board.free?('b6', player1)
 # game_board.display
 
-square = [0, 0]
+square = [3, 4]
 
-new_rook = Rook.new(:blue)
+new_bishop = Bishop.new(:blue)
 temp_board = Board.new
-temp_board.board[square[0]][square[1]] = Rook.new(:red)
+temp_board.board[square[0]][square[1]] = Bishop.new(:red)
 
-left = new_rook.create_valid_moves([square[0], square[1]])
-# right = new_rook.create_right_moves([square[0], square[1]])
-# top = new_rook.create_top_moves([square[0], square[1]])
-# bottom = new_rook.create_bottom_moves([square[0], square[1]])
+left = new_bishop.create_valid_moves([square[0], square[1]])
 
-left.each { |i| temp_board.board[i[0]][i[1]] = new_rook }
-# right.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
-# top.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
-# bottom.each {|i| temp_board.board[i[0]][i[1]] = new_rook}
+left.each { |i| temp_board.board[i[0]][i[1]] = new_bishop }
 
 temp_board.display
