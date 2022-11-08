@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/game_pieces/king.rb'
+require_relative '../../lib/game_pieces/king'
 require 'colorize'
 
 describe King do

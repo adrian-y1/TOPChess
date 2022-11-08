@@ -11,7 +11,7 @@ class Bishop
     @valid_moves = []
   end
 
-  # Creates all the possible valid moves the Bishop can move to 
+  # Creates all the possible valid moves the Bishop can move to
   # given a square and directional movement (top left, bottom left, bottom right, top right).
   # If the row is a positive integer, move up to the next row,
   # Else, move down to the row before. Same rules apply for the column

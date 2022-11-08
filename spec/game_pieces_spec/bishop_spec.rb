@@ -9,13 +9,13 @@ describe Bishop do
   describe '#create_diagonal_moves' do
     context 'when the square is out of bounds (not between 0 & 7)' do
       it 'stops loop' do
-        square = [9, 9] 
+        square = [9, 9]
         top_left = [-1, -1]
         create_moves = bishop.create_diagonal_moves(square, top_left)
         expect(create_moves).to eq([])
       end
     end
-    
+
     context 'when given the square [3, 4] and the top left movement' do
       it "returns 3 valid squares the Bishop can move to on it's top left" do
         square = [3, 4]

@@ -23,14 +23,13 @@ board_setup.pawn_setup(game_board.board)
 game_board.move('b8', 'b6') if game_board.free?('b6', player1)
 # game_board.display
 
-
-square = [5, 7]
-new_king = King.new(:blue)
+square = [6, 2]
+new_pawn = Pawn.new(:red)
 temp_board = Board.new
-temp_board.board[square[0]][square[1]] = King.new(:red)
+temp_board.board[square[0]][square[1]] = Pawn.new(:red)
 
-moves = new_king.create_all_moves([square[0], square[1]])
+moves = new_pawn.two_square_move([square[0], square[1]])
 p moves
-moves.each { |i| temp_board.board[i[0]][i[1]] = new_king }
+moves.each { |i| temp_board.board[i[0]][i[1]] = new_pawn }
 
 temp_board.display

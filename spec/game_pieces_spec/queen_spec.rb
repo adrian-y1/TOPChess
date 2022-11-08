@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/game_pieces/queen.rb'
+require_relative '../../lib/game_pieces/queen'
 require 'colorize'
 
 describe Queen do
