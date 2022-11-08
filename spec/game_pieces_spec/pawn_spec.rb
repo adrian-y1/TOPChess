@@ -153,4 +153,22 @@ describe Pawn do
       end
     end
   end
+
+  describe '#inside_board?' do
+    context 'when the square is inside the board' do
+      it 'returns true' do
+        square = [5, 7]
+        inside = pawn.inside_board?(square)
+        expect(inside).to be true
+      end
+    end
+
+    context 'when the square is not inside the board' do
+      it 'returns false' do
+        square = [8, 9]
+        inside = pawn.inside_board?(square)
+        expect(inside).to be false
+      end
+    end
+  end
 end
