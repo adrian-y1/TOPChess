@@ -11,10 +11,10 @@ class Board
     @removed_pieces = []
   end
 
-  # Given the piece position of a piece, move that piece to the given destination
-  # once moved, change it's previous position to empty str
-  def move(piece, destination)
-    piece_square = find_coordinates_index(piece)
+  # Given the position of a piece, move that piece to the given destination
+  # Once moved, change it's previous position to empty str
+  def move(piece_coordinates, destination)
+    piece_square = find_coordinates_index(piece_coordinates)
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[piece_square[0]][piece_square[1]]
     remove_piece(piece_square)
@@ -26,7 +26,7 @@ class Board
     @board[sq_index[0]][sq_index[1]] == ' ' || @board[sq_index[0]][sq_index[1]].color != current_player.color
   end
 
-  # Returns the row and column of a given square (e.g. a4 = [4, 0])
+  # Returns the row and column of a given square coordinate(e.g. a4 = [4, 0])
   def find_coordinates_index(square)
     letter_to_number = ('a'..'h').zip(0..7)
     column = letter_to_number.select { |i| i[0] == square.split('')[0] }.flatten

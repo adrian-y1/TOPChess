@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../lib/game_pieces/pawn'
+require_relative '../../lib/board'
 require 'colorize'
 
 describe Pawn do
@@ -86,7 +87,8 @@ describe Pawn do
       subject(:pawn_red) { described_class.new(:red) }
 
       before do
-        allow(pawn_red).to receive(:inside_board?).and_return(true)      end
+        allow(pawn_red).to receive(:inside_board?).and_return(true)
+      end
 
       it 'returns the 1st valid square the Pawn can move to' do
         square = [5, 2]
@@ -129,7 +131,8 @@ describe Pawn do
       subject(:pawn_blue) { described_class.new(:blue) }
 
       before do
-        allow(pawn_blue).to receive(:inside_board?).and_return(true)      end
+        allow(pawn_blue).to receive(:inside_board?).and_return(true)
+      end
 
       it 'returns the 1st valid square the Pawn can move to' do
         square = [4, 2]

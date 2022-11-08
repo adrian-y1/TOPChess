@@ -20,15 +20,18 @@ board_setup.queen_setup(Queen.new(:blue), Queen.new(:red), game_board.board)
 board_setup.king_setup(King.new(:blue), King.new(:red), game_board.board)
 board_setup.pawn_setup(game_board.board)
 
-game_board.move('b8', 'b6') if game_board.free?('b6', player1)
+# game_board.move('b8', 'c6') if game_board.free?('b6', player1)
 # game_board.display
 
-square = [6, 2]
+square = [4, 2]
 new_pawn = Pawn.new(:red)
+opp_pawn = Pawn.new(:blue)
 temp_board = Board.new
-temp_board.board[square[0]][square[1]] = Pawn.new(:red)
+temp_board.board[square[0]][square[1]] = new_pawn
 
-moves = new_pawn.two_square_move([square[0], square[1]])
+temp_board.board[3][3] = opp_pawn
+
+moves = new_pawn.diagonal_square_move([square[0], square[1]], temp_board)
 p moves
 moves.each { |i| temp_board.board[i[0]][i[1]] = new_pawn }
 

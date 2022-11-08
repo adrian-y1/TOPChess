@@ -2,6 +2,7 @@
 
 require 'colorize'
 
+# Class that creates a new Pawn
 class Pawn
   attr_reader :color, :colored_symbol
 
@@ -32,6 +33,37 @@ class Pawn
       @valid_moves.push(next_square) if inside_board?(next_square)
     end
     @valid_moves
+  end
+
+  def diagonal_square_move(square, board)
+    if @color == :red
+      red_diagonal_move(square, board, [-1, -1])
+      red_diagonal_move(square, board, [-1, 1])
+    else
+      blue_diagonal_move(square, board, [1, -1])
+      blue_diagonal_move(square, board, [1, 1])
+    end
+    @valid_moves
+  end
+
+  def red_diagonal_move(square, board, move)
+    if inside_board?([square[0] + move[0], square[1] + move[1]])
+      diagonal_move = [square[0] + move[0], square[1] + move[1]]
+      diagonal_square = board.board[diagonal_move[0]][diagonal_move[1]]
+      @valid_moves.push(diagonal_move) if available_square?(diagonal_square, :blue)
+    end
+  end
+
+  def blue_diagonal_move(square, board, move)
+    if inside_board?([square[0] + move[0], square[1] + move[1]])
+      diagonal_move = [square[0] + move[0], square[1] + move[1]]
+      diagonal_square = board.board[diagonal_move[0]][diagonal_move[1]]
+      @valid_moves.push(diagonal_move) if available_square?(diagonal_square, :red)
+    end
+  end
+
+  def available_square?(square, opponent_color)
+    square != ' ' && square.color == opponent_color
   end
 
   def inside_board?(square)
