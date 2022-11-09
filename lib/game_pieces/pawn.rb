@@ -52,6 +52,7 @@ class Pawn
       diagonal_square = board.board[diagonal_move[0]][diagonal_move[1]]
       @valid_moves.push(diagonal_move) if available_square?(diagonal_square, :blue)
     end
+    @valid_moves
   end
 
   def blue_diagonal_move(square, board, move)
@@ -60,10 +61,12 @@ class Pawn
       diagonal_square = board.board[diagonal_move[0]][diagonal_move[1]]
       @valid_moves.push(diagonal_move) if available_square?(diagonal_square, :red)
     end
+    @valid_moves
   end
 
-  def available_square?(square, opponent_color)
-    square != ' ' && square.color == opponent_color
+  # Checks if a square is not empty and occupied by opponent's piece
+  def available_square?(board_square, opponent_color)
+    board_square != ' ' && board_square.color == opponent_color
   end
 
   def inside_board?(square)
