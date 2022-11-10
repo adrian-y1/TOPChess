@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../lib/board'
+require_relative '../lib/player'
+require 'colorize'
 
 describe Board do
   subject(:board) { described_class.new }

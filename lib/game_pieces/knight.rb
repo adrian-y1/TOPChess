@@ -8,13 +8,13 @@ class Knight
     @symbol = " \u265E "
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
-    @moves = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
+    @movement = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
   end
 
   # Creates all the moves the knight can go to, given a square
   def create_possible_moves(square)
     possible_moves = []
-    @moves.each do |move|
+    @movement.each do |move|
       possible_moves.push([square[0] + move[0], square[1] + move[1]])
     end
     possible_moves

@@ -10,9 +10,10 @@ require_relative './player'
 require 'colorize'
 
 game_board = Board.new
-board_setup = BoardSetup.new(game_board.board)
+BoardSetup.new(game_board.board)
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 
+p game_board.king_in_check?(player2)
 game_board.display

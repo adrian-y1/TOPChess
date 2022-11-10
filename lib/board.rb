@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'colorize'
+require 'matrix'
 
 # Class the defines the board of the game and it's respective methods
 class Board
@@ -9,6 +10,26 @@ class Board
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
     @removed_pieces = []
+  end
+
+  # Checks if current player is in check
+  def king_in_check?(current_player)
+    current_player_king = find_king(current_player)
+    piece_moves = find_opponent_moves(current_player)
+    piece_moves.any? {|move| move.include?(current_player_king)}
+  end
+
+  def find_opponent_moves(current_player)
+    opponent_pieces = find_opponent_pieces(current_player)
+    piece_moves = []
+    opponent_pieces.each do |key, val|
+      if key.is_a?(Pawn)
+        piece_moves.push(key.create_all_moves(val, self))
+      else
+        piece_moves.push(key.create_all_moves(val))
+      end
+    end
+    piece_moves
   end
 
   # Given the position of a piece, move that piece to the given destination
@@ -53,6 +74,34 @@ class Board
     puts letters
   end
 
+  private 
+
+  # Finds the index position of the current player's King
+  def find_king(current_player)
+    (0..7).each do |row|
+      (0..7).each do |column|
+        square = @board[row][column]
+        return [row, column] if square.is_a?(King) && square.color == current_player.color
+      end
+    end
+  end
+
+  # Finds opponent's pieces and their current square
+  def find_opponent_pieces(current_player)
+    opponent = find_opponent_color(current_player)
+    opponent_pieces = {}
+    @board.each do |row|
+      row.each do |column|
+        opponent_pieces[column] = Matrix[*@board].index(column) if column != ' ' && column.color == opponent
+      end
+    end
+    opponent_pieces
+  end
+
+  def find_opponent_color(current_player)
+    current_player.color == :blue ? :red : :blue
+  end
+
   def change_square_bg(row, column, square)
     if row.even?
       print column.even? ? square.on_white : square.on_black
@@ -61,30 +110,3 @@ class Board
     end
   end
 end
-# board = Board.new
-# king = " \u265A "
-# queen = " \u265B "
-# rook = " \u265C "
-# bishop = " \u265D "
-# knight = " \u265E "
-# pawn = " \u265F "
-# board.board[0][0] = rook.blue
-# board.board[0][7] = rook.blue
-# board.board[0][1] = knight.blue
-# board.board[0][6] = knight.blue
-# board.board[0][2] = bishop.blue
-# board.board[0][5] = bishop.blue
-# board.board[0][3] = queen.blue
-# board.board[0][4] = king.blue
-# (0..7).each {|i| board.board[1][i] = pawn.blue}
-
-# board.board[7][0] = rook.red
-# board.board[7][7] = rook.red
-# board.board[7][1] = knight.red
-# board.board[7][6] = knight.red
-# board.board[7][2] = bishop.red
-# board.board[7][5] = bishop.red
-# board.board[7][3] = queen.red
-# board.board[7][4] = king.red
-# (0..7).each {|i| board.board[6][i] = pawn.red}
-# board.display
