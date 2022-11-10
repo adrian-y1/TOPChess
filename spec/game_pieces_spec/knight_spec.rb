@@ -26,7 +26,7 @@ describe Knight do
     end
   end
 
-  describe '#find_valid_moves' do
+  describe '#create_all_moves' do
     context 'when the Knight is at square [0, 0]' do
       before do
         possible_moves = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
@@ -36,7 +36,7 @@ describe Knight do
       it 'returns an array of all the valid squares the Knight can move to' do
         square = [0, 0]
         valid_moves = [[1, 2], [2, 1]]
-        find_moves = knight.find_valid_moves(square)
+        find_moves = knight.create_all_moves(square)
         expect(find_moves).to eq(valid_moves)
       end
     end

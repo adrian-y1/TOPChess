@@ -1,39 +1,31 @@
 # frozen_string_literal: true
 
+# Class that sets up the game pieces
 class BoardSetup
-  def rook_setup(blue_rook, red_rook, board)
-    board[0][0] = blue_rook
-    board[0][7] = blue_rook
-    board[7][0] = red_rook
-    board[7][7] = red_rook
+  def initialize(board)
+    @board = board
+    setup_board
   end
 
-  def knight_setup(blue_knight, red_knight, board)
-    board[0][1] = blue_knight
-    board[0][6] = blue_knight
-    board[7][1] = red_knight
-    board[7][6] = red_knight
+  def setup_board
+    @board.each_index do |row|
+      case row
+      when 0
+        create_game_pieces(row, :blue, @board)
+      when 7
+        create_game_pieces(row, :red, @board)
+      end
+    end
   end
-
-  def bishop_setup(blue_bishop, red_bishop, board)
-    board[0][2] = blue_bishop
-    board[0][5] = blue_bishop
-    board[7][2] = red_bishop
-    board[7][5] = red_bishop
-  end
-
-  def queen_setup(blue_queen, red_queen, board)
-    board[0][3] = blue_queen
-    board[7][3] = red_queen
-  end
-
-  def king_setup(blue_king, red_king, board)
-    board[0][4] = blue_king
-    board[7][4] = red_king
-  end
-
-  def pawn_setup(board)
-    (0..7).each { |i| board[1][i] = Pawn.new(:blue) }
-    (0..7).each { |i| board[6][i] = Pawn.new(:red) }
+ 
+  def create_game_pieces(row, color, board)
+    (0..7).each do |column|
+      row == 7 ? board[row - 1][column] = Pawn.new(color) : board[row + 1][column] = Pawn.new(color)
+      board[row][column] = Rook.new(color) if [0, 7].include?(column)
+      board[row][column] = Knight.new(color) if [1, 6].include?(column)
+      board[row][column] = Bishop.new(color) if [2, 5].include?(column)
+      board[row][column] = Queen.new(color) if column == 3
+      board[row][column] = King.new(color) if column == 4
+    end
   end
 end

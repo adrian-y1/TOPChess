@@ -176,12 +176,12 @@ describe Pawn do
   end
 
   describe '#available_square?' do
-    let(:opponent) { described_class.new(:blue)}
-    let(:current_player) { described_class.new(:red)}
+    let(:opponent) { described_class.new(:blue) }
+    let(:current_player) { described_class.new(:red) }
 
     context 'when the square is not empty and is occupied by opponent' do
       let(:board_available) { instance_double(Board) }
-      
+
       before do
         allow(board_available).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
         allow(board_available).to receive(:board=)
@@ -197,7 +197,7 @@ describe Pawn do
 
     context 'when the square is not empty and is occupied by current player' do
       let(:board_unavailable) { instance_double(Board) }
-      
+
       before do
         allow(board_unavailable).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
         allow(board_unavailable).to receive(:board=)
@@ -213,7 +213,7 @@ describe Pawn do
 
     context 'when the square is empty' do
       let(:board_unavailable) { instance_double(Board) }
-      
+
       before do
         allow(board_unavailable).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
         allow(board_unavailable).to receive(:board=)
@@ -229,8 +229,8 @@ describe Pawn do
 
   describe '#blue_diagonal_move' do
     let(:board_blue) { instance_double(Board) }
-    let(:current_player) { described_class.new(:blue)}
-    let(:opponent) { described_class.new(:red)}
+    let(:current_player) { described_class.new(:blue) }
+    let(:opponent) { described_class.new(:red) }
 
     before do
       allow(board_blue).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
@@ -286,8 +286,8 @@ describe Pawn do
 
     context 'when square inside board but not available to move' do
       before do
-          allow(current_player).to receive(:inside_board?).and_return(true)
-          allow(current_player).to receive(:available_square?).and_return(false)
+        allow(current_player).to receive(:inside_board?).and_return(true)
+        allow(current_player).to receive(:available_square?).and_return(false)
       end
 
       it 'returns empty array' do
@@ -301,8 +301,8 @@ describe Pawn do
 
   describe '#red_diagonal_moves' do
     let(:board_red) { instance_double(Board) }
-    let(:current_player) { described_class.new(:red)}
-    let(:opponent) { described_class.new(:blue)}
+    let(:current_player) { described_class.new(:red) }
+    let(:opponent) { described_class.new(:blue) }
 
     before do
       allow(board_red).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
@@ -358,8 +358,8 @@ describe Pawn do
 
     context 'when square inside board but not available to move' do
       before do
-          allow(current_player).to receive(:inside_board?).and_return(true)
-          allow(current_player).to receive(:available_square?).and_return(false)
+        allow(current_player).to receive(:inside_board?).and_return(true)
+        allow(current_player).to receive(:available_square?).and_return(false)
       end
 
       it 'returns empty array' do

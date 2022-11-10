@@ -35,7 +35,9 @@ class Pawn
     @valid_moves
   end
 
-  def diagonal_square_move(square, board)
+  # Creates all possible moves for the Pawn
+  def create_all_moves(square, board)
+    two_square_move(square)
     if @color == :red
       red_diagonal_move(square, board, [-1, -1])
       red_diagonal_move(square, board, [-1, 1])
@@ -46,6 +48,7 @@ class Pawn
     @valid_moves
   end
 
+  # Creates diagonal moves for Red (Player 2), either bottom left/right
   def red_diagonal_move(square, board, move)
     if inside_board?([square[0] + move[0], square[1] + move[1]])
       diagonal_move = [square[0] + move[0], square[1] + move[1]]
@@ -55,6 +58,7 @@ class Pawn
     @valid_moves
   end
 
+  # Creates diagonal moves for Blue (Player 1), either top left/right
   def blue_diagonal_move(square, board, move)
     if inside_board?([square[0] + move[0], square[1] + move[1]])
       diagonal_move = [square[0] + move[0], square[1] + move[1]]
@@ -69,6 +73,7 @@ class Pawn
     board_square != ' ' && board_square.color == opponent_color
   end
 
+  # Checks if a square is inside the board
   def inside_board?(square)
     square[0].between?(0, 7) && square[1].between?(0, 7)
   end
