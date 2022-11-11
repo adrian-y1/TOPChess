@@ -19,19 +19,6 @@ class Board
     piece_moves.any? {|move| move.include?(current_player_king)}
   end
 
-  def find_opponent_moves(current_player)
-    opponent_pieces = find_opponent_pieces(current_player)
-    piece_moves = []
-    opponent_pieces.each do |key, val|
-      if key.is_a?(Pawn)
-        piece_moves.push(key.create_all_moves(val, self))
-      else
-        piece_moves.push(key.create_all_moves(val))
-      end
-    end
-    piece_moves
-  end
-
   # Given the position of a piece, move that piece to the given destination
   # Once moved, change it's previous position to empty str
   def move(piece_coordinates, destination)
@@ -54,12 +41,6 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
-  # Removes the pieces at the given index and stores it in an array of removed pieces
-  def remove_piece(index)
-    @removed_pieces.push(@board[index[0]][index[1]])
-    @board[index[0]][index[1]] = ' '
-  end
-
   def display
     letters = '   A  B  C  D  E  F  G  H'
     puts letters
@@ -74,7 +55,13 @@ class Board
     puts letters
   end
 
-  private 
+  private
+
+  # Removes the pieces at the given index and stores it in an array of removed pieces
+  def remove_piece(index)
+    @removed_pieces.push(@board[index[0]][index[1]])
+    @board[index[0]][index[1]] = ' '
+  end
 
   # Finds the index position of the current player's King
   def find_king(current_player)
@@ -84,6 +71,15 @@ class Board
         return [row, column] if square.is_a?(King) && square.color == current_player.color
       end
     end
+  end
+
+  def find_opponent_moves(current_player)
+    opponent_pieces = find_opponent_pieces(current_player)
+    piece_moves = []
+    opponent_pieces.each do |key, val|
+      piece_moves.push(key.is_a?(Pawn) ? key.create_all_moves(val, self) : key.create_all_moves(val))
+    end
+    piece_moves
   end
 
   # Finds opponent's pieces and their current square
