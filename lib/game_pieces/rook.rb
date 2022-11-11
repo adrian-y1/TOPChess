@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validate_moves.rb'
+
 # Class that creates the Rook
 class Rook
   attr_reader :color, :colored_symbol
+
+  include ValidateMoves
 
   def initialize(color)
     @symbol = " \u265C "
@@ -24,7 +28,6 @@ class Rook
       moves[1].positive? ? moves[1] += 1 : moves[1] -= 1
       board_square = board.board[next_square[0]][next_square[1]]
       return @valid_moves if occupied_by_own_self?(board_square)
-
       @valid_moves.push(next_square)
       return @valid_moves if occupied_by_opponent?(board_square)
     end
@@ -56,13 +59,5 @@ class Rook
     top_moves = create_column_moves(square, [-1, 0], board)
     bottom_moves = create_column_moves(square, [1, 0], board)
     @valid_moves
-  end
-
-  def occupied_by_opponent?(board_square)
-    board_square != ' ' && board_square.color != @color
-  end
-
-  def occupied_by_own_self?(board_square)
-    board_square != ' ' && board_square.color == @color
   end
 end
