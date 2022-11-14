@@ -27,7 +27,7 @@ describe Rook do
         expect(create_moves).to eq([])
       end
     end
-    
+
     context 'when the row of a square is out of bounds (not between 0 & 7)' do
       it 'stops loop and returns empty array' do
         square = [9, 1]
