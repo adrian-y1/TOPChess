@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validate_moves'
+
+# Class that creates the King
 class King
   attr_reader :color, :colored_symbol
+
+  include ValidateMoves
 
   def initialize(color)
     @symbol = " \u265A "
@@ -11,11 +16,16 @@ class King
     @valid_moves = []
   end
 
-  def create_all_moves(square)
+  def create_all_moves(square, board)
     @movement.each do |move|
-      row = square[0] + move[0]
-      column = square[1] + move[1]
-      @valid_moves.push([row, column]) if row.between?(0, 7) && column.between?(0, 7)
+      next_square =[square[0] + move[0], square[1] + move[1]]
+      next unless inside_board?(next_square)
+
+      board_square = board.board[next_square[0]][next_square[1]]
+      next if occupied_by_own_self?(board_square, @color)
+
+      @valid_moves.push(next_square)
+      next if occupied_by_opponent?(board_square, @color)
     end
     @valid_moves
   end

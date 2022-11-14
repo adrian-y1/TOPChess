@@ -13,11 +13,11 @@ class Knight
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
     @movement = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
+    @valid_moves = []
   end
 
   # Creates all the valid moves the knight can go to, given a square
   def create_all_moves(square, board)
-    possible_moves = []
     @movement.each do |move|
       next_square =[square[0] + move[0], square[1] + move[1]]
       next unless inside_board?(next_square)
@@ -25,9 +25,9 @@ class Knight
       board_square = board.board[next_square[0]][next_square[1]]
       next if occupied_by_own_self?(board_square, @color)
 
-      possible_moves.push(next_square)
+      @valid_moves.push(next_square)
       next if occupied_by_opponent?(board_square, @color)
     end
-    possible_moves
+    @valid_moves
   end
 end
