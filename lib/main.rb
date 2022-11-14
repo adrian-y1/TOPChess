@@ -15,10 +15,11 @@ game_board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 
-square = [3, 4]
-game_board.board[3][4] = Queen.new(:blue)
-game_board.board[5][6] = Queen.new(:blue)
-moves = game_board.board[square[0]][square[1]].create_all_moves(square, game_board)
-moves.each { |m| game_board.board[m[0]][m[1]] = Queen.new(:red) }
+square = [0, 0]
+game_board.board[0][0] = Knight.new(:blue)
+game_board.board[1][2] = Knight.new(:blue)
+game_board.board[2][1] = Knight.new(:red)
+moves = game_board.board[square[0]][square[1]].create_possible_moves(square, game_board)
+moves.each { |m| game_board.board[m[0]][m[1]] = Knight.new(:red) }
 p moves
 game_board.display

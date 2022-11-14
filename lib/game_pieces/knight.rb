@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validate_moves'
+
 # Class that creates a Knight
 class Knight
   attr_reader :color, :colored_symbol
+
+  include ValidateMoves
 
   def initialize(color)
     @symbol = " \u265E "
@@ -11,18 +15,19 @@ class Knight
     @movement = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
   end
 
-  # Creates all the moves the knight can go to, given a square
-  def create_possible_moves(square)
+  # Creates all the valid moves the knight can go to, given a square
+  def create_all_moves(square, board)
     possible_moves = []
     @movement.each do |move|
-      possible_moves.push([square[0] + move[0], square[1] + move[1]])
+      next_square =[square[0] + move[0], square[1] + move[1]]
+      next unless inside_board?(next_square)
+
+      board_square = board.board[next_square[0]][next_square[1]]
+      next if occupied_by_own_self?(board_square, @color)
+
+      possible_moves.push(next_square)
+      next if occupied_by_opponent?(board_square, @color)
     end
     possible_moves
-  end
-
-  # Finds all the moves from #create_possible_moves that do not go out of bounds, given a square
-  def create_all_moves(square)
-    possible_moves = create_possible_moves(square)
-    possible_moves.select { |x, y| [x, y] if x.between?(0, 7) && y.between?(0, 7) }
   end
 end
