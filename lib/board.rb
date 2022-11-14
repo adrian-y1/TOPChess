@@ -16,7 +16,7 @@ class Board
   def king_in_check?(current_player)
     current_player_king = find_king(current_player)
     piece_moves = find_opponent_moves(current_player)
-    piece_moves.any? {|move| move.include?(current_player_king)}
+    piece_moves.any? { |move| move.include?(current_player_king) }
   end
 
   # Given the position of a piece, move that piece to the given destination

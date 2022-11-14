@@ -37,7 +37,7 @@ describe Board do
     end
 
     context 'when the square is not empty but occupied by opponent' do
-      let(:queen_opponent) { double('queen', color: opponent.color)}
+      let(:queen_opponent) { double('queen', color: opponent.color) }
 
       before do
         allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
@@ -52,9 +52,9 @@ describe Board do
     end
 
     context 'when the square is not empty and not occupied by opponent' do
-      let(:queen_current_player) { double('queen', color: current_player.color)}
+      let(:queen_current_player) { double('queen', color: current_player.color) }
 
-      before do 
+      before do
         allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
       end
 
@@ -89,7 +89,7 @@ describe Board do
   describe '#king_in_check?' do
     let(:current_player) { double('player', color: :blue) }
     let(:king_current) { double('king', color: :blue) }
-    let(:knight_opponent) { double('knight', color: :red)}
+    let(:knight_opponent) { double('knight', color: :red) }
 
     context "when current player's king is capturable by an opponent's piece" do
       before do

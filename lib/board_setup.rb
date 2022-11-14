@@ -17,7 +17,7 @@ class BoardSetup
       end
     end
   end
- 
+
   def create_game_pieces(row, color, board)
     (0..7).each do |column|
       row == 7 ? board[row - 1][column] = Pawn.new(color) : board[row + 1][column] = Pawn.new(color)
