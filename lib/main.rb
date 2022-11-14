@@ -15,10 +15,10 @@ game_board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 
-square = [2, 3]
-game_board.board[2][3] = Rook.new(:blue)
-
-moves = game_board.board[square[0]][square[1]].create_all_moves(square, game_board)
-moves.each { |m| game_board.board[m[0]][m[1]] = Rook.new(:red) }
-
+square = [3, 4]
+game_board.board[3][4] = Bishop.new(:blue)
+game_board.board[5][6] = Bishop.new(:blue)
+moves = game_board.board[square[0]][square[1]].create_diagonal_moves(square, [1, 1], game_board)
+moves.each { |m| game_board.board[m[0]][m[1]] = Bishop.new(:red) }
+p moves
 game_board.display

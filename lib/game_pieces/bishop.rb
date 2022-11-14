@@ -1,39 +1,40 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validate_moves'
+
 # Class that creates the Bishop
 class Bishop
   attr_reader :color, :colored_symbol
+
+  include ValidateMoves
 
   def initialize(color)
     @symbol = " \u265D "
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
+    @movement = [[-1, -1], [1, -1], [-1, 1], [1, 1]]
   end
 
   # Creates all the possible valid moves the Bishop can move to
   # given a square and directional movement (top left, bottom left, bottom right, top right).
-  # If the row is a positive integer, move up to the next row,
-  # Else, move down to the row before. Same rules apply for the column
-  def create_diagonal_moves(square, moves)
+  def create_diagonal_moves(square, moves, board)
     loop do
-      row = square[0] + moves[0]
-      column = square[1] + moves[1]
-      return @valid_moves unless row.between?(0, 7) && column.between?(0, 7)
-
       next_square = [moves[0] + square[0], moves[1] + square[1]]
-      moves[1].positive? ? moves[1] += 1 : moves[1] -= 1
-      moves[0].positive? ? moves[0] += 1 : moves[0] -= 1
+      return @valid_moves unless inside_board?(next_square)
+
+      update_movement(moves)
+      board_square = board.board[next_square[0]][next_square[1]]
+      return @valid_moves if occupied_by_own_self?(board_square, @color)
+
       @valid_moves.push(next_square)
+      return @valid_moves if occupied_by_opponent?(board_square, @color)
     end
   end
 
   # Creates all the diagonal moves the Bishop can make
-  def create_all_moves(square)
-    top_left = create_diagonal_moves(square, [-1, -1])
-    bottom_left = create_diagonal_moves(square, [1, -1])
-    top_right = create_diagonal_moves(square, [-1, 1])
-    bottom_right = create_diagonal_moves(square, [1, 1])
+  def create_all_moves(square, board)
+    @movement.each { |move| create_diagonal_moves(square, move, board) }
     @valid_moves
   end
 end

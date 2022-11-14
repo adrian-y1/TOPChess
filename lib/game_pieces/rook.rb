@@ -13,6 +13,7 @@ class Rook
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
+    @movement = [[0, -1], [0, 1], [-1, 0], [1, 0]]
   end
 
   # Creates all the valid moves in a given direction (left, right, top, bottom).
@@ -32,10 +33,7 @@ class Rook
 
   # Creates the left, right, top and bottom moves for the Rook
   def create_all_moves(square, board)
-    left_moves = create_directional_moves(square, [0, -1], board)
-    right_moves = create_directional_moves(square, [0, 1], board)
-    top_moves = create_directional_moves(square, [-1, 0], board)
-    bottom_moves = create_directional_moves(square, [1, 0], board)
+    @movement.each { |move| create_diagonal_moves(square, move, board) }
     @valid_moves
   end
 end

@@ -2,18 +2,18 @@
 
 require_relative '../../lib/game_pieces/rook'
 require_relative '../../lib/board'
-require_relative '../../lib/modules/validate_moves'
 
 require 'colorize'
 
 describe Rook do
   subject(:rook) { described_class.new(:blue) }
   subject(:rook_board) { double('board') }
-  subject(:validate_moves) { double('validate_moves') }
   let(:left_move) { [0, -1] }
   let(:right_move) { [0, 1] }
   let(:top_move) { [-1, 0] }
   let(:bottom_move) { [1, 0] }
+  let(:rook_current_player) { described_class.new(:blue) }
+  let(:rook_opponent) { described_class.new(:red) }
 
   describe '#create_directional_moves' do
     before do
@@ -21,13 +21,17 @@ describe Rook do
     end
 
     context 'when the column of a square is out of bounds (not between 0 & 7)' do
-      before do
-        allow(rook).to receive(:inside_board?).and_return(false)
-      end
-
       it 'stops loop and returns empty array' do
         square = [3, 10]
         create_moves = rook.create_directional_moves(square, left_move, rook_board)
+        expect(create_moves).to eq([])
+      end
+    end
+    
+    context 'when the row of a square is out of bounds (not between 0 & 7)' do
+      it 'stops loop and returns empty array' do
+        square = [9, 1]
+        create_moves = rook.create_directional_moves(square, top_move, rook_board)
         expect(create_moves).to eq([])
       end
     end
@@ -51,8 +55,6 @@ describe Rook do
     end
 
     context 'when given square [0, 0] with right movement and square [0, 2] is occupied by own self' do
-      let(:rook_current_player) { described_class.new(:blue) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[0][2] = rook_current_player
@@ -67,8 +69,6 @@ describe Rook do
     end
 
     context 'when given square [0, 5] with left movement and square [0, 2] is occupied by own self' do
-      let(:rook_current_player) { described_class.new(:blue) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[0][2] = rook_current_player
@@ -83,8 +83,6 @@ describe Rook do
     end
 
     context 'when given square [2, 5] with left movement and square [2, 1] is occupied by opponent' do
-      let(:rook_opponent) { described_class.new(:red) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[2][1] = rook_opponent
@@ -99,8 +97,6 @@ describe Rook do
     end
 
     context 'when given square [2, 5] with right movement and square [2, 7] is occupied by opponent' do
-      let(:rook_opponent) { described_class.new(:red) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[2][7] = rook_opponent
@@ -111,14 +107,6 @@ describe Rook do
         valid_moves = [[2, 6], [2, 7]]
         create_moves = rook.create_directional_moves(square, right_move, rook_board)
         expect(create_moves).to eq(valid_moves)
-      end
-    end
-
-    context 'when the row of a square is out of bounds (not between 0 & 7)' do
-      it 'stops loop and returns empty array' do
-        square = [9, 1]
-        create_moves = rook.create_directional_moves(square, top_move, rook_board)
-        expect(create_moves).to eq([])
       end
     end
 
@@ -141,8 +129,6 @@ describe Rook do
     end
 
     context 'when given square [3, 4] with top movement and square [0, 4] is occupied by own self' do
-      let(:rook_current_player) { described_class.new(:blue) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[0][4] = rook_current_player
@@ -157,8 +143,6 @@ describe Rook do
     end
 
     context 'when given square [3, 4] with bottom movement and square [6, 4] is occupied by own self' do
-      let(:rook_current_player) { described_class.new(:blue) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[6][4] = rook_current_player
@@ -173,8 +157,6 @@ describe Rook do
     end
 
     context 'when given square [3, 4] with top movement and square [1, 4] is occupied by opponent' do
-      let(:rook_opponent) { described_class.new(:red) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[1][4] = rook_opponent
@@ -189,8 +171,6 @@ describe Rook do
     end
 
     context 'when given square [3, 4] with bottom movement and square [7, 4] is occupied by opponent' do
-      let(:rook_opponent) { described_class.new(:red) }
-
       before do
         allow(rook_board).to receive(:board=)
         rook_board.board[7][4] = rook_opponent
