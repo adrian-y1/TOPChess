@@ -12,7 +12,7 @@ describe King do
 
   describe '#create_all_moves' do
     before do
-      allow(king_board).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' }})
+      allow(king_board).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
     end
 
     context 'when given square [0, 0]' do

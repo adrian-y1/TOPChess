@@ -13,7 +13,7 @@ describe Knight do
 
   describe '#create_all_moves' do
     before do
-      allow(knight_board).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' }})
+      allow(knight_board).to receive(:board).and_return(Array.new(8) { Array.new(8) { ' ' } })
     end
 
     context 'when Knight is at square [3, 4]' do

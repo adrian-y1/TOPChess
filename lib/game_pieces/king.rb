@@ -18,7 +18,7 @@ class King
 
   def create_all_moves(square, board)
     @movement.each do |move|
-      next_square =[square[0] + move[0], square[1] + move[1]]
+      next_square = [square[0] + move[0], square[1] + move[1]]
       next unless inside_board?(next_square)
 
       board_square = board.board[next_square[0]][next_square[1]]

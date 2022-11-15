@@ -175,7 +175,7 @@ describe Queen do
         expect(create_moves).to eq(valid_moves)
       end
     end
-    
+
     context 'when given square [5, 5] with bottom left movement and square [7, 3] is occupied by own self' do
       before do
         allow(queen_board).to receive(:board=)
@@ -203,7 +203,7 @@ describe Queen do
         expect(create_moves).to eq(valid_moves)
       end
     end
-    
+
     context 'when given square [5, 5] with bottom right movement and square [7, 7] is occupied by own self' do
       before do
         allow(queen_board).to receive(:board=)
@@ -231,7 +231,7 @@ describe Queen do
         expect(create_moves).to eq(valid_moves)
       end
     end
-    
+
     context 'when given square [5, 5] with left movement and square [5, 1] is occupied by own self' do
       before do
         allow(queen_board).to receive(:board=)

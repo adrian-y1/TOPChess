@@ -77,7 +77,7 @@ class Board
     opponent_pieces = find_opponent_pieces(current_player)
     piece_moves = []
     opponent_pieces.each do |key, val|
-      piece_moves.push(key.is_a?(Pawn) ? key.create_all_moves(val, self) : key.create_all_moves(val))
+      piece_moves.push(key.create_all_moves(val, self))
     end
     piece_moves
   end

@@ -9,16 +9,18 @@ require_relative './board_setup'
 require_relative './player'
 require 'colorize'
 
-game_board = Board.new
-# BoardSetup.new(game_board.board)
+board = Board.new
+#BoardSetup.new(board.board)
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-
-square = [0, 0]
-game_board.board[0][0] = King.new(:blue)
-
-moves = game_board.board[square[0]][square[1]].create_all_moves(square, game_board)
-moves.each { |m| game_board.board[m[0]][m[1]] = King.new(:red) }
+square = [1, 2]
+board.board[square[0]][square[1]] = Pawn.new(:blue)
+board.board[2][3] = Pawn.new(:red)
+board.board[2][1] = Pawn.new(:blue)
+moves = board.board[square[0]][square[1]].create_all_moves(square, board)
+moves.each {|m| board.board[m[0]][m[1]] = Pawn.new(:red)}
 p moves
-game_board.display
+p board.king_in_check?(player2)
+
+board.display

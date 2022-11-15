@@ -33,7 +33,7 @@ class Rook
 
   # Creates the left, right, top and bottom moves for the Rook
   def create_all_moves(square, board)
-    @movement.each { |move| create_diagonal_moves(square, move, board) }
+    @movement.each { |move| create_directional_moves(square, move, board) }
     @valid_moves
   end
 end
