@@ -25,10 +25,6 @@ describe Board do
     let(:opponent) { double('player', color: :red) }
 
     context 'when the square is empty' do
-      before do
-        allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
-      end
-
       it 'returns true' do
         square = 'a4'
         free = board.free?(square, current_player)
@@ -38,10 +34,6 @@ describe Board do
 
     context 'when the square is not empty but occupied by opponent' do
       let(:queen_opponent) { double('queen', color: opponent.color) }
-
-      before do
-        allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
-      end
 
       it 'returns true' do
         square = 'a4'
@@ -53,10 +45,6 @@ describe Board do
 
     context 'when the square is not empty and not occupied by opponent' do
       let(:queen_current_player) { double('queen', color: current_player.color) }
-
-      before do
-        allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
-      end
 
       it 'returns false' do
         square = 'a4'
@@ -72,9 +60,6 @@ describe Board do
 
     context 'when given piece coordinates a4 and desired destination of a8' do
       before do
-        allow(board).to receive(:find_coordinates_index).with('a4').and_return([4, 0])
-        allow(board).to receive(:find_coordinates_index).with('a8').and_return([0, 0])
-        allow(board).to receive(:remove_piece).with([4, 0])
         board.board[4][0] = queen_move
       end
 

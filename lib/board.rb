@@ -14,9 +14,10 @@ class Board
 
   # Checks if current player is in check
   def king_in_check?(current_player)
-    current_player_king = find_king(current_player)
-    piece_moves = find_opponent_moves(current_player)
-    piece_moves.any? { |move| move.include?(current_player_king) }
+    current_player_king = find_player_king(current_player)
+    opponent = find_opponent_color(current_player)
+    opponent_moves = find_player_moves(opponent)
+    opponent_moves.any? { |move| move.include?(current_player_king) }
   end
 
   # Given the position of a piece, move that piece to the given destination
@@ -64,34 +65,29 @@ class Board
   end
 
   # Finds the index position of the current player's King
-  def find_king(current_player)
+  def find_player_king(player)
     (0..7).each do |row|
       (0..7).each do |column|
         square = @board[row][column]
-        return [row, column] if square.is_a?(King) && square.color == current_player.color
+        return [row, column] if square.is_a?(King) && square.color == player.color
       end
     end
   end
 
-  def find_opponent_moves(current_player)
-    opponent_pieces = find_opponent_pieces(current_player)
-    piece_moves = []
-    opponent_pieces.each do |key, val|
-      piece_moves.push(key.create_all_moves(val, self))
-    end
-    piece_moves
+  def find_player_moves(player)
+    pieces = find_player_pieces(player)
+    pieces.map { |key, val| key.create_all_moves(val, self) }
   end
 
   # Finds opponent's pieces and their current square
-  def find_opponent_pieces(current_player)
-    opponent = find_opponent_color(current_player)
-    opponent_pieces = {}
+  def find_player_pieces(player)
+    pieces = {}
     @board.each do |row|
       row.each do |column|
-        opponent_pieces[column] = Matrix[*@board].index(column) if column != ' ' && column.color == opponent
+        pieces[column] = Matrix[*@board].index(column) if column != ' ' && column.color == player
       end
     end
-    opponent_pieces
+    pieces
   end
 
   def find_opponent_color(current_player)

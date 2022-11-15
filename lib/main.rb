@@ -10,15 +10,11 @@ require_relative './player'
 require 'colorize'
 
 board = Board.new
-# BoardSetup.new(board.board)
+BoardSetup.new(board.board)
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-square = [2, 2]
-board.board[square[0]][square[1]] = Pawn.new(:blue)
-
-moves = board.board[square[0]][square[1]].two_square_move(square, board)
-moves.each { |m| board.board[m[0]][m[1]] = Pawn.new(:red) }
-p moves
-
+board.move('e8', 'b1')
+squares = board.find_checking_piece_square(player1)
+p squares
 board.display
