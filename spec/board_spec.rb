@@ -4,6 +4,7 @@ require_relative '../lib/board'
 require_relative '../lib/player'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/knight'
+require_relative '../lib/game_pieces/pawn'
 require_relative '../lib/game_pieces/king'
 require 'colorize'
 
@@ -103,6 +104,48 @@ describe Board do
       it 'returns false' do
         check = board.king_in_check?(current_player)
         expect(check).to be false
+      end
+    end
+  end
+
+  describe '#checking_piece_capturable?' do
+    context 'when the piece that is checking the King is capturable' do
+      let(:current_player) { double('player', color: :blue) }
+      let(:king_current) { double('king', color: :blue) }
+      let(:pawn_opponent) { double('pawn', color: :red) }
+
+      before do
+        board.board[3][0] = king_current
+        board.board[4][1] = pawn_opponent
+        allow(pawn_opponent).to receive(:create_all_moves)
+        allow(pawn_opponent).to receive(:valid_moves).and_return([[3, 1], [3, 0]])
+        allow(king_current).to receive(:create_all_moves).and_return([[2, 0], [4, 0], [4, 1], [3, 1], [2, 1]])
+        allow(board).to receive(:find_checking_piece_square).and_return([[4, 1]])
+      end
+
+      it 'returns true' do
+        capturable = board.checking_piece_capturable?(current_player)
+        expect(capturable).to be true
+      end
+    end
+
+    context 'when the piece that is checking the King is not capturable' do
+      let(:current_player) { double('player', color: :blue) }
+      let(:king_current) { double('king', color: :blue) }
+      let(:knight_opponent) { double('knight', color: :red) }
+
+      before do
+        board.board[3][0] = king_current
+        board.board[2][2] = knight_opponent
+        allow(knight_opponent).to receive(:create_all_moves)
+        allow(knight_opponent).to receive(:valid_moves).and_return([[0, 1], [0, 3], [1, 4], [1, 0], [3, 4], [3, 0], [4, 3], [4, 1]])
+        allow(king_current).to receive(:create_all_moves).and_return([[2, 0], [4, 0], [4, 1], [3, 1], [2, 1]])
+        allow(board).to receive(:find_checking_piece_square).and_return([[2, 2]])
+      end
+
+      it 'returns false' do
+        capturable = board.checking_piece_capturable?(current_player)
+        expect(capturable).to be false
       end
     end
   end

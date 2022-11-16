@@ -42,17 +42,8 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
-  def find_checking_piece_square(player)
-    opponent = find_opponent_color(player)
-    find_player_moves(opponent)
-    player_king = find_player_king(player)
-    checking_piece_square = []
-    @pieces.each do |key, val|
-      checking_piece_square << val if key.valid_moves.include?(player_king)
-    end
-    checking_piece_square
-  end
-
+  # When King is in check, it checks whether or not the opponent's pieces
+  # that are checking the King are capturable
   def checking_piece_capturable?(player)
     checking_piece_square = find_checking_piece_square(player)
     current_player_moves = find_player_moves(player.color)
@@ -75,6 +66,19 @@ class Board
 
   private
 
+  # When King is in check, it finds the square of opponent's pieces 
+  # that are checking the King
+  def find_checking_piece_square(player)
+    opponent = find_opponent_color(player)
+    find_player_moves(opponent)
+    player_king = find_player_king(player)
+    checking_piece_square = []
+    @pieces.each do |key, val|
+      checking_piece_square << val if key.valid_moves.include?(player_king)
+    end
+    checking_piece_square
+  end
+
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(index)
     @removed_pieces.push(@board[index[0]][index[1]])
@@ -93,7 +97,6 @@ class Board
 
   # Finds the given player's possible moves
   def find_player_moves(player)
-    p player
     @pieces = find_player_pieces(player)
     @pieces.map { |key, val| key.create_all_moves(val, self) }
   end
