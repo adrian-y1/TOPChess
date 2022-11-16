@@ -4,7 +4,7 @@ require_relative '../modules/validate_moves'
 
 # Class that creates a Knight
 class Knight
-  attr_reader :color, :colored_symbol
+  attr_reader :color, :colored_symbol, :valid_moves
 
   include ValidateMoves
 

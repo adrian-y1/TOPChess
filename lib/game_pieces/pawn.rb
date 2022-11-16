@@ -5,7 +5,7 @@ require 'colorize'
 
 # Class that creates a new Pawn
 class Pawn
-  attr_reader :color, :colored_symbol
+  attr_reader :color, :colored_symbol, :valid_moves
 
   include ValidateMoves
 

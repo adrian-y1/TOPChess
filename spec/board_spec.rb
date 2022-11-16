@@ -81,8 +81,8 @@ describe Board do
         board.board[4][3] = king_current
         board.board[5][1] = knight_opponent
         knight_moves = [[[3, 0], [3, 2], [4, 3], [6, 3], [7, 2], [7, 0]]]
-        allow(board).to receive(:find_king).with(current_player).and_return([4, 3])
-        allow(board).to receive(:find_opponent_moves).with(current_player).and_return(knight_moves)
+        allow(board).to receive(:find_player_king).with(current_player).and_return([4, 3])
+        allow(board).to receive(:find_player_moves).with(knight_opponent.color).and_return(knight_moves)
       end
 
       it 'returns true' do
@@ -96,8 +96,8 @@ describe Board do
         board.board[7][7] = king_current
         board.board[5][1] = knight_opponent
         knight_moves = [[[3, 0], [3, 2], [4, 3], [6, 3], [7, 2], [7, 0]]]
-        allow(board).to receive(:find_king).with(current_player).and_return([7, 7])
-        allow(board).to receive(:find_opponent_moves).with(current_player).and_return(knight_moves)
+        allow(board).to receive(:find_player_king).with(current_player).and_return([7, 7])
+        allow(board).to receive(:find_player_moves).with(knight_opponent.color).and_return(knight_moves)
       end
 
       it 'returns false' do

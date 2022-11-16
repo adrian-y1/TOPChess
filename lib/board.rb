@@ -42,6 +42,23 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  def find_checking_piece_square(player)
+    opponent = find_opponent_color(player)
+    find_player_moves(opponent)
+    player_king = find_player_king(player)
+    checking_piece_square = []
+    @pieces.each do |key, val|
+      checking_piece_square << val if key.valid_moves.include?(player_king)
+    end
+    checking_piece_square
+  end
+
+  def checking_piece_capturable?(player)
+    checking_piece_square = find_checking_piece_square(player)
+    current_player_moves = find_player_moves(player.color)
+    current_player_moves.any? { |move| checking_piece_square.any? { |square| move.include?(square) } }
+  end
+
   def display
     letters = '   A  B  C  D  E  F  G  H'
     puts letters
@@ -74,12 +91,14 @@ class Board
     end
   end
 
+  # Finds the given player's possible moves
   def find_player_moves(player)
-    pieces = find_player_pieces(player)
-    pieces.map { |key, val| key.create_all_moves(val, self) }
+    p player
+    @pieces = find_player_pieces(player)
+    @pieces.map { |key, val| key.create_all_moves(val, self) }
   end
 
-  # Finds opponent's pieces and their current square
+  # Finds the given player's pieces on the board and their current square
   def find_player_pieces(player)
     pieces = {}
     @board.each do |row|
@@ -90,6 +109,7 @@ class Board
     pieces
   end
 
+  # Returns opponent's color
   def find_opponent_color(current_player)
     current_player.color == :blue ? :red : :blue
   end

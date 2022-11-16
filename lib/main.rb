@@ -14,7 +14,8 @@ BoardSetup.new(board.board)
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.move('e8', 'b1')
-squares = board.find_checking_piece_square(player1)
+board.move('e8', 'a5')
+
+squares = board.checking_piece_capturable?(player1)
 p squares
 board.display
