@@ -149,4 +149,42 @@ describe Board do
       end
     end
   end
+
+  describe '#move_to_safe_position?' do
+    let(:current_player) { double('player', color: :blue) }
+    let(:king_current) { double('king', color: :blue) }
+    
+    context 'when the king can move to a safe position' do
+      let(:pawn_opponent) { double('pawn', color: :red) }
+
+      before do
+        board.board[4][1] = king_current
+        board.board[6][2] = pawn_opponent
+        valid_moves = [[3, 1], [3, 0], [4, 0], [5, 0], [5, 1], [4, 1], [3, 2]]
+        allow(pawn_opponent).to receive(:create_all_moves)
+        allow(board).to receive(:remove_guarded_king_moves).and_return(valid_moves)
+      end
+
+      it 'returns true' do
+        safe_position = board.move_to_safe_position?(current_player)
+        expect(safe_position).to be true
+      end
+    end
+
+    context 'when the king cannot move to a safe position' do
+      let(:queen_opponent) { double('queen', color: :red) }
+
+      before do
+        board.board[0][0] = king_current
+        board.board[1][2] = queen_opponent
+        allow(queen_opponent).to receive(:create_all_moves)
+        allow(board).to receive(:remove_guarded_king_moves).and_return([])
+      end
+
+      it 'returns false' do
+        safe_position = board.move_to_safe_position?(current_player)
+        expect(safe_position).to be false
+      end
+    end
+  end
 end

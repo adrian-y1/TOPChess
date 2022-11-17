@@ -15,6 +15,6 @@ BoardSetup.new(board.board)
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.move('e8', 'b4')
-board.safe_position?(player1)
+board.move_to_safe_position?(player1)
 
 board.display
