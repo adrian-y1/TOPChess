@@ -42,24 +42,25 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
-  def safe_position(player)
-    player_king = find_player_king(player)
-    player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
+  def safe_position?(player)
     opponent = find_opponent_color(player)
     find_player_moves(opponent)
-    @pieces.each do |key, val|
-      player_king_moves.each do |king_m|
-        if player_king_moves.include?(val)
-          player_king_moves.delete(val) if key.defended
-        end
-        if key.is_a?(Pawn)
-          player_king_moves.delete(king_m) if key.attacking_squares.include?(king_m)
-        else
-          player_king_moves.delete(king_m) if key.valid_moves.include?(king_m)
-        end
+    valid_king_moves = remove_guarded_king_moves(player)
+    p valid_king_moves
+    p !valid_king_moves.empty?
+    !valid_king_moves.empty?
+  end
+
+  def remove_guarded_king_moves(player)
+    player_king = find_player_king(player)
+    player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
+    @pieces.each do |obj, square|
+      player_king_moves.each do |move|
+        player_king_moves.delete(square) if player_king_moves.include?(square) && obj.defended
+        player_king_moves.delete(move) if obj.attacking_squares.include?(move)
       end
     end
-    p player_king_moves
+    player_king_moves
   end
 
   # When King is in check, it checks whether or not the opponent's pieces

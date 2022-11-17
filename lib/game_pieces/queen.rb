@@ -4,7 +4,7 @@ require_relative '../modules/validate_moves'
 
 # Class that creates the Queen
 class Queen
-  attr_reader :color, :colored_symbol, :valid_moves
+  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
   attr_accessor :defended
 
   include ValidateMoves
@@ -16,6 +16,7 @@ class Queen
     @valid_moves = []
     @movement = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]]
     @defended = false
+    @attacking_squares = @valid_moves
   end
 
   # Creates all the 8 directional moves the Queen can move to

@@ -4,7 +4,7 @@ require_relative '../modules/validate_moves'
 
 # Class that creates the King
 class King
-  attr_reader :color, :colored_symbol, :valid_moves
+  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
   attr_accessor :defended
 
   include ValidateMoves
@@ -16,6 +16,7 @@ class King
     @movement = [[-1, 0], [-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1]]
     @valid_moves = []
     @defended = false
+    @attacking_squares = @valid_moves
   end
 
   def create_all_moves(square, board)

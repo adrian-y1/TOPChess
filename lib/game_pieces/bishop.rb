@@ -4,7 +4,7 @@ require_relative '../modules/validate_moves'
 
 # Class that creates the Bishop
 class Bishop
-  attr_reader :color, :colored_symbol, :valid_moves
+  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
   attr_accessor :defended
 
   include ValidateMoves
@@ -16,6 +16,7 @@ class Bishop
     @valid_moves = []
     @movement = [[-1, -1], [1, -1], [-1, 1], [1, 1]]
     @defended = false
+    @attacking_squares = @valid_moves
   end
 
   # Creates all the possible valid moves the Bishop can move to

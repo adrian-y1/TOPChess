@@ -4,7 +4,7 @@ require_relative '../modules/validate_moves'
 
 # Class that creates a Knight
 class Knight
-  attr_reader :color, :colored_symbol, :valid_moves
+  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
   attr_accessor :defended
 
   include ValidateMoves
@@ -16,6 +16,7 @@ class Knight
     @movement = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
     @valid_moves = []
     @defended = false
+    @attacking_squares = @valid_moves
   end
 
   # Creates all the valid moves the knight can go to, given a square
