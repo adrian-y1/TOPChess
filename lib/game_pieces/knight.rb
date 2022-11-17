@@ -5,6 +5,7 @@ require_relative '../modules/validate_moves'
 # Class that creates a Knight
 class Knight
   attr_reader :color, :colored_symbol, :valid_moves
+  attr_accessor :defended
 
   include ValidateMoves
 
@@ -14,6 +15,7 @@ class Knight
     @colored_symbol = @symbol.colorize(color: @color)
     @movement = [[-2, -1], [-2, 1], [-1, 2], [-1, -2], [1, 2], [1, -2], [2, 1], [2, -1]]
     @valid_moves = []
+    @defended = false
   end
 
   # Creates all the valid moves the knight can go to, given a square
@@ -23,7 +25,10 @@ class Knight
       next unless inside_board?(next_square)
 
       board_square = board.board[next_square[0]][next_square[1]]
-      next if occupied_by_own_self?(board_square, @color)
+      if occupied_by_own_self?(board_square, @color)
+        board_square.defended = true
+        return @valid_moves 
+      end
 
       @valid_moves.push(next_square)
       next if occupied_by_opponent?(board_square, @color)

@@ -5,6 +5,7 @@ require_relative '../modules/validate_moves'
 # Class that creates the King
 class King
   attr_reader :color, :colored_symbol, :valid_moves
+  attr_accessor :defended
 
   include ValidateMoves
 
@@ -14,6 +15,7 @@ class King
     @colored_symbol = @symbol.colorize(color: @color)
     @movement = [[-1, 0], [-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1]]
     @valid_moves = []
+    @defended = false
   end
 
   def create_all_moves(square, board)
@@ -22,7 +24,10 @@ class King
       next unless inside_board?(next_square)
 
       board_square = board.board[next_square[0]][next_square[1]]
-      next if occupied_by_own_self?(board_square, @color)
+      if occupied_by_own_self?(board_square, @color)
+        board_square.defended = true
+        next
+      end
 
       @valid_moves.push(next_square)
       next if occupied_by_opponent?(board_square, @color)

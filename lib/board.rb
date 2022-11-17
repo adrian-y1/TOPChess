@@ -42,6 +42,26 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  def safe_position(player)
+    player_king = find_player_king(player)
+    player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
+    opponent = find_opponent_color(player)
+    find_player_moves(opponent)
+    attack_squares = []
+    @pieces.each do |key, val|
+      puts "#{key.class} -> #{key.defended}"
+      attack_squares.push(key.is_a?(Pawn) ? key.attacking_squares : key.valid_moves)
+    end
+    safe_pos = []
+
+    player_king_moves.each do |king_m|
+      attack_squares.each do |square_arr|
+        safe_pos.push(king_m) if square_arr.include?(king_m) && !safe_pos.include?(king_m)
+      end
+    end
+    p player_king_moves - safe_pos
+  end
+
   # When King is in check, it checks whether or not the opponent's pieces
   # that are checking the King are capturable
   def checking_piece_capturable?(player)

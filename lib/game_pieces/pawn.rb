@@ -5,7 +5,8 @@ require 'colorize'
 
 # Class that creates a new Pawn
 class Pawn
-  attr_reader :color, :colored_symbol, :valid_moves
+  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
+  attr_accessor :defended
 
   include ValidateMoves
 
@@ -14,8 +15,10 @@ class Pawn
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
+    @attacking_squares = []
     @blue_movement = [[1, -1], [1, 1]]
     @red_movement = [[-1, -1], [-1, 1]]
+    @defended = false
   end
 
   # Creates all possible moves for the Pawn
@@ -55,6 +58,8 @@ class Pawn
     return @valid_moves unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
+
+    @attacking_squares << next_square
     occupied_by_opponent?(board_square, @color) ? @valid_moves.push(next_square) : @valid_moves
   end
 

@@ -5,6 +5,7 @@ require_relative '../modules/validate_moves'
 # Class that creates the Queen
 class Queen
   attr_reader :color, :colored_symbol, :valid_moves
+  attr_accessor :defended
 
   include ValidateMoves
 
@@ -14,6 +15,7 @@ class Queen
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
     @movement = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]]
+    @defended = false
   end
 
   # Creates all the 8 directional moves the Queen can move to
@@ -25,7 +27,10 @@ class Queen
 
       update_movement(moves)
       board_square = board.board[next_square[0]][next_square[1]]
-      return @valid_moves if occupied_by_own_self?(board_square, @color)
+      if occupied_by_own_self?(board_square, @color)
+        board_square.defended = true
+        return @valid_moves 
+      end
 
       @valid_moves.push(next_square)
       return @valid_moves if occupied_by_opponent?(board_square, @color)
