@@ -47,19 +47,19 @@ class Board
     player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
     opponent = find_opponent_color(player)
     find_player_moves(opponent)
-    attack_squares = []
     @pieces.each do |key, val|
-      puts "#{key.class} -> #{key.defended}"
-      attack_squares.push(key.is_a?(Pawn) ? key.attacking_squares : key.valid_moves)
-    end
-    safe_pos = []
-
-    player_king_moves.each do |king_m|
-      attack_squares.each do |square_arr|
-        safe_pos.push(king_m) if square_arr.include?(king_m) && !safe_pos.include?(king_m)
+      player_king_moves.each do |king_m|
+        if player_king_moves.include?(val)
+          player_king_moves.delete(val) if key.defended
+        end
+        if key.is_a?(Pawn)
+          player_king_moves.delete(king_m) if key.attacking_squares.include?(king_m)
+        else
+          player_king_moves.delete(king_m) if key.valid_moves.include?(king_m)
+        end
       end
     end
-    p player_king_moves - safe_pos
+    p player_king_moves
   end
 
   # When King is in check, it checks whether or not the opponent's pieces
