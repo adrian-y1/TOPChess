@@ -58,26 +58,34 @@ class Board
     current_player_moves.any? { |move| checking_piece_square.any? { |square| move.include?(square) } }
   end
 
-  def interception_available(player)
+  def find_checking_piece_class(player)
     checking_square = find_checking_piece_square(player)
-    player_king = find_player_king(player)
-    arr = []
-    # Find the piece that is at the checking_square and store
-    # the entire class inside an array
-    checking_square.each do |square|
+    checking_square.map do |square|
       key = @pieces.key(square)
-      arr << key if key.is_a?(Queen) || key.is_a?(Rook) || key.is_a?(Bishop)
+      key if key.is_a?(Queen) || key.is_a?(Rook) || key.is_a?(Bishop)
     end
-    # Loop through that piece's valid moves and check which direction the king's square is in and store it
+  end
+
+  def find_available_interceptions(player)
+    player_king = find_player_king(player)
+    piece_class = find_checking_piece_class(player)
     intercepting_squares = []
-    arr.each do |piece|
+    piece_class.each do |piece|
       piece.valid_moves.each do |moves|
-        intercepting_squares << moves  if moves.include?(player_king)
+        intercepting_squares << moves if moves.include?(player_king)
       end
     end
     intercepting_squares.flatten!(1)
     intercepting_squares.delete(player_king)
-    p intercepting_squares
+    intercepting_squares
+  end
+
+  def interception_available?(player)
+    available_interceptions = find_available_interceptions(player)
+    pieces = find_player_pieces(player.color)
+    pieces.each {|piece, _sq| pieces.delete(piece) if piece.is_a?(King)}
+    current_player_moves = pieces.map { |key, val| key.create_all_moves(val, self) }.flatten!(2)
+    current_player_moves.any? {|move| available_interceptions.include?(move)}
   end
 
   def display

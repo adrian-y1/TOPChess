@@ -31,7 +31,7 @@ class Queen
       board_square = board.board[next_square[0]][next_square[1]]
       if occupied_by_own_self?(board_square, @color)
         board_square.defended = true
-        return valid_moves 
+        return valid_moves
       end
 
       valid_moves.push(next_square)
@@ -41,11 +41,10 @@ class Queen
 
   # Creates all the moves in all of the directions for the Queen
   def create_all_moves(square, board)
-    @movement.each do |move| 
+    @movement.each do |move|
       new_moves = create_directional_moves(square, move, board)
       @valid_moves << new_moves unless new_moves.empty?
     end
-    puts "Queen -> #{@valid_moves}"
     @valid_moves
   end
 end

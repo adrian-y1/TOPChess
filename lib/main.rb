@@ -15,9 +15,13 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[3][3] = King.new(:blue)
+board.board[2][2] = Rook.new(:blue)
+board.board[7][2] = Rook.new(:blue)
 board.board[3][6] = Rook.new(:red)
+board.board[3][2] = Rook.new(:red)
+board.board[6][2] = Rook.new(:red)
 board.board[5][1] = Queen.new(:red)
 
-board.interception_available(player1)
+p board.interception_available?(player1)
 
 board.display
