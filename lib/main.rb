@@ -10,11 +10,14 @@ require_relative './player'
 require 'colorize'
 
 board = Board.new
-BoardSetup.new(board.board)
+#BoardSetup.new(board.board)
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.move('e8', 'b4')
-board.move_to_safe_position?(player1)
+board.board[3][3] = King.new(:blue)
+board.board[3][6] = Rook.new(:red)
+board.board[5][1] = Queen.new(:red)
+
+board.interception_available(player1)
 
 board.display

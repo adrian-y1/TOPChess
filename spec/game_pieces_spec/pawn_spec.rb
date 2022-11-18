@@ -22,7 +22,7 @@ describe Pawn do
     context 'when given square [2, 2] and Pawn is blue, next square inside the board and empty' do
       it 'returns 1 valid square ([3, 2])' do
         square = [2, 2]
-        valid_moves = [[3, 2]]
+        valid_moves = [[[3, 2]]]
         create_moves = pawn_blue.one_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -52,7 +52,7 @@ describe Pawn do
     context 'when given square [2, 2] and Pawn is red, next square inside the board and empty' do
       it 'returns 1 valid square ([1, 2])' do
         square = [2, 2]
-        valid_moves = [[1, 2]]
+        valid_moves = [[[1, 2]]]
         create_moves = pawn_red.one_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -84,7 +84,7 @@ describe Pawn do
     context 'when given square [1, 2] and Pawn is blue, on starting position, inside the board, next square is empty and array is not empty' do
       it 'returns 2 valid squares ([2, 2], [3, 2])' do
         square = [1, 2]
-        valid_moves = [[2, 2], [3, 2]]
+        valid_moves = [[[2, 2]], [[3, 2]]]
         create_moves = pawn_blue.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -98,7 +98,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([3, 2])' do
         square = [2, 2]
-        valid_moves = [[3, 2]]
+        valid_moves = [[[3, 2]]]
         create_moves = pawn_blue.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -113,7 +113,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([3, 2])' do
         square = [2, 2]
-        valid_moves = [[3, 2]]
+        valid_moves = [[[3, 2]]]
         create_moves = pawn_blue.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -144,7 +144,7 @@ describe Pawn do
     context 'when given square [6, 2] and Pawn is red, on starting position, inside the board, next square is empty and array is not empty' do
       it 'returns 2 valid squares ([5, 2], [4, 2])' do
         square = [6, 2]
-        valid_moves = [[5, 2], [4, 2]]
+        valid_moves = [[[5, 2]], [[4, 2]]]
         create_moves = pawn_red.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -158,7 +158,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([4, 2])' do
         square = [5, 2]
-        valid_moves = [[4, 2]]
+        valid_moves = [[[4, 2]]]
         create_moves = pawn_red.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -173,7 +173,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([4, 2])' do
         square = [5, 2]
-        valid_moves = [[4, 2]]
+        valid_moves = [[[4, 2]]]
         create_moves = pawn_red.two_square_move(square, pawn_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -227,7 +227,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([3, 1])' do
         square = [2, 2]
-        valid_moves = [[3, 1]]
+        valid_moves = [[[3, 1]]]
         create_moves = pawn_blue.create_diagonal_moves(square, pawn_board, bottom_left)
         expect(create_moves).to eq(valid_moves)
       end
@@ -249,7 +249,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([3, 3])' do
         square = [2, 2]
-        valid_moves = [[3, 3]]
+        valid_moves = [[[3, 3]]]
         create_moves = pawn_blue.create_diagonal_moves(square, pawn_board, bottom_right)
         expect(create_moves).to eq(valid_moves)
       end
@@ -271,7 +271,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([4, 1])' do
         square = [5, 2]
-        valid_moves = [[4, 1]]
+        valid_moves = [[[4, 1]]]
         create_moves = pawn_red.create_diagonal_moves(square, pawn_board, top_left)
         expect(create_moves).to eq(valid_moves)
       end
@@ -293,7 +293,7 @@ describe Pawn do
 
       it 'returns 1 valid square ([4, 3])' do
         square = [5, 2]
-        valid_moves = [[4, 3]]
+        valid_moves = [[[4, 3]]]
         create_moves = pawn_red.create_diagonal_moves(square, pawn_board, top_right)
         expect(create_moves).to eq(valid_moves)
       end

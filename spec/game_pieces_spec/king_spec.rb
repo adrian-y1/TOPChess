@@ -18,7 +18,7 @@ describe King do
     context 'when given square [0, 0]' do
       it 'returns 3 valid squares ([1, 0], [1, 1], [0, 1])' do
         square = [0, 0]
-        valid_moves = [[1, 0], [1, 1], [0, 1]]
+        valid_moves = [[[1, 0]], [[1, 1]], [[0, 1]]]
         create_moves = king.create_all_moves(square, king_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -27,7 +27,7 @@ describe King do
     context 'when given the square [2, 3]' do
       it 'returns 8 valid squares ([1, 3], [1, 2], [2, 2], [3, 2], [3, 3], [3, 4], [2, 4], [1, 4])' do
         square = [2, 3]
-        valid_moves = [[1, 3], [1, 2], [2, 2], [3, 2], [3, 3], [3, 4], [2, 4], [1, 4]]
+        valid_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
         create_moves = king.create_all_moves(square, king_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -42,7 +42,7 @@ describe King do
 
       it 'returns 6 valid squares ([1, 2], [2, 2], [3, 3], [3, 4], [2, 4], [1, 4])' do
         square = [2, 3]
-        valid_moves = [[1, 2], [2, 2], [3, 3], [3, 4], [2, 4], [1, 4]]
+        valid_moves = [[[1, 2]], [[2, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
         create_moves = king.create_all_moves(square, king_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -57,7 +57,7 @@ describe King do
 
       it 'returns 8 valid squares ([1, 3], [1, 2], [2, 2], [3, 2], [3, 3], [3, 4], [2, 4], [1, 4])' do
         square = [2, 3]
-        valid_moves = [[1, 3], [1, 2], [2, 2], [3, 2], [3, 3], [3, 4], [2, 4], [1, 4]]
+        valid_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
         create_moves = king.create_all_moves(square, king_board)
         expect(create_moves).to eq(valid_moves)
       end

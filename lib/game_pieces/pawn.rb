@@ -38,7 +38,7 @@ class Pawn
     return @valid_moves unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
-    board_square == ' ' ? @valid_moves.push(next_square) : @valid_moves
+    board_square == ' ' ? @valid_moves.push([next_square]) : @valid_moves
   end
 
   # Creates 2 possible square moves for the Pawn if it's on it's starting position
@@ -48,7 +48,7 @@ class Pawn
     return @valid_moves unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
-    board_square == ' ' && !@valid_moves.empty? ? @valid_moves.push(next_square) : @valid_moves
+    board_square == ' ' && !@valid_moves.empty? ? @valid_moves.push([next_square]) : @valid_moves
   end
 
   # Creates possible diagonal square capture if there's an opponent's piece on
@@ -60,7 +60,7 @@ class Pawn
     board_square = board.board[next_square[0]][next_square[1]]
 
     @attacking_squares << next_square
-    occupied_by_opponent?(board_square, @color) ? @valid_moves.push(next_square) : @valid_moves
+    occupied_by_opponent?(board_square, @color) ? @valid_moves.push([next_square]) : @valid_moves
   end
 
   # Creates the 2nd square for the Pawn if it's on starting position

@@ -31,7 +31,7 @@ class Knight
         next @valid_moves 
       end
 
-      @valid_moves.push(next_square)
+      @valid_moves.push([next_square])
       next if occupied_by_opponent?(board_square, @color)
     end
     @valid_moves

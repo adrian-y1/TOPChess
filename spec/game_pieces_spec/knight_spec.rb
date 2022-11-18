@@ -19,7 +19,7 @@ describe Knight do
     context 'when Knight is at square [3, 4]' do
       it 'returns 8 valid squares ([1, 3], [1, 5], [2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3])' do
         square = [3, 4]
-        valid_moves = [[1, 3], [1, 5], [2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3]]
+        valid_moves = [[[1, 3]], [[1, 5]], [[2, 6]], [[2, 2]], [[4, 6]], [[4, 2]], [[5, 5]], [[5, 3]]]
         create_moves = knight.create_all_moves(square, knight_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -28,7 +28,7 @@ describe Knight do
     context 'when the Knight is at square [0, 0]' do
       it 'returns 2 valid squares ([1, 2], [2, 1])' do
         square = [0, 0]
-        valid_moves = [[1, 2], [2, 1]]
+        valid_moves = [[[1, 2]], [[2, 1]]]
         create_moves = knight.create_all_moves(square, knight_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -43,7 +43,7 @@ describe Knight do
 
       it 'returns 6 valid squares ([1, 3], [1, 5], [2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3])' do
         square = [3, 4]
-        valid_moves = [[2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3]]
+        valid_moves = [[[2, 6]], [[2, 2]], [[4, 6]], [[4, 2]], [[5, 5]], [[5, 3]]]
         create_moves = knight.create_all_moves(square, knight_board)
         expect(create_moves).to eq(valid_moves)
       end
@@ -58,7 +58,7 @@ describe Knight do
 
       it 'returns 8 valid squares ([1, 3], [1, 5], [2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3])' do
         square = [3, 4]
-        valid_moves = [[1, 3], [1, 5], [2, 6], [2, 2], [4, 6], [4, 2], [5, 5], [5, 3]]
+        valid_moves = [[[1, 3]], [[1, 5]], [[2, 6]], [[2, 2]], [[4, 6]], [[4, 2]], [[5, 5]], [[5, 3]]]
         create_moves = knight.create_all_moves(square, knight_board)
         expect(create_moves).to eq(valid_moves)
       end

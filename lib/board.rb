@@ -50,26 +50,34 @@ class Board
     !valid_king_moves.empty?
   end
 
-  # Removes any king's moves that are guarded by opponent and
-  # any moves that can capture an opponent's piece but are defended by another piece
-  def remove_guarded_king_moves(player)
-    player_king = find_player_king(player)
-    player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
-    @pieces.each do |obj, square|
-      player_king_moves.each do |move|
-        player_king_moves.delete(square) if player_king_moves.include?(square) && obj.defended
-        player_king_moves.delete(move) if obj.attacking_squares.include?(move)
-      end
-    end
-    player_king_moves
-  end
-
   # When King is in check, it checks whether or not the opponent's pieces
   # that are checking the King are capturable
   def checking_piece_capturable?(player)
     checking_piece_square = find_checking_piece_square(player)
     current_player_moves = find_player_moves(player.color)
     current_player_moves.any? { |move| checking_piece_square.any? { |square| move.include?(square) } }
+  end
+
+  def interception_available(player)
+    checking_square = find_checking_piece_square(player)
+    player_king = find_player_king(player)
+    arr = []
+    # Find the piece that is at the checking_square and store
+    # the entire class inside an array
+    checking_square.each do |square|
+      key = @pieces.key(square)
+      arr << key if key.is_a?(Queen) || key.is_a?(Rook) || key.is_a?(Bishop)
+    end
+    # Loop through that piece's valid moves and check which direction the king's square is in and store it
+    intercepting_squares = []
+    arr.each do |piece|
+      piece.valid_moves.each do |moves|
+        intercepting_squares << moves  if moves.include?(player_king)
+      end
+    end
+    intercepting_squares.flatten!(1)
+    intercepting_squares.delete(player_king)
+    p intercepting_squares
   end
 
   def display
@@ -88,6 +96,20 @@ class Board
 
   private
 
+  # Removes any king's moves that are guarded by opponent and
+  # any moves that can capture an opponent's piece but are defended by another piece
+  def remove_guarded_king_moves(player)
+    player_king = find_player_king(player)
+    player_king_moves = @board[player_king[0]][player_king[1]].create_all_moves(player_king, self)
+    @pieces.each do |obj, square|
+      player_king_moves.each do |move|
+        player_king_moves.delete(square) if player_king_moves.include?(square) && obj.defended
+        player_king_moves.delete(move) if obj.attacking_squares.any? {|attk| attk.include?(move) }
+      end
+    end
+    player_king_moves
+  end
+
   # When King is in check, it finds the square of opponent's pieces 
   # that are checking the King
   def find_checking_piece_square(player)
@@ -96,7 +118,7 @@ class Board
     player_king = find_player_king(player)
     checking_piece_square = []
     @pieces.each do |key, val|
-      checking_piece_square << val if key.valid_moves.include?(player_king)
+      checking_piece_square << val if key.valid_moves.any? { |move| move.include?(player_king) }
     end
     checking_piece_square
   end
