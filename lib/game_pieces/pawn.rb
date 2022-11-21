@@ -59,7 +59,7 @@ class Pawn
 
     board_square = board.board[next_square[0]][next_square[1]]
 
-    @attacking_squares << next_square
+    @attacking_squares << [next_square]
     occupied_by_opponent?(board_square, @color) ? @valid_moves.push([next_square]) : @valid_moves
   end
 

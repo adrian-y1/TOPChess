@@ -6,6 +6,7 @@ require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/knight'
 require_relative '../lib/game_pieces/pawn'
 require_relative '../lib/game_pieces/king'
+require_relative '../lib/game_pieces/bishop'
 require 'colorize'
 
 describe Board do
@@ -184,6 +185,28 @@ describe Board do
       it 'returns false' do
         safe_position = board.move_to_safe_position?(current_player)
         expect(safe_position).to be false
+      end
+    end
+  end
+
+  describe '#find_checking_piece_class' do
+    context 'when the king is in check' do
+      let(:current_player) { double('player', color: :blue) }
+      let(:king_current) { double('king', color: :blue) }
+      let(:bishop_opponent) { double('bishop', color: :red) }
+      
+      before do
+        board.board[2][2] = king_current
+        board.board[0][0] = bishop_opponent
+        bishop_moves = [[[1, 1], [2, 2]]]
+        allow(bishop_opponent).to receive(:create_all_moves).and_return(bishop_moves)
+        allow(bishop_opponent).to receive(:valid_moves).and_return(bishop_moves)
+      end
+
+      it 'returns a 1 element array of object of the piece that is checking the king' do
+        checking_piece = [bishop_opponent]
+        find_Checking_piece = board.find_checking_piece_class(current_player)
+        expect(find_Checking_piece).to eq(checking_piece)
       end
     end
   end
