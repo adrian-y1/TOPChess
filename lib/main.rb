@@ -14,13 +14,13 @@ board = Board.new
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.board[0][0] = King.new(:blue)
-board.board[1][3] = Rook.new(:blue)
+board.board[0][1] = King.new(:blue)
+board.board[0][4] = Rook.new(:blue)
 board.board[3][3] = Queen.new(:red)
 board.board[2][1] = Rook.new(:red)
-board.board[3][0] = Rook.new(:red)
-#board.move('e8', 'd2')
 
+#board.move('e8', 'd2')
+p board.checkmate?(player1)
 p board.king_in_check?(player1)
 p board.move_to_safe_position?(player1)
 p board.interception_available?(player1)

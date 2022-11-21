@@ -20,14 +20,6 @@ class Board
     @pieces = {}
   end
 
-  # Checks if current player is in check
-  def king_in_check?(current_player)
-    current_player_king = find_player_king(current_player)
-    opponent = find_opponent_color(current_player)
-    opponent_pieces = find_player_pieces(opponent)
-    opponent_pieces.any? { |obj| obj[:piece].valid_moves.flatten(1).include?(current_player_king) }
-  end
-
   # Given the position of a piece, move that piece to the given destination
   # Once moved, change it's previous position to empty str
   def move(piece_coordinates, destination)
@@ -50,6 +42,21 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  def checkmate?(player)
+    king_in_check?(player) &&
+      !move_to_safe_position?(player) &&
+      !checking_piece_capturable?(player) &&
+      !interception_available?(player)
+  end
+
+  # Checks if current player is in check
+  def king_in_check?(current_player)
+    current_player_king = find_player_king(current_player)
+    opponent = find_opponent_color(current_player)
+    opponent_pieces = find_player_pieces(opponent)
+    opponent_pieces.any? { |obj| obj[:piece].valid_moves.flatten(1).include?(current_player_king) }
+  end
+
   # Checks if the King can move to safe position
   def move_to_safe_position?(player)
     valid_king_moves = remove_guarded_king_moves(player)
@@ -60,6 +67,7 @@ class Board
   # that are checking the King are capturable
   def checking_piece_capturable?(player)
     checking_piece_square = find_checking_piece_class(player)
+    return false if checking_piece_square.length > 1
     unguarded_squares = checking_piece_square.map {|obj| obj[:current_square] unless obj[:piece].defended }
     player_pieces = find_player_pieces(player.color)
     current_player_moves = player_pieces.map { |obj| obj[:piece].valid_moves }.flatten(1)
@@ -93,9 +101,12 @@ class Board
   end
 
   # Finds all the available squares that can be intercepted to remove the check
+  # Returns empty array if there are more than 1 piece checking the King
   def find_available_interceptions(player)
     player_king = find_player_king(player)
     piece_class_obj = find_checking_piece_class(player)
+    return [] if piece_class_obj.length > 1
+
     intercepting_squares = []
     piece_class_obj.each do |piece|
       piece[:piece].valid_moves.each do |moves|
