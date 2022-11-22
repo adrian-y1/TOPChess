@@ -42,6 +42,15 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Returns an array of hashes of piece objects that are interceptable
+  # Only interceptable pieces are Rook, Queen and Bishop
+  def find_interceptable_pieces(player)
+    checking_piece = find_checking_piece(player)
+    checking_piece.map do |obj|
+      obj if obj[:piece].is_a?(Queen) || obj[:piece].is_a?(Rook) || obj[:piece].is_a?(Bishop)
+    end
+  end
+
   # Checks if the King can move to a safe position
   def move_to_safe_position?(player)
     opponent = find_opponent_color(player)

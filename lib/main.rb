@@ -15,11 +15,10 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[0][0] = King.new(:blue)
-board.board[2][0] = Pawn.new(:red)
-board.board[2][2] = Knight.new(:red)
+board.board[2][0] = Rook.new(:red)
+board.board[2][2] = Queen.new(:red)
 
 #board.move('e8', 'd2')
-pieces = board.find_player_pieces(player2.color)
-p board.remove_guarded_king_moves(player1, pieces)
+p board.find_interceptable_pieces(player1)
 
 board.display
