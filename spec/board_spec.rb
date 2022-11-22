@@ -153,11 +153,67 @@ describe Board do
         allow(red_pawn).to receive(:attacking_squares) { pawn_attack_moves }
       end
 
-      it "removes any of the King's valid moves that are covered by opponent" do
+      it "removes any of the King's valid moves that are guarded by opponent" do
         red_pieces = [{ piece: red_knight, current_square: [2, 0] }, { piece: red_pawn, current_square: [2, 3] }]
         valid_king_moves = [[0, 0], [1, 0], [1, 1], [0, 2]]
         remove_guarded_moves = board.remove_guarded_king_moves(blue_player, red_pieces)
         expect(remove_guarded_moves).to eq(valid_king_moves)
+      end
+    end
+  end
+
+  describe '#move_to_safe_position?' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:red_player) { double('player', color: :red) }
+    let(:blue_king) { double('king', color: :blue) }
+    let(:red_pawn) { double('pawn', color: :red) }
+    let(:red_knight) { double('knight', color: :red) }
+
+    context 'when the king has a safe position to move to' do
+      before do
+        board.board[1][1] = blue_king
+        board.board[3][2] = red_pawn
+
+        pawn_moves = [[[2, 2], [1, 2]]]
+        pawn_attack_moves = [[[2, 1]], [[2, 3]]]
+        king_moves = [[[0, 1], [0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2]]]
+        king_obj = [{ piece: blue_king, current_square: [1, 1] }]
+
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_pawn).to receive(:attacking_squares) { pawn_attack_moves }
+        allow(board).to receive(:find_player_king).with(blue_player).and_return(king_obj)
+      end
+
+      it 'returns true' do
+        safe_position = board.move_to_safe_position?(blue_player)
+        expect(safe_position).to be true
+      end
+    end
+
+    context 'when the king doesnt have a safe position to move to' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_pawn
+        board.board[2][2] = red_knight
+
+        pawn_moves = [[[1, 0]]]
+        pawn_attack_moves = [[[1, 1]]]
+        king_moves = [[[1, 0], [1, 1], [0, 1]]]
+        knight_moves = [[[0, 1]], [[0, 3]], [[1, 4]], [[1, 0]], [[3, 4]], [[3, 0]], [[4, 3]], [[4, 1]]]
+        king_obj = [{ piece: blue_king, current_square: [0, 0] }]
+
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_pawn).to receive(:attacking_squares) { pawn_attack_moves }
+        allow(red_knight).to receive(:create_all_moves) { knight_moves }
+        allow(red_knight).to receive(:attacking_squares) { knight_moves }
+        allow(board).to receive(:find_player_king).with(blue_player) { king_obj }
+      end
+
+      it 'returns false' do
+        safe_position = board.move_to_safe_position?(blue_player)
+        expect(safe_position).to be false
       end
     end
   end

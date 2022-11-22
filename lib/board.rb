@@ -42,6 +42,16 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Checks if the King can move to a safe position
+  def move_to_safe_position?(player)
+    opponent = find_opponent_color(player)
+    opponent_pieces = find_player_pieces(opponent)
+    valid_king_moves = remove_guarded_king_moves(player, opponent_pieces).uniq
+    !valid_king_moves.empty?
+  end
+
+  # Removes any king's moves that are guarded by opponent and
+  # any moves that can capture an opponent's piece but are defended by another piece
   def remove_guarded_king_moves(player, opponent_pieces)
     player_king_moves = find_player_king(player)[0][:piece].valid_moves.flatten(1)
     invalid_moves = []
