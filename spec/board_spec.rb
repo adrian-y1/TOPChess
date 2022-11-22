@@ -3,6 +3,7 @@
 require_relative '../lib/board'
 require_relative '../lib/player'
 require_relative '../lib/game_pieces/queen'
+require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/knight'
 require_relative '../lib/game_pieces/pawn'
 require_relative '../lib/game_pieces/king'
@@ -75,7 +76,6 @@ describe Board do
 
   describe '#find_checking_piece' do
     let(:blue_player) { double('player', color: :blue) }
-    let(:red_player) { double('player', color: :red) }
     let(:blue_king) { double('king', color: :blue) }
     let(:red_pawn) { double('pawn', color: :red) }
 
@@ -128,7 +128,6 @@ describe Board do
 
   describe '#remove_guarded_king_moves' do
     let(:blue_player) { double('player', color: :blue) }
-    let(:red_player) { double('player', color: :red) }
     let(:blue_king) { double('king', color: :blue) }
     let(:red_pawn) { double('pawn', color: :red) }
     let(:red_knight) { double('knight', color: :red) }
@@ -164,7 +163,6 @@ describe Board do
 
   describe '#move_to_safe_position?' do
     let(:blue_player) { double('player', color: :blue) }
-    let(:red_player) { double('player', color: :red) }
     let(:blue_king) { double('king', color: :blue) }
     let(:red_pawn) { double('pawn', color: :red) }
     let(:red_knight) { double('knight', color: :red) }
@@ -214,6 +212,87 @@ describe Board do
       it 'returns false' do
         safe_position = board.move_to_safe_position?(blue_player)
         expect(safe_position).to be false
+      end
+    end
+  end
+
+  describe '#find_available_interceptions' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:blue_king) { double('king', color: :blue) }
+    let(:red_rook) { double('rook', color: :red) }
+    let(:red_pawn) { double('pawn', color: :red) }
+
+    context "when King is at [0, 0] and is in check by opponent's Rook who's at [2, 0]" do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook
+
+        king_moves = [[[1, 0], [1, 1], [0, 1]]]
+        king_obj = [{ piece: blue_king, current_square: [0, 0] }]
+        rook_obj = [{ piece: red_rook, current_square: [2, 0] }]
+        rook_moves = [[[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]], [[1, 0], [0, 0]],
+                      [[3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(red_rook).to receive(:create_all_moves) { rook_moves }
+        allow(red_rook).to receive(:valid_moves) { rook_moves }
+        allow(board).to receive(:find_player_king).with(blue_player) { king_obj }
+        allow(board).to receive(:find_interceptable_pieces) { rook_obj }
+      end
+
+      it 'returns square [1, 0] as a interceptable square' do
+        interceptable_squares = [[1, 0]]
+        find_interceptions = board.find_available_interceptions(blue_player)
+        expect(find_interceptions).to eq(interceptable_squares)
+      end
+    end
+
+    context "when King is in check by opponent's Pawn" do
+      before do
+        board.board[0][0] = blue_king
+        board.board[1][1] = red_pawn
+
+        king_moves = [[[1, 0], [1, 1], [0, 1]]]
+        king_obj = [{ piece: blue_king, current_square: [0, 0] }]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(board).to receive(:find_player_king).with(blue_player) { king_obj }
+        allow(board).to receive(:find_interceptable_pieces) { [] }
+      end
+
+      it 'returns empty array' do
+        find_interceptions = board.find_available_interceptions(blue_player)
+        expect(find_interceptions).to eq([])
+      end
+    end
+
+    context 'when King is in check by more than 1 piece' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[1][1] = red_pawn
+        board.board[2][0] = red_rook
+
+        king_moves = [[[1, 0], [1, 1], [0, 1]]]
+        king_obj = [{ piece: blue_king, current_square: [0, 0] }]
+        rook_obj = [{ piece: red_rook, current_square: [2, 0] }]
+        pawn_obj = [{ piece: red_pawn, current_square: [1, 1] }]
+        rook_moves = [[[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]], [[1, 0], [0, 0]],
+                      [[3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]]
+        pawn_moves = [[[0, 1]]]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(red_rook).to receive(:create_all_moves) { rook_moves }
+        allow(red_rook).to receive(:valid_moves) { rook_moves }
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_pawn).to receive(:valid_moves) { pawn_moves }
+        allow(board).to receive(:find_player_king).with(blue_player) { king_obj }
+        allow(board).to receive(:find_interceptable_pieces) { rook_obj }
+        allow(board).to receive(:find_checking_piece) { [rook_obj, pawn_obj] }
+      end
+
+      it 'returns empty array' do
+        find_interceptions = board.find_available_interceptions(blue_player)
+        expect(find_interceptions).to eq([])
       end
     end
   end

@@ -46,9 +46,9 @@ class Board
   # Returns empty array if there are more than 1 piece checking the King
   def find_available_interceptions(player)
     player_king = find_player_king(player)[0][:current_square]
-    interceptable_pieces = find_interceptable_pieces(player)
+    interceptable_pieces = find_interceptable_pieces(player).compact
     interceptable_squares = []
-    return [] if interceptable_pieces.length > 1
+    return [] if interceptable_pieces.empty? || find_checking_piece(player).length > 1
 
     interceptable_pieces.each do |obj|
       obj[:piece].valid_moves.each { |moves| interceptable_squares << moves if moves.include?(player_king) }
