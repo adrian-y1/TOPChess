@@ -14,12 +14,14 @@ board = Board.new
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.board[0][1] = King.new(:blue)
+board.board[1][1] = King.new(:blue)
 board.board[1][4] = Rook.new(:blue)
-board.board[3][4] = Queen.new(:red)
+board.board[2][3] = Pawn.new(:red)
+board.board[3][1] = Queen.new(:red)
 board.board[2][0] = Knight.new(:red)
 
 #board.move('e8', 'd2')
-p board.find_checking_piece(player1)
+pieces = board.find_player_pieces(player2.color)
+p board.remove_guarded_king_moves(player1, pieces)
 
 board.display

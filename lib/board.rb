@@ -42,12 +42,16 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
-  # Checks if the King can move to safe position
-  def move_to_safe_position?(player)
-    opponent = find_opponent_color(player)
-    opponent_pieces = find_player_pieces(opponent)
-    valid_king_moves = remove_guarded_king_moves(player, opponent_pieces)
-    !valid_king_moves.empty?
+  def remove_guarded_king_moves(player, opponent_pieces)
+    player_king_moves = find_player_king(player)[0][:piece].valid_moves.flatten(1)
+    invalid_moves = []
+    opponent_pieces.each do |obj|
+      player_king_moves.each do |move|
+        invalid_moves << move if move == obj[:current_square] && obj[:piece].defended
+        invalid_moves << move if obj[:piece].attacking_squares.any? { |sq| sq.include?(move) }
+      end
+    end
+    player_king_moves - invalid_moves.uniq
   end
 
   # Returns an array of hashes of class instances of the piece(s) checking
@@ -55,9 +59,9 @@ class Board
   def find_checking_piece(player)
     opponent = find_opponent_color(player)
     opponent_pieces = find_player_pieces(opponent)
-    current_player_king = find_player_king(player)
+    current_player_king = find_player_king(player)[0]
     opponent_pieces.each_with_object([]) do |obj, checking_piece|
-      next unless obj[:piece].valid_moves.any? { |move| move.include?(current_player_king) }
+      next unless obj[:piece].valid_moves.any? { |move| move.include?(current_player_king[:current_square]) }
 
       checking_piece << obj
     end
@@ -85,14 +89,10 @@ class Board
     @board[index[0]][index[1]] = ' '
   end
 
-  # Finds the index position of the current player's King
+  # Finds the class instance of the current player's King and current square
   def find_player_king(player)
-    (0..7).each do |row|
-      (0..7).each do |column|
-        square = @board[row][column]
-        return [row, column] if square.is_a?(King) && square.color == player.color
-      end
-    end
+    player_pieces = find_player_pieces(player.color)
+    player_pieces.select {|obj| obj[:piece].is_a?(King) }
   end
 
   # Finds the given player's pieces on the board and their current square

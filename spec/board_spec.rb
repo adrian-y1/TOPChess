@@ -78,18 +78,22 @@ describe Board do
     let(:red_player) { double('player', color: :red) }
     let(:blue_king) { double('king', color: :blue) }
     let(:red_pawn) { double('pawn', color: :red) }
+
     context "when a piece is checking the current player's King" do
       before do
         board.board[0][1] = blue_king
         board.board[1][2] = red_pawn
+
         pawn_moves = [[[0, 2], [0, 1]]]
-        allow(board).to receive(:find_player_king).with(blue_player).and_return([0, 1])
+        king_obj = [{ piece: blue_king, current_square: [0, 1] }]
+
+        allow(board).to receive(:find_player_king).and_return(king_obj)
         allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
         allow(red_pawn).to receive(:valid_moves) { pawn_moves }
       end
-      
+
       it "returns a 1 element hash array of the piece class instance and it's current square" do
-        checking_piece = [{:piece => red_pawn, :current_square => [1, 2]}]
+        checking_piece = [{ piece: red_pawn, current_square: [1, 2] }]
         find_piece = board.find_checking_piece(blue_player)
         expect(find_piece).to eq(checking_piece)
       end
@@ -102,9 +106,12 @@ describe Board do
         board.board[0][1] = blue_king
         board.board[1][2] = red_pawn
         board.board[2][0] = red_knight
+
         pawn_moves = [[[0, 2], [0, 1]]]
         knight_moves = [[[0, 1]], [[1, 2]], [[3, 2]], [[4, 1]]]
-        allow(board).to receive(:find_player_king).with(blue_player).and_return([0, 1])
+        king_obj = [{ piece: blue_king, current_square: [0, 1] }]
+
+        allow(board).to receive(:find_player_king).with(blue_player).and_return(king_obj)
         allow(red_knight).to receive(:create_all_moves) { knight_moves }
         allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
         allow(red_knight).to receive(:valid_moves) { knight_moves }
@@ -112,9 +119,45 @@ describe Board do
       end
 
       it 'returns a 2 element array of hashes of the pieces class instances and their current square' do
-        checking_pieces = [{:piece => red_pawn, :current_square => [1, 2]}, {:piece => red_knight, :current_square => [2, 0]}]
+        checking_pieces = [{ piece: red_pawn, current_square: [1, 2] }, { piece: red_knight, current_square: [2, 0] }]
         find_piece = board.find_checking_piece(blue_player)
         expect(find_piece).to eq(checking_pieces)
+      end
+    end
+  end
+
+  describe '#remove_guarded_king_moves' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:red_player) { double('player', color: :red) }
+    let(:blue_king) { double('king', color: :blue) }
+    let(:red_pawn) { double('pawn', color: :red) }
+    let(:red_knight) { double('knight', color: :red) }
+
+    context "when current player's King is in check" do
+      before do
+        board.board[0][1] = blue_king
+        board.board[2][3] = red_pawn
+        board.board[2][0] = red_knight
+
+        knight_moves = [[[0, 1]], [[1, 2]], [[3, 2]], [[4, 1]]]
+        king_obj = [{ piece: blue_king, current_square: [0, 1] }]
+        king_moves = [[[0, 0], [1, 0], [1, 1], [1, 2], [0, 2]]]
+        pawn_attack_moves = [[[1, 2]], [[1, 4]]]
+        pawn_moves = [[[1, 3], [0, 3]]]
+
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(board).to receive(:find_player_king).with(blue_player).and_return(king_obj)
+        allow(red_knight).to receive(:create_all_moves) { knight_moves }
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_knight).to receive(:attacking_squares) { knight_moves }
+        allow(red_pawn).to receive(:attacking_squares) { pawn_attack_moves }
+      end
+
+      it "removes any of the King's valid moves that are covered by opponent" do
+        red_pieces = [{ piece: red_knight, current_square: [2, 0] }, { piece: red_pawn, current_square: [2, 3] }]
+        valid_king_moves = [[0, 0], [1, 0], [1, 1], [0, 2]]
+        remove_guarded_moves = board.remove_guarded_king_moves(blue_player, red_pieces)
+        expect(remove_guarded_moves).to eq(valid_king_moves)
       end
     end
   end
