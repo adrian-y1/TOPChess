@@ -42,6 +42,15 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  def interception_available?(player)
+    available_interceptions = find_available_interceptions(player)
+    player_valid_moves = find_player_pieces(player.color).map do |obj|
+      obj[:piece].valid_moves unless obj[:piece].is_a?(King)
+    end
+    player_valid_moves.compact!.flatten!(2)
+    player_valid_moves ? player_valid_moves.any? { |move| available_interceptions.include?(move) } : false
+  end
+
   # Finds all the available squares that can be intercepted to remove the check
   # Returns empty array if there are more than 1 piece checking the King
   def find_available_interceptions(player)
