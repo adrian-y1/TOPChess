@@ -73,140 +73,48 @@ describe Board do
     end
   end
 
-  describe '#king_in_check?' do
-    let(:current_player) { double('player', color: :blue) }
-    let(:king_current) { double('king', color: :blue) }
-    let(:knight_opponent) { double('knight', color: :red) }
-
-    context "when current player's king is capturable by an opponent's piece" do
+  describe '#find_checking_piece' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:red_player) { double('player', color: :red) }
+    let(:blue_king) { double('king', color: :blue) }
+    let(:red_pawn) { double('pawn', color: :red) }
+    context "when a piece is checking the current player's King" do
       before do
-        board.board[4][3] = king_current
-        board.board[5][1] = knight_opponent
-        knight_moves = [[[3, 0], [3, 2], [4, 3], [6, 3], [7, 2], [7, 0]]]
-        allow(board).to receive(:find_player_king).with(current_player).and_return([4, 3])
-        allow(board).to receive(:find_player_moves).with(knight_opponent.color).and_return(knight_moves)
+        board.board[0][1] = blue_king
+        board.board[1][2] = red_pawn
+        pawn_moves = [[[0, 2], [0, 1]]]
+        allow(board).to receive(:find_player_king).with(blue_player).and_return([0, 1])
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_pawn).to receive(:valid_moves) { pawn_moves }
       end
-
-      it 'returns true' do
-        check = board.king_in_check?(current_player)
-        expect(check).to be true
-      end
-    end
-
-    context "when current player's king is not capturable by an opponent's piece" do
-      before do
-        board.board[7][7] = king_current
-        board.board[5][1] = knight_opponent
-        knight_moves = [[[3, 0], [3, 2], [4, 3], [6, 3], [7, 2], [7, 0]]]
-        allow(board).to receive(:find_player_king).with(current_player).and_return([7, 7])
-        allow(board).to receive(:find_player_moves).with(knight_opponent.color).and_return(knight_moves)
-      end
-
-      it 'returns false' do
-        check = board.king_in_check?(current_player)
-        expect(check).to be false
-      end
-    end
-  end
-
-  describe '#checking_piece_capturable?' do
-    context 'when the piece that is checking the King is capturable' do
-      let(:current_player) { double('player', color: :blue) }
-      let(:king_current) { double('king', color: :blue) }
-      let(:pawn_opponent) { double('pawn', color: :red) }
-
-      before do
-        board.board[3][0] = king_current
-        board.board[4][1] = pawn_opponent
-        allow(pawn_opponent).to receive(:create_all_moves)
-        allow(pawn_opponent).to receive(:valid_moves).and_return([[3, 1], [3, 0]])
-        allow(king_current).to receive(:create_all_moves).and_return([[2, 0], [4, 0], [4, 1], [3, 1], [2, 1]])
-        allow(board).to receive(:find_checking_piece_square).and_return([[4, 1]])
-      end
-
-      it 'returns true' do
-        capturable = board.checking_piece_capturable?(current_player)
-        expect(capturable).to be true
-      end
-    end
-
-    context 'when the piece that is checking the King is not capturable' do
-      let(:current_player) { double('player', color: :blue) }
-      let(:king_current) { double('king', color: :blue) }
-      let(:knight_opponent) { double('knight', color: :red) }
-
-      before do
-        board.board[3][0] = king_current
-        board.board[2][2] = knight_opponent
-        allow(knight_opponent).to receive(:create_all_moves)
-        allow(knight_opponent).to receive(:valid_moves).and_return([[0, 1], [0, 3], [1, 4], [1, 0], [3, 4], [3, 0], [4, 3], [4, 1]])
-        allow(king_current).to receive(:create_all_moves).and_return([[2, 0], [4, 0], [4, 1], [3, 1], [2, 1]])
-        allow(board).to receive(:find_checking_piece_square).and_return([[2, 2]])
-      end
-
-      it 'returns false' do
-        capturable = board.checking_piece_capturable?(current_player)
-        expect(capturable).to be false
-      end
-    end
-  end
-
-  describe '#move_to_safe_position?' do
-    let(:current_player) { double('player', color: :blue) }
-    let(:king_current) { double('king', color: :blue) }
-    
-    context 'when the king can move to a safe position' do
-      let(:pawn_opponent) { double('pawn', color: :red) }
-
-      before do
-        board.board[4][1] = king_current
-        board.board[6][2] = pawn_opponent
-        valid_moves = [[3, 1], [3, 0], [4, 0], [5, 0], [5, 1], [4, 1], [3, 2]]
-        allow(pawn_opponent).to receive(:create_all_moves)
-        allow(board).to receive(:remove_guarded_king_moves).and_return(valid_moves)
-      end
-
-      it 'returns true' do
-        safe_position = board.move_to_safe_position?(current_player)
-        expect(safe_position).to be true
-      end
-    end
-
-    context 'when the king cannot move to a safe position' do
-      let(:queen_opponent) { double('queen', color: :red) }
-
-      before do
-        board.board[0][0] = king_current
-        board.board[1][2] = queen_opponent
-        allow(queen_opponent).to receive(:create_all_moves)
-        allow(board).to receive(:remove_guarded_king_moves).and_return([])
-      end
-
-      it 'returns false' do
-        safe_position = board.move_to_safe_position?(current_player)
-        expect(safe_position).to be false
-      end
-    end
-  end
-
-  describe '#find_checking_piece_class' do
-    context 'when the king is in check' do
-      let(:current_player) { double('player', color: :blue) }
-      let(:king_current) { double('king', color: :blue) }
-      let(:bishop_opponent) { double('bishop', color: :red) }
       
+      it "returns a 1 element hash array of the piece class instance and it's current square" do
+        checking_piece = [{:piece => red_pawn, :current_square => [1, 2]}]
+        find_piece = board.find_checking_piece(blue_player)
+        expect(find_piece).to eq(checking_piece)
+      end
+    end
+
+    context "when there are 2 pieces checking the current player's King" do
+      let(:red_knight) { double('knight', color: :red) }
+
       before do
-        board.board[2][2] = king_current
-        board.board[0][0] = bishop_opponent
-        bishop_moves = [[[1, 1], [2, 2]]]
-        allow(bishop_opponent).to receive(:create_all_moves).and_return(bishop_moves)
-        allow(bishop_opponent).to receive(:valid_moves).and_return(bishop_moves)
+        board.board[0][1] = blue_king
+        board.board[1][2] = red_pawn
+        board.board[2][0] = red_knight
+        pawn_moves = [[[0, 2], [0, 1]]]
+        knight_moves = [[[0, 1]], [[1, 2]], [[3, 2]], [[4, 1]]]
+        allow(board).to receive(:find_player_king).with(blue_player).and_return([0, 1])
+        allow(red_knight).to receive(:create_all_moves) { knight_moves }
+        allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
+        allow(red_knight).to receive(:valid_moves) { knight_moves }
+        allow(red_pawn).to receive(:valid_moves) { pawn_moves }
       end
 
-      it 'returns a 1 element array of object of the piece that is checking the king' do
-        checking_piece = [bishop_opponent]
-        find_Checking_piece = board.find_checking_piece_class(current_player)
-        expect(find_Checking_piece).to eq(checking_piece)
+      it 'returns a 2 element array of hashes of the pieces class instances and their current square' do
+        checking_pieces = [{:piece => red_pawn, :current_square => [1, 2]}, {:piece => red_knight, :current_square => [2, 0]}]
+        find_piece = board.find_checking_piece(blue_player)
+        expect(find_piece).to eq(checking_pieces)
       end
     end
   end

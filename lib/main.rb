@@ -15,15 +15,11 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[0][1] = King.new(:blue)
-board.board[0][4] = Rook.new(:blue)
-board.board[3][3] = Queen.new(:red)
-board.board[2][1] = Rook.new(:red)
+board.board[1][4] = Rook.new(:blue)
+board.board[3][4] = Queen.new(:red)
+board.board[2][0] = Knight.new(:red)
 
 #board.move('e8', 'd2')
-p board.checkmate?(player1)
-p board.king_in_check?(player1)
-p board.move_to_safe_position?(player1)
-p board.interception_available?(player1)
-p board.checking_piece_capturable?(player1)
+p board.find_checking_piece(player1)
 
 board.display
