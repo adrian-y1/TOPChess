@@ -42,6 +42,22 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Finds all the available squares that can be intercepted to remove the check
+  # Returns empty array if there are more than 1 piece checking the King
+  def find_available_interceptions(player)
+    player_king = find_player_king(player)[0][:current_square]
+    interceptable_pieces = find_interceptable_pieces(player)
+    interceptable_squares = []
+    return [] if interceptable_pieces.length > 1
+
+    interceptable_pieces.each do |obj|
+      obj[:piece].valid_moves.each { |moves| interceptable_squares << moves if moves.include?(player_king) }
+    end
+    interceptable_squares.flatten!(1)
+    interceptable_squares.delete(player_king)
+    interceptable_squares
+  end
+
   # Returns an array of hashes of piece objects that are interceptable
   # Only interceptable pieces are Rook, Queen and Bishop
   def find_interceptable_pieces(player)

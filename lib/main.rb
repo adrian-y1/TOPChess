@@ -15,10 +15,10 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[0][0] = King.new(:blue)
-board.board[2][0] = Rook.new(:red)
-board.board[2][2] = Queen.new(:red)
+
+board.board[3][3] = Queen.new(:red)
 
 #board.move('e8', 'd2')
-p board.find_interceptable_pieces(player1)
+p board.find_available_interceptions(player1)
 
 board.display
