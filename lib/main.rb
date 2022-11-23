@@ -15,10 +15,12 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[2][3] = King.new(:blue)
-board.board[0][6] = Knight.new(:blue)
-board.board[6][7] = Bishop.new(:red)
-
+board.board[2][6] = Knight.new(:blue)
+board.board[3][1] = Rook.new(:blue)
+board.board[3][4] = Bishop.new(:red)
+board.board[4][1] = Bishop.new(:red)
 #board.move('e8', 'd2')
-p board.interception_available?(player1)
+
+p board.checking_piece_capturable?(player1)
 
 board.display

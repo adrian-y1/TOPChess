@@ -317,7 +317,7 @@ describe Board do
         allow(blue_rook).to receive(:create_all_moves) { blue_rook_moves }
         allow(blue_rook).to receive(:valid_moves) { blue_rook_moves }
         allow(board).to receive(:find_available_interceptions) { [[1, 0]] }
-        allow(board).to receive(:find_player_pieces).with(blue_player.color) { blue_rook_obj }
+        allow(board).to receive(:none_king_player_moves).with(blue_player) { blue_rook_moves.flatten(1) }
       end
 
       it 'returns true' do
@@ -345,7 +345,7 @@ describe Board do
         allow(blue_knight).to receive(:create_all_moves) { knight_moves }
         allow(blue_knight).to receive(:valid_moves) { knight_moves }
         allow(board).to receive(:find_available_interceptions) { available_interceptions }
-        allow(board).to receive(:find_player_pieces).with(blue_player.color) { knight_obj }
+        allow(board).to receive(:none_king_player_moves).with(blue_player) { knight_moves.flatten(1) }
       end
 
       it 'returns true' do
@@ -373,7 +373,7 @@ describe Board do
         allow(blue_knight).to receive(:create_all_moves) { knight_moves }
         allow(blue_knight).to receive(:valid_moves) { knight_moves }
         allow(board).to receive(:find_available_interceptions) { available_interceptions }
-        allow(board).to receive(:find_player_pieces).with(blue_player.color) { knight_obj }
+        allow(board).to receive(:none_king_player_moves).with(blue_player) { knight_moves.flatten(1) }
       end
 
       it 'returns false' do
@@ -382,4 +382,5 @@ describe Board do
       end
     end
   end
+
 end
