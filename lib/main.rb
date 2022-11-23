@@ -14,10 +14,9 @@ board = Board.new
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.board[0][0] = King.new(:blue)
-board.board[1][5] = Rook.new(:blue)
-
-board.board[1][0] = Rook.new(:red)
+board.board[2][3] = King.new(:blue)
+board.board[0][6] = Knight.new(:blue)
+board.board[6][7] = Bishop.new(:red)
 
 #board.move('e8', 'd2')
 p board.interception_available?(player1)

@@ -44,10 +44,11 @@ class Board
 
   def interception_available?(player)
     available_interceptions = find_available_interceptions(player)
-    player_valid_moves = find_player_pieces(player.color).map do |obj|
-      obj[:piece].valid_moves unless obj[:piece].is_a?(King)
+    player_valid_moves = []
+    find_player_pieces(player.color).each do |obj|
+      player_valid_moves << obj[:piece].valid_moves unless obj[:piece].is_a?(King)
     end
-    player_valid_moves.compact!.flatten!(2)
+    player_valid_moves.flatten!(2)
     player_valid_moves ? player_valid_moves.any? { |move| available_interceptions.include?(move) } : false
   end
 
@@ -57,7 +58,7 @@ class Board
     player_king = find_player_king(player)[0][:current_square]
     interceptable_pieces = find_interceptable_pieces(player).compact
     interceptable_squares = []
-    return [] if interceptable_pieces.empty? || find_checking_piece(player).length > 1
+    return [] if interceptable_pieces.empty?
 
     interceptable_pieces.each do |obj|
       obj[:piece].valid_moves.each { |moves| interceptable_squares << moves if moves.include?(player_king) }
@@ -71,6 +72,8 @@ class Board
   # Only interceptable pieces are Rook, Queen and Bishop
   def find_interceptable_pieces(player)
     checking_piece = find_checking_piece(player)
+    return [] if checking_piece.length > 1
+
     checking_piece.map do |obj|
       obj if obj[:piece].is_a?(Queen) || obj[:piece].is_a?(Rook) || obj[:piece].is_a?(Bishop)
     end

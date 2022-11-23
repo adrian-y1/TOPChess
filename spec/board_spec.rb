@@ -274,8 +274,6 @@ describe Board do
 
         king_moves = [[[1, 0], [1, 1], [0, 1]]]
         king_obj = [{ piece: blue_king, current_square: [0, 0] }]
-        rook_obj = [{ piece: red_rook, current_square: [2, 0] }]
-        pawn_obj = [{ piece: red_pawn, current_square: [1, 1] }]
         rook_moves = [[[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7]], [[1, 0], [0, 0]],
                       [[3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]]
         pawn_moves = [[[0, 1]]]
@@ -286,13 +284,101 @@ describe Board do
         allow(red_pawn).to receive(:create_all_moves) { pawn_moves }
         allow(red_pawn).to receive(:valid_moves) { pawn_moves }
         allow(board).to receive(:find_player_king).with(blue_player) { king_obj }
-        allow(board).to receive(:find_interceptable_pieces) { rook_obj }
-        allow(board).to receive(:find_checking_piece) { [rook_obj, pawn_obj] }
+        allow(board).to receive(:find_interceptable_pieces) { [] }
       end
 
       it 'returns empty array' do
         find_interceptions = board.find_available_interceptions(blue_player)
         expect(find_interceptions).to eq([])
+      end
+    end
+  end
+
+  describe '#interception_available?' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:blue_king) { double('king', color: :blue) }
+
+    context 'when blue King is in check at [0, 0] and blue Rook is at [1, 3] and red Rook is at [2, 0]' do
+      let(:blue_rook) { double('rook', color: :blue) }
+      let(:red_rook) { double('rook', color: :red) }
+
+      before do
+        board.board[0][0] = blue_king
+        board.board[1][3] = blue_rook
+        board.board[2][0] = red_rook
+
+        king_moves = [[[1, 0], [1, 1], [0, 1]]]
+        blue_rook_moves = [[[1, 2], [1, 1], [1, 0]], [[1, 4], [1, 5], [1, 6], [1, 7]], [[0, 3]],
+                           [[2, 3], [3, 3], [4, 3], [5, 3], [6, 3], [7, 3]]]
+        blue_rook_obj = [{ piece: blue_rook, current_square: [1, 3] }]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(blue_rook).to receive(:create_all_moves) { blue_rook_moves }
+        allow(blue_rook).to receive(:valid_moves) { blue_rook_moves }
+        allow(board).to receive(:find_available_interceptions) { [[1, 0]] }
+        allow(board).to receive(:find_player_pieces).with(blue_player.color) { blue_rook_obj }
+      end
+
+      it 'returns true' do
+        available = board.interception_available?(blue_player)
+        expect(available).to be true
+      end
+    end
+
+    context 'when King is in check at [2, 1] and blue Knight is at [2, 6] and red Bishop at [6, 7]' do
+      let(:blue_knight) { double('knight', color: :blue) }
+      let(:red_bishop) { double('bishop', color: :red) }
+
+      before do
+        board.board[2][1] = blue_king
+        board.board[2][6] = blue_knight
+        board.board[6][7] = red_bishop
+
+        king_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
+        knight_moves = [[[0, 5]], [[0, 7]], [[1, 4]], [[3, 4]], [[4, 7]], [[4, 5]]]
+        available_interceptions = [[5, 6], [4, 5], [3, 4]]
+        knight_obj = [{ piece: blue_knight, current_square: [2, 6] }]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(blue_knight).to receive(:create_all_moves) { knight_moves }
+        allow(blue_knight).to receive(:valid_moves) { knight_moves }
+        allow(board).to receive(:find_available_interceptions) { available_interceptions }
+        allow(board).to receive(:find_player_pieces).with(blue_player.color) { knight_obj }
+      end
+
+      it 'returns true' do
+        available = board.interception_available?(blue_player)
+        expect(available).to be true
+      end
+    end
+
+    context 'when King is in check at [2, 3] and blue Knight is at [0, 6] and red Bishop at [6, 7]' do
+      let(:blue_knight) { double('knight', color: :blue) }
+      let(:red_bishop) { double('bishop', color: :red) }
+
+      before do
+        board.board[2][3] = blue_king
+        board.board[0][6] = blue_knight
+        board.board[6][7] = red_bishop
+
+        king_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
+        knight_moves = [[[1, 4]], [[2, 7]], [[2, 5]]]
+        available_interceptions = [[5, 6], [4, 5], [3, 4]]
+        knight_obj = [{ piece: blue_knight, current_square: [0, 6] }]
+
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+        allow(blue_knight).to receive(:create_all_moves) { knight_moves }
+        allow(blue_knight).to receive(:valid_moves) { knight_moves }
+        allow(board).to receive(:find_available_interceptions) { available_interceptions }
+        allow(board).to receive(:find_player_pieces).with(blue_player.color) { knight_obj }
+      end
+
+      it 'returns false' do
+        available = board.interception_available?(blue_player)
+        expect(available).to be false
       end
     end
   end
