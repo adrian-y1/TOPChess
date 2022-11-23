@@ -17,7 +17,7 @@ player2 = Player.new(:red)
 board.board[2][3] = King.new(:blue)
 board.board[2][6] = Knight.new(:blue)
 board.board[3][1] = Rook.new(:blue)
-board.board[3][4] = Bishop.new(:red)
+board.board[4][5] = Pawn.new(:red)
 board.board[4][1] = Bishop.new(:red)
 #board.move('e8', 'd2')
 

@@ -55,14 +55,14 @@ class Board
 
   # Returns true if the checking piece can be captured
   # Returns false if the checking piece is not capture or
-  # if there are more than 1 checking piece, returns whether or not
-  # The king can capture one of them
+  # if there are more than 1 checking piece or non_king_moves returns nil, returns whether or not
+  # The king can capture the piece
   def checking_piece_capturable?(player)
     checking_piece = find_checking_piece(player)
-    return capturable_by_king?(player, checking_piece) if checking_piece.length > 1
-
     opponent_squares = checking_piece.map { |obj| obj[:current_square] }
     player_valid_moves = none_king_player_moves(player)
+    return capturable_by_king?(player, checking_piece) if checking_piece.length > 1 || player_valid_moves.nil?
+
     player_valid_moves.any? { |move| opponent_squares.include?(move) }
   end
 
@@ -159,7 +159,7 @@ class Board
     end
     non_king_moves.flatten!(2)
   end
-  
+
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(index)
     @removed_pieces.push(@board[index[0]][index[1]])

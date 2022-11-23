@@ -383,4 +383,54 @@ describe Board do
     end
   end
 
+  describe '#capturable_by_king?' do
+    let(:blue_player) { double('player', color: :blue) }
+    let(:blue_king) { double('king', color: :blue) }
+
+    context 'when blue King is at [2, 3], is in check and red Pawn is at [3, 4]' do
+      let(:red_pawn) { double('pawn', color: :red) }
+
+      before do
+        board.board[2][3] = blue_king
+        board.board[3][4] = red_pawn
+
+        king_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
+        king_obj = [{ piece: blue_king, current_square: [2, 3] }]
+
+        allow(red_pawn).to receive(:defended) { false }
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(board).to receive(:find_player_king) { king_obj }
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+      end
+
+      it 'returns true' do
+        checking_piece = [{ piece: red_pawn, current_square: [3, 4] }]
+        capturable = board.capturable_by_king?(blue_player, checking_piece)
+        expect(capturable).to be true
+      end
+    end
+
+    context 'when blue King is at [2, 3], is in check and red Bishop is at [6, 7]' do
+      let(:red_bishop) { double('pawn', color: :red) }
+
+      before do
+        board.board[2][3] = blue_king
+        board.board[6][7] = red_bishop
+
+        king_moves = [[[1, 3]], [[1, 2]], [[2, 2]], [[3, 2]], [[3, 3]], [[3, 4]], [[2, 4]], [[1, 4]]]
+        king_obj = [{ piece: blue_king, current_square: [2, 3] }]
+
+        allow(red_bishop).to receive(:defended) { false }
+        allow(blue_king).to receive(:create_all_moves) { king_moves }
+        allow(board).to receive(:find_player_king) { king_obj }
+        allow(blue_king).to receive(:valid_moves) { king_moves }
+      end
+
+      it 'returns false' do
+        checking_piece = [{ piece: red_bishop, current_square: [6, 7] }]
+        capturable = board.capturable_by_king?(blue_player, checking_piece)
+        expect(capturable).to be false
+      end
+    end
+  end
 end
