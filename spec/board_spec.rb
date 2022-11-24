@@ -81,11 +81,11 @@ describe Board do
     let(:red_rook1) { Rook.new(:red) }
     let(:red_rook2) { Rook.new(:red) }
 
-    context 'When the King annot get out of check' do
+    context 'when the King cannot get out of check' do
       before do
-        board.board[0][0] = blue_king
-        board.board[2][0] = red_rook1
-        board.board[2][1] = red_rook2
+        board.board[7][0] = blue_king
+        board.board[5][0] = red_rook1
+        board.board[5][1] = red_rook2
       end
 
       it 'returns true' do
@@ -94,7 +94,7 @@ describe Board do
       end
     end
 
-    context 'When the King can move to safe position' do
+    context 'when the King can move to safe position' do
       before do
         board.board[0][1] = blue_king
         board.board[2][1] = red_rook1
@@ -108,9 +108,9 @@ describe Board do
 
     context 'when the King cant move to safe position' do
       before do
-        board.board[0][0] = blue_king
-        board.board[2][0] = red_rook1
-        board.board[2][1] = red_rook2
+        board.board[7][4] = blue_king
+        board.board[7][0] = red_rook1
+        board.board[6][0] = red_rook2
       end
 
       it 'returns true' do
@@ -150,6 +150,7 @@ describe Board do
         board.board[0][0] = blue_king
         board.board[2][0] = red_rook1
         board.board[2][1] = red_rook2
+        board.board[3][4] = blue_queen
       end
 
       it 'returns true' do
@@ -184,6 +185,5 @@ describe Board do
         expect(checkmate).to be true
       end
     end
-
   end
 end
