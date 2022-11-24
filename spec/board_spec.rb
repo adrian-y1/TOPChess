@@ -186,4 +186,34 @@ describe Board do
       end
     end
   end
+
+  describe 'king_in_check?' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:blue_king) { King.new(:blue) }
+    let(:red_knight) { Knight.new(:red) } 
+
+    context 'when the king is in check' do
+      before do
+        board.board[2][1] = blue_king
+        board.board[4][2] = red_knight
+      end
+
+      it 'returns true' do
+        check = board.king_in_check?(blue_player)
+        expect(check).to be true
+      end
+    end
+
+    context 'when the King is not in check' do
+      before do
+        board.board[2][1] = blue_king
+        board.board[5][2] = red_knight
+      end
+
+      it 'returns false' do
+        check = board.king_in_check?(blue_player)
+        expect(check).to be false
+      end
+    end
+  end
 end
