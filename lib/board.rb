@@ -42,6 +42,22 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Checks if the player is checkmated or not
+  def checkmate?(player)
+    king_in_check?(player) &&
+      !move_to_safe_position?(player) &&
+      !checking_piece_capturable?(player) &&
+      !interception_available?(player)
+  end
+
+  # Finds out if the King is in check or not
+  def king_in_check?(player)
+    player_king = find_player_king(player)[0][:current_square]
+    opponent = find_opponent_color(player)
+    opponent_pieces = find_player_pieces(opponent)
+    opponent_pieces.any? { |obj| obj[:piece].valid_moves.flatten(1).include?(player_king) }
+  end
+
   # When there are more than 1 piece checking the King,
   # this method checks if any of those pieces can be captured by the King
   def capturable_by_king?(player, checking_piece)
