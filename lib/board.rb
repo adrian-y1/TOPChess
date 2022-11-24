@@ -50,6 +50,15 @@ class Board
       !interception_available?(player)
   end
 
+  # If the player has no legal moves to make and is not in check
+  # returns true
+  def stalemate?(player) 
+    !king_in_check?(player) &&
+      !move_to_safe_position?(player) &&
+      !checking_piece_capturable?(player) &&
+      !interception_available?(player)
+  end
+
   # Finds out if the King is in check or not
   def king_in_check?(player)
     player_king = find_player_king(player)[:current_square]

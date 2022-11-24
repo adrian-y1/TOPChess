@@ -15,10 +15,9 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 board.board[0][0] = King.new(:blue)
-board.board[1][0] = Rook.new(:red)
-board.board[2][1] = Rook.new(:red)
+board.board[1][2] = Queen.new(:red)
 #board.move('e8', 'd2')
 
-p board.find_player_king(player1)
+p board.stalemate?(player1)
 
 board.display
