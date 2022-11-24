@@ -7,7 +7,8 @@ require 'colorize'
 
 describe Bishop do
   subject(:bishop) { described_class.new(:blue) }
-  subject(:bishop_board) { double('board') }
+
+  let(:bishop_board) { instance_double('board') }
   let(:top_left) { [-1, -1] }
   let(:bottom_left) { [1, -1] }
   let(:top_right) { [-1, 1] }

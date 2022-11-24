@@ -7,9 +7,10 @@ require 'colorize'
 
 describe Queen do
   subject(:queen) { described_class.new(:blue) }
+
   let(:queen_current_player) { described_class.new(:blue) }
   let(:queen_opponent) { described_class.new(:red) }
-  subject(:queen_board) { double('board') }
+  let(:queen_board) { instance_double('board') }
   let(:left) { [0, -1] }
   let(:right) { [0, 1] }
   let(:top) { [-1, 0] }

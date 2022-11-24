@@ -73,4 +73,117 @@ describe Board do
       end
     end
   end
+
+  describe '#checkmate?' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:blue_queen) { Queen.new(:blue) }
+    let(:blue_king) { King.new(:blue) }
+    let(:red_rook1) { Rook.new(:red) }
+    let(:red_rook2) { Rook.new(:red) }
+
+    context 'When the King annot get out of check' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+      end
+
+      it 'returns true' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be true
+      end
+    end
+
+    context 'When the King can move to safe position' do
+      before do
+        board.board[0][1] = blue_king
+        board.board[2][1] = red_rook1
+      end
+
+      it 'returns false' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be false
+      end
+    end
+
+    context 'when the King cant move to safe position' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+      end
+
+      it 'returns true' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be true
+      end
+    end
+
+    context 'when the King can capture checking piece' do
+      before do
+        board.board[2][1] = blue_king
+        board.board[3][1] = red_rook1
+      end
+
+      it 'returns false' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be false
+      end
+    end
+
+    context 'when the checking piece can be captured by another piece' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+        board.board[5][0] = blue_queen
+      end
+
+      it 'returns false' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be false
+      end
+    end
+
+    context 'when the checking piece cannot be captured' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+      end
+
+      it 'returns true' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be true
+      end
+    end
+
+    context 'when the checking piece can be intercepted by another piece' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+        board.board[1][3] = blue_queen
+      end
+
+      it 'returns false' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be false
+      end
+    end
+
+    context 'when the checking piece cannot be intercepted by another piece' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[2][0] = red_rook1
+        board.board[2][1] = red_rook2
+      end
+
+      it 'returns true' do
+        checkmate = board.checkmate?(blue_player)
+        expect(checkmate).to be true
+      end
+    end
+
+  end
 end

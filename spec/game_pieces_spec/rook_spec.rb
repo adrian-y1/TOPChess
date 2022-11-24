@@ -7,7 +7,8 @@ require 'colorize'
 
 describe Rook do
   subject(:rook) { described_class.new(:blue) }
-  subject(:rook_board) { double('board') }
+
+  let(:rook_board) { instance_double(Board) }
   let(:left_move) { [0, -1] }
   let(:right_move) { [0, 1] }
   let(:top_move) { [-1, 0] }

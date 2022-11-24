@@ -6,7 +6,8 @@ require 'colorize'
 
 describe Pawn do
   subject(:pawn) { described_class.new(:blue) }
-  let(:pawn_board) { double('board') }
+
+  let(:pawn_board) { instance_double(Board) }
   let(:pawn_blue) { described_class.new(:blue) }
   let(:pawn_red) { described_class.new(:red) }
   let(:bottom_left) { [1, -1] }

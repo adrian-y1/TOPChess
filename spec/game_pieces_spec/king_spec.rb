@@ -6,9 +6,10 @@ require 'colorize'
 
 describe King do
   subject(:king) { described_class.new(:blue) }
+
   let(:king_current_player) { described_class.new(:blue) }
   let(:king_opponent) { described_class.new(:red) }
-  let(:king_board) { double('board') }
+  let(:king_board) { instance_double(Board) }
 
   describe '#create_all_moves' do
     before do

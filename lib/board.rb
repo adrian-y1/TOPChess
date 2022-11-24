@@ -52,7 +52,7 @@ class Board
 
   # Finds out if the King is in check or not
   def king_in_check?(player)
-    player_king = find_player_king(player)[0][:current_square]
+    player_king = find_player_king(player)[:current_square]
     opponent = find_opponent_color(player)
     opponent_pieces = find_player_pieces(opponent)
     opponent_pieces.any? { |obj| obj[:piece].valid_moves.flatten(1).include?(player_king) }
@@ -62,7 +62,7 @@ class Board
   # this method checks if any of those pieces can be captured by the King
   def capturable_by_king?(player, checking_piece)
     undefended_squares = checking_piece.map { |obj| obj[:current_square] unless obj[:piece].defended }
-    player_king_moves = find_player_king(player)[0][:piece].valid_moves.flatten(1).uniq
+    player_king_moves = find_player_king(player)[:piece].valid_moves.flatten(1).uniq
 
     player_king_moves.any? do |move|
       undefended_squares.include?(move)
@@ -92,7 +92,7 @@ class Board
   # Finds all the available squares that can be intercepted to remove the check
   # Returns empty array if there are more than 1 piece checking the King
   def find_available_interceptions(player)
-    player_king = find_player_king(player)[0][:current_square]
+    player_king = find_player_king(player)[:current_square]
     interceptable_pieces = find_interceptable_pieces(player).compact
     interceptable_squares = []
     return [] if interceptable_pieces.empty?
@@ -127,7 +127,7 @@ class Board
   # Removes any king's moves that are guarded by opponent and
   # any moves that can capture an opponent's piece but are defended by another piece
   def remove_guarded_king_moves(player, opponent_pieces)
-    player_king_moves = find_player_king(player)[0][:piece].valid_moves.flatten(1)
+    player_king_moves = find_player_king(player)[:piece].valid_moves.flatten(1)
     invalid_moves = []
     opponent_pieces.each do |obj|
       player_king_moves.each do |move|
@@ -143,7 +143,7 @@ class Board
   def find_checking_piece(player)
     opponent = find_opponent_color(player)
     opponent_pieces = find_player_pieces(opponent)
-    current_player_king = find_player_king(player)[0]
+    current_player_king = find_player_king(player)
     opponent_pieces.each_with_object([]) do |obj, checking_piece|
       next unless obj[:piece].valid_moves.any? { |move| move.include?(current_player_king[:current_square]) }
 
@@ -185,7 +185,10 @@ class Board
   # Finds the class instance of the current player's King and current square
   def find_player_king(player)
     player_pieces = find_player_pieces(player.color)
-    player_pieces.select {|obj| obj[:piece].is_a?(King) }
+    player_king = player_pieces.find do |obj| 
+      obj[:piece].is_a?(King)
+    end
+    player_king.nil? ? {} : player_king
   end
 
   # Finds the given player's pieces on the board and their current square
@@ -193,7 +196,7 @@ class Board
     @board.each_with_object([]) do |row, pieces|
       row.each do |column|
         next unless occupied_by_own_self?(column, player)
-
+        
         current_square = Matrix[*@board].index(column)
         column.create_all_moves(current_square, self)
         pieces << { piece: column, current_square: current_square }
