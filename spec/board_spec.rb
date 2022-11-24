@@ -216,4 +216,46 @@ describe Board do
       end
     end
   end
+
+  describe '#stalemate?' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:blue_king) { King.new(:blue) }
+    let(:red_queen) { Queen.new(:red) } 
+    
+    context 'when the player is in check' do
+      before do
+        board.board[2][1] = blue_king
+        board.board[2][5] = red_queen
+      end
+
+      it 'returns false' do
+        stalemate = board.stalemate?(blue_player)
+        expect(stalemate).to be false
+      end
+    end
+
+    context 'when the player is not in check and has no legal moves to make' do
+      before do
+        board.board[0][0] = blue_king
+        board.board[1][2] = red_queen
+      end
+
+      it 'returns true' do
+        stalemate = board.stalemate?(blue_player)
+        expect(stalemate).to be true
+      end
+    end
+
+    context 'when the player is not in check and has legal moves to make' do
+      before do
+        board.board[0][1] = blue_king
+        board.board[1][3] = red_queen
+      end 
+
+      it 'returns false' do
+        stalemate = board.stalemate?(blue_player)
+        expect(stalemate).to be false
+      end
+    end
+  end
 end
