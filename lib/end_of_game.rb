@@ -68,6 +68,16 @@ class EndOfGame
     player_valid_moves ? player_valid_moves.any? { |move| available_interceptions.include?(move) } : false
   end
 
+  # Checks if the King can move to a safe position
+  def move_to_safe_position?(player)
+    opponent = find_opponent_color(player)
+    opponent_pieces = find_player_pieces(opponent)
+    valid_king_moves = remove_guarded_king_moves(player, opponent_pieces).uniq
+    !valid_king_moves.empty?
+  end
+
+  private
+
   # Finds all the available squares that can be intercepted to remove the check
   # Returns empty array if there are more than 1 piece checking the King
   def find_available_interceptions(player)
@@ -93,15 +103,6 @@ class EndOfGame
     checking_piece.map do |obj|
       obj if obj[:piece].is_a?(Queen) || obj[:piece].is_a?(Rook) || obj[:piece].is_a?(Bishop)
     end
-  end
-
-  # Checks if the King can move to a safe position
-  def move_to_safe_position?(player)
-    opponent = find_opponent_color(player)
-    opponent_pieces = find_player_pieces(opponent)
-    valid_king_moves = remove_guarded_king_moves(player, opponent_pieces).uniq
-    p valid_king_moves
-    !valid_king_moves.empty?
   end
 
   # Removes any king's moves that are guarded by opponent and

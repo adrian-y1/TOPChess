@@ -56,7 +56,7 @@ class Board
     puts letters
   end
 
-  #private
+  private
 
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(index)
