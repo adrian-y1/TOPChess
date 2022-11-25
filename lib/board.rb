@@ -4,6 +4,7 @@ require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
 require 'colorize'
+require 'matrix'
 
 # Class the defines the board of the game and it's respective methods
 class Board
@@ -38,11 +39,29 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  def promotion_piece(player)
+    if promotion_available?(player)
+      # ask user to choose between Queen, Rook, Bishop and Knight
+      # create a new object with the chosen piece e.g. Piece.new(player.color)
+      # Find promotable pawn
+      # Set that new piece object to the position of the promotable pawn
+    end
+  end
+
   # Checks if a promotion is available
   def promotion_available?(player)
     row = promotion_row(player)
-    @board[row].any? do |column|
-      column.is_a?(Pawn) && column.color == player.color
+    @board[row].any? do |col|
+      col.is_a?(Pawn) && col.color == player.color
+    end
+  end
+
+  # Finds the promotable Pawn square
+  def find_promotable_pawn(player)
+    row = promotion_row(player)
+    @board[row].each do |col|
+      square = Matrix[*@board].index(col)
+      return square if col.is_a?(Pawn) && col.color == player.color
     end
   end
 

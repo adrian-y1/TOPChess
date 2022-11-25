@@ -15,9 +15,9 @@ board = Board.new
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.board[6][5] = Pawn.new(:blue)
+board.board[7][5] = Pawn.new(:blue)
 end_game = EndOfGame.new(board)
 
-p board.promotion_available?(player1)
+p board.find_promotable_pawn(player1)
 
 board.display
