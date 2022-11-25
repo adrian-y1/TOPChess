@@ -3,16 +3,12 @@
 require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
-require_relative '../lib/modules/validate_moves'
 require 'colorize'
-require 'matrix'
 
 # Class the defines the board of the game and it's respective methods
 class Board
   attr_accessor :board
   attr_reader :pieces
-
-  include ValidateMoves
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
@@ -40,6 +36,13 @@ class Board
     letter_to_number = ('a'..'h').zip(0..7)
     column = letter_to_number.select { |i| i[0] == square.split('')[0] }.flatten
     [8 - square.split('')[1].to_i, column[1]]
+  end
+
+  def promotion_available?(player)
+    promotion_row = player.color == :blue ? 7 : 0
+    @board[promotion_row].any? do |column|
+      column.is_a?(Pawn) && column.color == player.color
+    end
   end
 
   def display

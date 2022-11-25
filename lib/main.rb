@@ -15,11 +15,9 @@ board = Board.new
 
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-board.board[0][0] = King.new(:blue)
-board.board[1][1] = Queen.new(:red)
-board.board[2][2] = Bishop.new(:red)
+board.board[6][5] = Pawn.new(:blue)
 end_game = EndOfGame.new(board)
 
-p end_game.checkmate?(player1)
+p board.promotion_available?(player1)
 
 board.display

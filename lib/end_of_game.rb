@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../lib/modules/validate_moves'
-require 'colorize'
 require 'matrix'
 
 # Class that determines wins, draws, losses
