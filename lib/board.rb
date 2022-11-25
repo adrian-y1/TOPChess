@@ -39,12 +39,16 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
-  def promotion_piece(player)
+  def make_promotion(player)
     if promotion_available?(player)
       # ask user to choose between Queen, Rook, Bishop and Knight
+      chosen_piece = 'to be created later...'
       # create a new object with the chosen piece e.g. Piece.new(player.color)
+      promotion_piece = create_chosen_piece(player, chosen_piece)
       # Find promotable pawn
+      promotable_pawn = find_promotable_pawn(player)
       # Set that new piece object to the position of the promotable pawn
+      @board[promotable_pawn[0]][promotable_pawn[1]] = promotion_piece
     end
   end
 
@@ -53,6 +57,20 @@ class Board
     row = promotion_row(player)
     @board[row].any? do |col|
       col.is_a?(Pawn) && col.color == player.color
+    end
+  end
+
+  # Creates a new obj and class instance of the chosen piece
+  def create_chosen_piece(player, chosen_piece)
+    case chosen_piece
+    when 'Queen'
+      Queen.new(player.color)
+    when 'Bishop'
+      Bishop.new(player.color)
+    when 'Rook'
+      Rook.new(player.color)
+    when 'Knight'
+      Knight.new(player.color)
     end
   end
 

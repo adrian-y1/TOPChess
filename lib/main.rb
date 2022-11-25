@@ -18,6 +18,6 @@ player2 = Player.new(:red)
 board.board[7][5] = Pawn.new(:blue)
 end_game = EndOfGame.new(board)
 
-p board.find_promotable_pawn(player1)
+p board.create_chosen_piece(player1, 'Bishop')
 
 board.display
