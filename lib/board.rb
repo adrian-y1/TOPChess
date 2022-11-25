@@ -3,6 +3,7 @@
 require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
+require_relative './board_setup'
 require 'colorize'
 require 'matrix'
 
@@ -86,6 +87,10 @@ class Board
   # Finds the promotion row depending on the player
   def promotion_row(player)
     player.color == :blue ? 7 : 0
+  end
+
+  def setup_board
+    BoardSetup.new(@board)
   end
 
   def display
