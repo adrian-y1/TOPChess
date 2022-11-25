@@ -40,10 +40,15 @@ class Board
 
   # Checks if a promotion is available
   def promotion_available?(player)
-    promotion_row = player.color == :blue ? 7 : 0
-    @board[promotion_row].any? do |column|
+    row = promotion_row(player)
+    @board[row].any? do |column|
       column.is_a?(Pawn) && column.color == player.color
     end
+  end
+
+  # Finds the promotion row depending on the player
+  def promotion_row(player)
+    player.color == :blue ? 7 : 0
   end
 
   def display
