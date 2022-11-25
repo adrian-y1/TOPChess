@@ -38,6 +38,7 @@ class Board
     [8 - square.split('')[1].to_i, column[1]]
   end
 
+  # Checks if a promotion is available
   def promotion_available?(player)
     promotion_row = player.color == :blue ? 7 : 0
     @board[promotion_row].any? do |column|

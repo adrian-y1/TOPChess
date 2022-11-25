@@ -73,4 +73,55 @@ describe Board do
       end
     end
   end
+
+  describe '#promotion_available?' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:red_player) { Player.new(:red) }
+    let(:blue_pawn) { Pawn.new(:blue) }
+    let(:red_pawn) { Pawn.new(:red) }
+
+    context "when blue player's Pawn is not on row index 7" do
+      before do
+        board.board[4][1] = blue_pawn
+      end
+
+      it 'returns false' do
+        promotion = board.promotion_available?(blue_player)
+        expect(promotion).to be false
+      end
+    end
+
+    context "when blue player's Pawn is on row index 7" do
+      before do
+        board.board[7][1] = blue_pawn
+      end
+
+      it 'returns true' do
+        promotion = board.promotion_available?(blue_player)
+        expect(promotion).to be true
+      end
+    end
+
+    context "when red player's Pawn is not on row index 0" do
+      before do
+        board.board[3][0] = red_pawn
+      end
+
+      it 'returns false' do
+        promotion = board.promotion_available?(red_player)
+        expect(promotion).to be false
+      end
+    end
+
+    context "when red player's Pawn is on row index 0" do
+      before do
+        board.board[0][5] = red_pawn
+      end
+
+      it 'returns true' do
+        promotion = board.promotion_available?(red_player)
+        expect(promotion).to be true
+      end
+    end
+  end
 end
