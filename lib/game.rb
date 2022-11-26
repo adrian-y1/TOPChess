@@ -18,6 +18,12 @@ class Game
   def initialize(board = Board.new)
     @board = board
   end
+
+  def setup_players
+    @blue_player = Player.new(:blue)
+    @red_player = Player.new(:red)
+    @current_player = @blue_player
+  end
 end
 
 game = Game.new

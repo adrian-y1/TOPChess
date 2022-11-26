@@ -37,7 +37,15 @@ class Board
   def find_coordinates_index(square)
     letter_to_number = ('a'..'h').zip(0..7)
     column = letter_to_number.select { |i| i[0] == square.split('')[0] }.flatten
+    p column
     [8 - square.split('')[1].to_i, column[1]]
+  end
+
+  # Turns a given square's index to coordingate (e.g. [4, 0] = a4)
+  def square_index_to_coordinates(square)
+    number_to_letter = (0..7).zip('a'..'h')
+    column = number_to_letter.select { |i| i[0] == square[1] }.flatten
+    "#{column[1]}#{8 - square[0]}"
   end
 
   def make_promotion(player)

@@ -124,4 +124,22 @@ describe Board do
       end
     end
   end
+
+  describe '#square_index_to_coordinates' do
+    context 'when given index of square [4, 0]' do
+      it 'returns the coordinates of that square (a4)' do
+        square = [4, 0]
+        coordinates = board.square_index_to_coordinates(square)
+        expect(coordinates).to eq('a4')
+      end
+    end
+
+    context 'when given the index of square [7, 7]' do
+      it 'returns the coordinates of that square (h1)' do
+        square = [7, 7]
+        coordinates = board.square_index_to_coordinates(square)
+        expect(coordinates).to eq('h1')
+      end
+    end
+  end
 end
