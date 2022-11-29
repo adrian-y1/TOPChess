@@ -4,6 +4,7 @@ require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
 require_relative './board_setup'
+require_relative './end_of_game'
 require 'colorize'
 require 'matrix'
 
@@ -48,6 +49,7 @@ class Board
     "#{column[1]}#{8 - square[0]}"
   end
 
+  # TODO
   def make_promotion(player)
     if promotion_available?(player)
       # ask user to choose between Queen, Rook, Bishop and Knight
@@ -99,6 +101,26 @@ class Board
 
   def setup_board
     BoardSetup.new(@board)
+  end
+
+  # Removes illegal moves that place the King in check from each piece's valid moves
+  def remove_illegal_moves(player)
+    game_end = EndOfGame.new(self)
+    player_pieces = game_end.find_player_pieces(player.color)
+    player_pieces.each do |obj|
+      obj[:piece].valid_moves.reverse_each do |moves_arr|
+        moves_arr.reverse_each do |move|
+          temp_board = Marshal.load(Marshal.dump(self))
+          game_end.board = temp_board
+          current_sq = obj[:current_square]
+          temp_board.board[move[0]][move[1]] = temp_board.board[current_sq[0]][current_sq[1]]
+          temp_board.board[current_sq[0]][current_sq[1]] = ' '
+          moves_arr.delete(move) if game_end.king_in_check?(player)
+        end
+      end
+    end
+    game_end.board = self
+    player_pieces.each { |obj| obj[:piece].valid_moves.reject!(&:empty?) }
   end
 
   def display

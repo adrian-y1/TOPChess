@@ -5,6 +5,8 @@ require 'matrix'
 
 # Class that determines wins, draws, losses
 class EndOfGame
+  attr_accessor :board
+
   include ValidateMoves
 
   def initialize(board)
@@ -74,8 +76,6 @@ class EndOfGame
     valid_king_moves = remove_guarded_king_moves(player, opponent_pieces).uniq
     !valid_king_moves.empty?
   end
-
-  private
 
   # Finds all the available squares that can be intercepted to remove the check
   # Returns empty array if there are more than 1 piece checking the King
