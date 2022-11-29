@@ -142,4 +142,36 @@ describe Board do
       end
     end
   end
+
+  describe '#remove_illegal_moves' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:blue_king) { King.new(:blue) }
+    let(:blue_queen) { Queen.new(:blue) }
+    let(:red_queen) { Queen.new(:red) }
+
+    context "when blue player's queen can make illegal moves that put the King in check" do
+      before do
+        board.board[0][4] = blue_king
+        board.board[1][4] = blue_queen
+        board.board[7][4] = red_queen
+      end
+
+      it "changes the blue queen's valid moves array and removes the illegal moves" do
+        valid_moves = [[[2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4]]]
+        expect { board.remove_illegal_moves(blue_player) }.to change(blue_queen, :valid_moves).to valid_moves
+      end
+    end
+
+    context "when the blue player's King can make illegal moves that puts it in check" do
+      before do
+        board.board[3][4] = blue_king
+        board.board[6][3] = red_queen
+      end
+
+      it "changes the blue King's valid moves array and removes the illegal moves" do
+        valid_moves = [[[2, 4]], [[4, 4]], [[3, 5]], [[2, 5]]]
+        expect { board.remove_illegal_moves(blue_player) }.to change(blue_king, :valid_moves).to valid_moves
+      end
+    end
+  end
 end

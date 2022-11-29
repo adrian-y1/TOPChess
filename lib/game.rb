@@ -36,9 +36,9 @@ end
 
 board = Board.new
 #board.setup_board
-board.board[0][4] = King.new(:blue)
-board.board[1][4] = Queen.new(:blue)
-board.board[7][4] = Queen.new(:red)
+board.board[3][4] = King.new(:blue)
+
+board.board[6][3] = Queen.new(:red)
 
 end_of_game = EndOfGame.new(board)
 game = Game.new(board, end_of_game)
