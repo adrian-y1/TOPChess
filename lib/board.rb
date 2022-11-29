@@ -104,8 +104,7 @@ class Board
   end
 
   # Removes illegal moves that place the King in check from each piece's valid moves
-  def remove_illegal_moves(player)
-    game_end = EndOfGame.new(self)
+  def remove_illegal_moves(player, game_end)
     player_pieces = game_end.find_player_pieces(player.color)
     player_pieces.each do |obj|
       obj[:piece].valid_moves.reverse_each do |moves_arr|

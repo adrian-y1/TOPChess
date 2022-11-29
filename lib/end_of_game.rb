@@ -4,7 +4,7 @@ require_relative '../lib/modules/validate_moves'
 require 'matrix'
 
 # Class that determines wins, draws, losses
-class EndOfGame
+class EndGame
   attr_accessor :board
 
   include ValidateMoves

@@ -11,7 +11,7 @@ require_relative '../lib/game_pieces/bishop'
 require_relative '../lib/end_of_game'
 require 'colorize'
 
-describe EndOfGame do
+describe EndGame do
   subject(:end_of_game) { described_class.new(game_board) }
 
   let(:game_board) { Board.new }

@@ -8,6 +8,7 @@ require_relative '../lib/game_pieces/knight'
 require_relative '../lib/game_pieces/pawn'
 require_relative '../lib/game_pieces/king'
 require_relative '../lib/game_pieces/bishop'
+require_relative '../lib/end_of_game'
 require 'colorize'
 
 describe Board do
@@ -148,6 +149,7 @@ describe Board do
     let(:blue_king) { King.new(:blue) }
     let(:blue_queen) { Queen.new(:blue) }
     let(:red_queen) { Queen.new(:red) }
+    let(:game_end) { EndGame.new(board) }
 
     context "when blue player's queen can make illegal moves that put the King in check" do
       before do
@@ -158,7 +160,7 @@ describe Board do
 
       it "changes the blue queen's valid moves array and removes the illegal moves" do
         valid_moves = [[[2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4]]]
-        expect { board.remove_illegal_moves(blue_player) }.to change(blue_queen, :valid_moves).to valid_moves
+        expect { board.remove_illegal_moves(blue_player, game_end) }.to change(blue_queen, :valid_moves).to valid_moves
       end
     end
 
@@ -170,7 +172,7 @@ describe Board do
 
       it "changes the blue King's valid moves array and removes the illegal moves" do
         valid_moves = [[[2, 4]], [[4, 4]], [[3, 5]], [[2, 5]]]
-        expect { board.remove_illegal_moves(blue_player) }.to change(blue_king, :valid_moves).to valid_moves
+        expect { board.remove_illegal_moves(blue_player, game_end) }.to change(blue_king, :valid_moves).to valid_moves
       end
     end
   end

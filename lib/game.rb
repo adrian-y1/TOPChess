@@ -40,10 +40,10 @@ board.board[3][4] = King.new(:blue)
 
 board.board[6][3] = Queen.new(:red)
 
-end_of_game = EndOfGame.new(board)
+end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
-board.remove_illegal_moves(game.blue_player)
+board.remove_illegal_moves(game.blue_player, end_of_game)
 #p end_of_game.king_in_check?(game.blue_player)
 # end_of_game.remove_illegal_moves(game.blue_player)
 game.board.display
