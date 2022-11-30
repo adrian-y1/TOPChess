@@ -19,13 +19,13 @@ class Game
 
   include GameInfo
 
-  def initialize(board, end_of_game)
+  def initialize(board, end_game)
     @board = board
-    @end_of_game = end_of_game
+    @end_game = end_game
   end
 
   def get_piece_position(player)
-    piece_coordinates = @board.find_available_piece_coordinates(player, @end_of_game)
+    piece_coordinates = @board.find_available_piece_coordinates(player, @end_game)
     puts position_info(player)
     puts pieces_info(piece_coordinates)
     loop do
@@ -50,6 +50,24 @@ class Game
     end
   end
 
+  def get_promotion_piece(player)
+    promotable_pawn = @board.find_promotable_pawn(player)
+    promotable_pawn_coordinates = @board.square_index_to_coordinates(promotable_pawn)
+    puts promotion_info(player, promotable_pawn_coordinates)
+    loop do
+      user_input = gets.chomp
+      promotion_piece = verify_promotion_piece(user_input)
+      return promotion_piece if promotion_piece
+
+      puts promotion_error
+    end
+  end
+
+  def verify_promotion_piece(user_input)
+    pieces = %w[Queen Rook Bishop Knight]
+    user_input if pieces.include?(user_input.capitalize)
+  end
+
   def verify_position(user_input, piece_coordinates)
     user_input if user_input.length == 2 && piece_coordinates.include?(user_input)
   end
@@ -59,14 +77,19 @@ class Game
     @red_player = Player.new(:red)
     @current_player = @blue_player
   end
+
+  def switch_turn
+    @current_player = @current_player == @blue_player ? @red_player : @blue_player
+  end
 end
 
 board = Board.new
-board.setup_board
-board.move('d1', 'b5')
-end_of_game = EndGame.new(board)
-game = Game.new(board, end_of_game)
+#board.setup_board
+#board.move('d1', 'b5')
+board.board[6][4] = Pawn.new(:blue)
+end_game = EndGame.new(board)
+game = Game.new(board, end_game)
 game.setup_players
+game.board.display
 game.get_piece_position(game.red_player)
 game.get_piece_move(game.red_player)
-game.board.display

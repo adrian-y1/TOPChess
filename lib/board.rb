@@ -49,17 +49,13 @@ class Board
   end
 
   # TODO
-  def make_promotion(player)
-    if promotion_available?(player)
-      # ask user to choose between Queen, Rook, Bishop and Knight
-      chosen_piece = 'to be created later...'
-      # create a new object with the chosen piece e.g. Piece.new(player.color)
-      promotion_piece = create_chosen_piece(player, chosen_piece)
-      # Find promotable pawn
-      promotable_pawn = find_promotable_pawn(player)
-      # Set that new piece object to the position of the promotable pawn
-      @board[promotable_pawn[0]][promotable_pawn[1]] = promotion_piece
-    end
+  def make_promotion(player, chosen_piece)
+    # create a new object with the chosen piece e.g. Piece.new(player.color)
+    promotion_piece = create_chosen_piece(player, chosen_piece.capitalize)
+    # Find promotable pawn
+    promotable_pawn = find_promotable_pawn(player)
+    # Set that new piece object to the position of the promotable pawn
+    @board[promotable_pawn[0]][promotable_pawn[1]] = promotion_piece
   end
 
   # Checks if a promotion is available
