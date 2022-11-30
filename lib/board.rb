@@ -103,7 +103,7 @@ class Board
   end
 
   # Returns player friendly coordinates for available pieces to move
-  def find_available_piece_positions(player, game_end)
+  def find_available_piece_coordinates(player, game_end)
     pieces = game_end.find_player_pieces(player.color)
     remove_illegal_moves(player, game_end, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact

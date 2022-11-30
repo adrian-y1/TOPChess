@@ -178,4 +178,39 @@ describe Board do
       end
     end
   end
+
+  describe '#find_available_piece_coordinates' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:game_end) { EndGame.new(board) }
+
+    context 'when the board is initially set up' do
+      before do
+        board.setup_board
+      end
+
+      it 'returns 10 available piece coordinates to move (b8, g8, a7, b7, c7, d7, e7, f7, g7, h7)' do
+        available_coordinates = "b8, g8, a7, b7, c7, d7, e7, f7, g7, h7"
+        find_available_coordinates = board.find_available_piece_coordinates(blue_player, game_end)
+        expect(find_available_coordinates).to eq(available_coordinates)
+      end
+    end
+
+    context 'when moving a blue piece results in blue player being in check' do
+      let(:blue_king) { King.new(:blue) }
+      let(:blue_pawn) { Pawn.new(:blue) }
+      let(:red_queen) { Queen.new(:red) }
+
+      before do
+        board.board[0][0] = blue_king
+        board.board[1][1] = blue_pawn
+        board.board[3][3] = red_queen
+      end
+
+      it 'returns only valid to move pieces (a8)' do
+        available_pieces = 'a8'
+        find_available_coordinates = board.find_available_piece_coordinates(blue_player, game_end)
+        expect(find_available_coordinates).to eq(available_pieces)
+      end
+    end
+  end
 end
