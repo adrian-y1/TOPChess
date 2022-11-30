@@ -21,6 +21,23 @@ class Game
     @end_of_game = end_of_game
   end
 
+  def get_piece_position(player)
+    piece_coordinates = @board.find_available_piece_coordinates(player, @end_of_game)
+    puts "Player #{player.color}, please enter the position of the piece you want to move:"
+    puts "Available pieces -> #{piece_coordinates}"
+    loop do 
+      user_input = gets.chomp
+      @piece_position = verify_piece_position(user_input, piece_coordinates)
+      return piece_position if piece_position
+
+      puts "Invalid input! Please choose from the list of available pieces."
+    end
+  end
+
+  def verify_piece_position(user_input, piece_coordinates)
+    user_input if user_input.length == 2 && piece_coordinates.include?(user_input)
+  end
+
   def setup_players
     @blue_player = Player.new(:blue)
     @red_player = Player.new(:red)
@@ -34,7 +51,5 @@ board.move('d1', 'b5')
 end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
-board.find_available_piece_coordinates(game.red_player, end_of_game)
-moves = board.find_valid_piece_move_coordinates('b5')
-p moves
+game.get_piece_position(game.blue_player)
 game.board.display
