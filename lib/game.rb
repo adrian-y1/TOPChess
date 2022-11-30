@@ -10,11 +10,14 @@ require_relative './board_setup'
 require_relative './board'
 require_relative './player'
 require_relative './end_of_game'
+require_relative './modules/game_info'
 require 'colorize'
 
 # contains everything needed to setup the game
 class Game
   attr_reader :board, :blue_player, :red_player
+
+  include GameInfo
 
   def initialize(board, end_of_game)
     @board = board
@@ -23,14 +26,14 @@ class Game
 
   def get_piece_position(player)
     piece_coordinates = @board.find_available_piece_coordinates(player, @end_of_game)
-    puts "Player #{player.color}, please enter the position of the piece you want to move:"
+    puts position_info(player)
     puts "Available pieces -> #{piece_coordinates}"
     loop do 
       user_input = gets.chomp
       @piece_position = verify_piece_position(user_input, piece_coordinates)
-      return piece_position if piece_position
+      return @piece_position if @piece_position
 
-      puts "Invalid input! Please choose from the list of available pieces."
+      puts position_error
     end
   end
 
@@ -51,5 +54,5 @@ board.move('d1', 'b5')
 end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
-game.get_piece_position(game.blue_player)
+game.get_piece_position(game.red_player)
 game.board.display
