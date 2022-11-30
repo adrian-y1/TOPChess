@@ -213,4 +213,37 @@ describe Board do
       end
     end
   end
+
+  describe '#find_valid_piece_move_coordinates' do
+    let(:red_player) { Player.new(:red) }
+    let(:blue_player) { Player.new(:blue) }
+    let(:game_end) { EndGame.new(board) }
+
+    context "when given a piece's coordinates" do
+      before do
+        board.setup_board
+        board.move('d1', 'b5')
+      end
+      
+      it "returns coordinates of all the piece's moves" do
+        pieces = board.find_available_piece_coordinates(red_player, game_end)
+        piece_moves_coordinates = "a5, c5, d5, e5, f5, g5, h5, b6, b7, b4, b3, a6, a4, c6, d7, c4, d3"
+        find_move_coordinates = board.find_valid_piece_move_coordinates('b5')
+        expect(find_move_coordinates).to eq(piece_moves_coordinates)
+      end
+    end
+
+    context "when a piece cannot make any legal moves" do
+      before do
+        board.setup_board
+        board.move('d1', 'b5')
+      end
+
+      it "returns empty str" do
+        pieces = board.find_available_piece_coordinates(blue_player, game_end)
+        find_move_coordinates = board.find_valid_piece_move_coordinates('d7')
+        expect(find_move_coordinates).to eq("")
+      end
+    end
+  end
 end
