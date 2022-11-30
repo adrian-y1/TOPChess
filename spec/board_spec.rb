@@ -159,8 +159,9 @@ describe Board do
       end
 
       it "changes the blue queen's valid moves array and removes the illegal moves" do
+        player_pieces = game_end.find_player_pieces(blue_player.color)
         valid_moves = [[[2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4]]]
-        expect { board.remove_illegal_moves(blue_player, game_end) }.to change(blue_queen, :valid_moves).to valid_moves
+        expect { board.remove_illegal_moves(blue_player, game_end, player_pieces) }.to change(blue_queen, :valid_moves).to valid_moves
       end
     end
 
@@ -171,8 +172,9 @@ describe Board do
       end
 
       it "changes the blue King's valid moves array and removes the illegal moves" do
+        player_pieces = game_end.find_player_pieces(blue_player.color)
         valid_moves = [[[2, 4]], [[4, 4]], [[3, 5]], [[2, 5]]]
-        expect { board.remove_illegal_moves(blue_player, game_end) }.to change(blue_king, :valid_moves).to valid_moves
+        expect { board.remove_illegal_moves(blue_player, game_end, player_pieces) }.to change(blue_king, :valid_moves).to valid_moves
       end
     end
   end

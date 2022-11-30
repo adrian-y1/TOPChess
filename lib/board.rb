@@ -38,7 +38,6 @@ class Board
   def find_coordinates_index(square)
     letter_to_number = ('a'..'h').zip(0..7)
     column = letter_to_number.select { |i| i[0] == square.split('')[0] }.flatten
-    p column
     [8 - square.split('')[1].to_i, column[1]]
   end
 
@@ -103,9 +102,16 @@ class Board
     BoardSetup.new(@board)
   end
 
+  # Returns player friendly coordinates for available pieces to move
+  def find_available_piece_positions(player, game_end)
+    pieces = game_end.find_player_pieces(player.color)
+    remove_illegal_moves(player, game_end, pieces)
+    pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
+    pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
+  end
+
   # Removes illegal moves that place the King in check from each piece's valid moves
-  def remove_illegal_moves(player, game_end)
-    player_pieces = game_end.find_player_pieces(player.color)
+  def remove_illegal_moves(player, game_end, player_pieces)
     player_pieces.each do |obj|
       obj[:piece].valid_moves.reverse_each do |moves_arr|
         moves_arr.reverse_each do |move|

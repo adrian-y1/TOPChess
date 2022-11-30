@@ -16,7 +16,3 @@ board = Board.new
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
 
-board.setup_board
-end_game = EndGame.new(board)
-p board.square_index_to_coordinates([7, 7])
-board.display

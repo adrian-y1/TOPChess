@@ -26,24 +26,14 @@ class Game
     @red_player = Player.new(:red)
     @current_player = @blue_player
   end
-
-  # def find_available_piece_positions(player)
-  #   pieces = @end_of_game.find_player_pieces(player.color)
-  #   pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
-  #   pieces_square.map { |square| board.square_index_to_coordinates(square) }.join(', ')
-  # end
 end
 
 board = Board.new
-#board.setup_board
-board.board[3][4] = King.new(:blue)
-
-board.board[6][3] = Queen.new(:red)
-
+board.setup_board
+board.move('d1', 'b5')
 end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
-board.remove_illegal_moves(game.blue_player, end_of_game)
-#p end_of_game.king_in_check?(game.blue_player)
-# end_of_game.remove_illegal_moves(game.blue_player)
+puts board.find_available_piece_positions(game.blue_player, end_of_game)
+
 game.board.display
