@@ -34,6 +34,7 @@ board.move('d1', 'b5')
 end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
-puts board.find_available_piece_coordinates(game.blue_player, end_of_game)
-
+board.find_available_piece_coordinates(game.red_player, end_of_game)
+moves = board.find_valid_piece_move_coordinates('d7')
+p moves
 game.board.display

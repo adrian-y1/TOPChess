@@ -102,12 +102,19 @@ class Board
     BoardSetup.new(@board)
   end
 
-  # Returns player friendly coordinates for available pieces to move
+  # Returns user friendly coordinates for available pieces to move
   def find_available_piece_coordinates(player, game_end)
     pieces = game_end.find_player_pieces(player.color)
     remove_illegal_moves(player, game_end, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
     pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
+  end
+
+  # Returns user friendly valid moves coordinates for a given piece coordinate
+  def find_valid_piece_move_coordinates(piece_coordinates)
+    piece_square = find_coordinates_index(piece_coordinates)
+    piece_moves = @board[piece_square[0]][piece_square[1]].valid_moves.flatten(1)
+    piece_moves.map { |move| square_index_to_coordinates(move) }.join(', ')
   end
 
   # Removes illegal moves that place the King in check from each piece's valid moves
