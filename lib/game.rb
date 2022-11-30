@@ -27,17 +27,30 @@ class Game
   def get_piece_position(player)
     piece_coordinates = @board.find_available_piece_coordinates(player, @end_of_game)
     puts position_info(player)
-    puts "Available pieces -> #{piece_coordinates}"
-    loop do 
+    puts pieces_info(piece_coordinates)
+    loop do
       user_input = gets.chomp
-      @piece_position = verify_piece_position(user_input, piece_coordinates)
+      @piece_position = verify_position(user_input, piece_coordinates)
       return @piece_position if @piece_position
 
       puts position_error
     end
   end
 
-  def verify_piece_position(user_input, piece_coordinates)
+  def get_piece_move(player)
+    piece_move_coordinates = @board.find_valid_piece_move_coordinates(@piece_position)
+    puts move_info(player, @piece_position)
+    puts piece_moves_info(piece_move_coordinates)
+    loop do
+      user_input = gets.chomp
+      @move_position = verify_position(user_input, piece_move_coordinates)
+      return @move_position if @move_position
+
+      puts move_error
+    end
+  end
+
+  def verify_position(user_input, piece_coordinates)
     user_input if user_input.length == 2 && piece_coordinates.include?(user_input)
   end
 
@@ -55,4 +68,5 @@ end_of_game = EndGame.new(board)
 game = Game.new(board, end_of_game)
 game.setup_players
 game.get_piece_position(game.red_player)
+game.get_piece_move(game.red_player)
 game.board.display
