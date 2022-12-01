@@ -126,6 +126,22 @@ describe Board do
     end
   end
 
+  describe '#make_promotion' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:blue_pawn) { Pawn.new(:blue) }
+
+    context 'when blue player is able to make a promotion' do
+      before do
+        board.board[7][1] = blue_pawn
+      end
+
+      it 'changes the pawn to the chosen piece' do
+        chosen_piece = 'Queen'
+        expect { board.make_promotion(blue_player, chosen_piece) }.to change { board.board[7][1] }.from(blue_pawn)
+      end
+    end
+  end
+
   describe '#square_index_to_coordinates' do
     context 'when given index of square [4, 0]' do
       it 'returns the coordinates of that square (a4)' do

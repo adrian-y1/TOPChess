@@ -91,5 +91,5 @@ end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 game.setup_players
 game.board.display
-game.get_piece_position(game.red_player)
-game.get_piece_move(game.red_player)
+game.get_piece_position(game.blue_player)
+game.get_piece_move(game.blue_player)
