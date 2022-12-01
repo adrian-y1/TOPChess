@@ -6,7 +6,7 @@ require 'colorize'
 # Class that creates a new Pawn
 class Pawn
   attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
-  attr_accessor :defended
+  attr_accessor :defended, :move_counter
 
   include ValidateMoves
 
@@ -18,6 +18,7 @@ class Pawn
     @attacking_squares = []
     @blue_movement = [[1, -1], [1, 1]]
     @red_movement = [[-1, -1], [-1, 1]]
+    @move_counter = 0
     @defended = false
   end
 

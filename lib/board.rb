@@ -5,6 +5,7 @@ require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
 require_relative './board_setup'
 require_relative './end_of_game'
+require_relative '../lib/modules/validate_moves'
 require 'colorize'
 require 'matrix'
 
@@ -12,6 +13,8 @@ require 'matrix'
 class Board
   attr_accessor :board
   attr_reader :pieces
+
+  include ValidateMoves
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
@@ -25,6 +28,7 @@ class Board
     piece_square = find_coordinates_index(piece_coordinates)
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[piece_square[0]][piece_square[1]]
+    @board[destination_square[0]][destination_square[1]].move_counter += 1 if @board[destination_square[0]][destination_square[1]].is_a?(Pawn)
     remove_piece(piece_square)
   end
 

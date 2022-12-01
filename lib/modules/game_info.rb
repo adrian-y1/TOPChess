@@ -39,4 +39,12 @@ module GameInfo
   def promotion_error
     "\n#{'Invalid Input!'.bold} Please enter one of the above listed pieces:".light_red
   end
+
+  def checkmate_info(player)
+    "Congratulations, player #{player.color.to_s.bold}! You have checkmated your opponent.".green
+  end
+
+  def stalemate_info
+    "Stalemate! The game has ended in a draw.".yellow
+  end
 end

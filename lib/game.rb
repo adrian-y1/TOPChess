@@ -24,6 +24,14 @@ class Game
     @end_game = end_game
   end
 
+  
+  def play_turn(player)
+    piece_position = get_piece_position(player)
+    destination = get_piece_move(player)
+    @board.move(piece_position, destination)
+    @board.display
+  end
+
   def get_piece_position(player)
     piece_coordinates = @board.find_available_piece_coordinates(player, @end_game)
     puts position_info(player)
@@ -81,15 +89,35 @@ class Game
   def switch_turn
     @current_player = @current_player == @blue_player ? @red_player : @blue_player
   end
+
+  def game_won?(player)
+    opponent = @end_game.find_opponent_color(player)
+    return false unless @end_game.checkmate?(opponent)
+
+    puts checkmate_info(player)
+    true
+  end
+
+  def game_draw?(player)
+    return false unless @end_game.stalemate?(player)
+
+    puts stalemate_info
+    true
+  end
+
+  def game_end?(player)
+    game_draw?(player) || game_won?(player)
+  end
 end
 
 board = Board.new
-#board.setup_board
-#board.move('d1', 'b5')
-board.board[6][4] = Pawn.new(:blue)
+board.setup_board
+board.move('b7', 'b5')
+board.move('d2', 'd4')
+board.move('b5', 'b4')
+board.move('a2', 'a4')
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 game.setup_players
-game.board.display
-game.get_piece_position(game.blue_player)
-game.get_piece_move(game.blue_player)
+board.en_passant(game.blue_player)
+board.display
