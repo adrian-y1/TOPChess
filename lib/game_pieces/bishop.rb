@@ -41,7 +41,8 @@ class Bishop
 
   # Creates all the diagonal moves the Bishop can make
   def create_all_moves(square, board)
-    @movement.each do |move|
+    movement_copy = Marshal.load(Marshal.dump(@movement))
+    movement_copy.each do |move|
       new_moves = create_diagonal_moves(square, move, board)
       @valid_moves << new_moves unless new_moves.empty?
     end

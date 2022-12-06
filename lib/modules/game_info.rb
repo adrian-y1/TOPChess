@@ -13,7 +13,7 @@ module GameInfo
   end
 
   def pieces_info(piece_coordinates)
-    "#{'Available Pieces'.bold} -> #{piece_coordinates.to_s.bold}"
+    "#{"Available Pieces (#{piece_coordinates.split(' ').length})".bold} -> #{piece_coordinates.to_s.bold}"
   end
 
   def move_info(player, piece_position)

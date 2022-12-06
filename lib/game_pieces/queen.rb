@@ -41,7 +41,8 @@ class Queen
 
   # Creates all the moves in all of the directions for the Queen
   def create_all_moves(square, board)
-    @movement.each do |move|
+    movement_copy = Marshal.load(Marshal.dump(@movement))
+    movement_copy.each do |move|
       new_moves = create_directional_moves(square, move, board)
       @valid_moves << new_moves unless new_moves.empty?
     end

@@ -21,7 +21,8 @@ class Knight
 
   # Creates all the valid moves the knight can go to, given a square
   def create_all_moves(square, board)
-    @movement.each do |move|
+    movement_copy = Marshal.load(Marshal.dump(@movement))
+    movement_copy.each do |move|
       next_square = [square[0] + move[0], square[1] + move[1]]
       next unless inside_board?(next_square)
 

@@ -27,7 +27,8 @@ class EndGame
     !king_in_check?(player) &&
       !move_to_safe_position?(player) &&
       !checking_piece_capturable?(player) &&
-      !interception_available?(player)
+      !interception_available?(player) &&
+      @board.find_available_piece_coordinates(player, self).empty?
   end
 
   # Finds out if the King is in check or not

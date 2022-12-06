@@ -114,7 +114,7 @@ class Board
   def find_valid_piece_move_coordinates(piece_coordinates)
     piece_square = find_coordinates_index(piece_coordinates)
     piece_moves = @board[piece_square[0]][piece_square[1]].valid_moves.flatten(1)
-    piece_moves.map { |move| square_index_to_coordinates(move) }.join(', ')
+    piece_moves.uniq.map { |move| square_index_to_coordinates(move) }.join(', ')
   end
 
   # Removes illegal moves that place the King in check from each piece's valid moves

@@ -24,7 +24,18 @@ class Game
     @end_game = end_game
   end
 
-  
+  def play_game
+    # puts game_rules
+    setup_players
+    @board.display
+    loop do
+      play_turn(@current_player)
+      return if game_end?(@current_player)
+
+      switch_turn
+    end
+  end
+
   def play_turn(player)
     piece_position = get_piece_position(player)
     destination = get_piece_move(player)
@@ -83,7 +94,7 @@ class Game
   def setup_players
     @blue_player = Player.new(:blue)
     @red_player = Player.new(:red)
-    @current_player = @blue_player
+    @current_player = @red_player
   end
 
   def switch_turn
@@ -91,7 +102,7 @@ class Game
   end
 
   def game_won?(player)
-    opponent = @end_game.find_opponent_color(player)
+    opponent = player == @blue_player ? @blue_player : @red_player
     return false unless @end_game.checkmate?(opponent)
 
     puts checkmate_info(player)
@@ -111,13 +122,14 @@ class Game
 end
 
 board = Board.new
-board.setup_board
-board.move('b7', 'b5')
-board.move('d2', 'd4')
-board.move('b5', 'b4')
-board.move('a2', 'a4')
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
-game.setup_players
-board.en_passant(game.blue_player)
-board.display
+board.setup_board
+game.play_game
+# board.move('d8', 'h4')
+# board.move('h2', 'h3')
+# board.display
+# one_sq = board.board[5][7].one_square_move([5, 7], board)
+# puts "One -> #{one_sq}"
+# two_sq = board.board[5][7].two_square_move([5, 7], board)
+# puts "Two -> #{two_sq}"

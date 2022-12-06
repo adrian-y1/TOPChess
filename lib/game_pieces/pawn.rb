@@ -24,11 +24,13 @@ class Pawn
 
   # Creates all possible moves for the Pawn
   def create_all_moves(square, board)
+    red_movement_copy = Marshal.load(Marshal.dump(@red_movement))
+    blue_movement_copy = Marshal.load(Marshal.dump(@blue_movement))
     two_square_move(square, board)
     if @color == :red
-      @red_movement.each { |move| create_diagonal_moves(square, board, move) }
+      red_movement_copy.each { |move| create_diagonal_moves(square, board, move) }
     else
-      @blue_movement.each { |move| create_diagonal_moves(square, board, move) }
+      blue_movement_copy.each { |move| create_diagonal_moves(square, board, move) }
     end
     @valid_moves
   end
