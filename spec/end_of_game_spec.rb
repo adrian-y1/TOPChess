@@ -53,6 +53,7 @@ describe EndGame do
         game_board.board[7][4] = blue_king
         game_board.board[7][0] = red_rook1
         game_board.board[6][0] = red_rook2
+        game_board.display
       end
 
       it 'returns true' do

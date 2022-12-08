@@ -15,7 +15,7 @@ class Pawn
     @color = color
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
-    @attacking_squares = []
+    #@attacking_squares = []
     @blue_movement = [[1, -1], [1, 1]]
     @red_movement = [[-1, -1], [-1, 1]]
     @move_counter = 0
@@ -25,6 +25,7 @@ class Pawn
   # Creates all possible moves for the Pawn
   def create_all_moves(square, board)
     valid_moves = []
+    @attacking_squares = []
     red_movement_copy = Marshal.load(Marshal.dump(@red_movement))
     blue_movement_copy = Marshal.load(Marshal.dump(@blue_movement))
     valid_moves << one_square_move(square, board)
@@ -64,7 +65,7 @@ class Pawn
   # the forward diagonal squares of a pawn
   def create_diagonal_moves(square, board, move)
     next_square = [square[0] + move[0], square[1] + move[1]]
-    return[] unless inside_board?(next_square)
+    return [] unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
 

@@ -125,30 +125,22 @@ end
 board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
-board.setup_board
-game.play_game
-# game.setup_players
-# end_game.create_player_moves(game.blue_player)
-# board.find_available_piece_coordinates(game.blue_player, end_game)
-# board.move('d8', 'h4')
-# board.display
-# end_game.create_player_moves(game.red_player)
-# board.find_available_piece_coordinates(game.red_player, end_game)
-# board.move('a2', 'a4')
-# board.display
-# end_game.create_player_moves(game.blue_player)
-# board.find_available_piece_coordinates(game.blue_player, end_game)
-# board.move('b8', 'c6')
-# board.display
-# end_game.create_player_moves(game.red_player)
-# board.find_available_piece_coordinates(game.red_player, end_game)
-# board.move('b1', 'a3')
-# board.display
-# end_game.create_player_moves(game.blue_player)
-# board.find_available_piece_coordinates(game.blue_player, end_game)
-# board.move('a7', 'a5')
-# board.display
-# end_game.create_player_moves(game.red_player)
-# board.find_available_piece_coordinates(game.red_player, end_game)
-# board.move('h2', 'h3')
-# board.display
+#board.setup_board
+# game.play_game
+game.setup_players
+
+board.board[7][0] = Rook.new(:red)
+board.board[6][0] = Rook.new(:red)
+board.board[7][4] = King.new(:blue)
+#board.board[7][1] = Pawn.new(:blue)
+board.display
+board.board[7][0].create_valid_moves([7, 0], board)
+board.board[6][0].create_valid_moves([6, 0], board)
+board.board[7][4].create_valid_moves([7, 4], board)
+opps = end_game.find_player_pieces(:red)
+end_game.remove_guarded_king_moves(game.blue_player, opps)
+
+p board.board[7][0].attacking_squares
+p board.board[6][0].attacking_squares
+p board.board[7][4].attacking_squares
+p end_game.move_to_safe_position?(game.blue_player)
