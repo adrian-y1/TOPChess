@@ -40,11 +40,16 @@ module GameInfo
     "\n#{'Invalid Input!'.bold} Please enter one of the above listed pieces:".light_red
   end
 
-  def checkmate_info(player)
-    "Congratulations, player #{player.color.to_s.bold}! You have checkmated your opponent.".green
+  def checkmate_info(opponent)
+    player = opponent.color == :red ? :blue : :red
+    "Congratulations, player #{player.to_s.bold}! You have checkmated your opponent.".green
   end
 
   def stalemate_info
-    "Stalemate! The game has ended in a draw.".yellow
+    "Stalemate! The game has ended in a draw.".light_yellow
+  end
+
+  def in_check_info(player, opponent)
+    "#{"Check!".bold} Player #{player.color.to_s.bold} has put Player #{opponent.color.to_s.bold}'s King check.".yellow
   end
 end

@@ -104,7 +104,7 @@ class Game
   def game_won?(opponent)
     return false unless @end_game.checkmate?(opponent)
 
-    puts checkmate_info(player)
+    puts checkmate_info(opponent)
     true
   end
 
@@ -117,6 +117,7 @@ class Game
 
   def game_end?(player)
     opponent = player == @blue_player ? @red_player : @blue_player
+    puts in_check_info(player, opponent) if @end_game.king_in_check?(opponent)
     game_draw?(opponent) || game_won?(opponent)
   end
 end
