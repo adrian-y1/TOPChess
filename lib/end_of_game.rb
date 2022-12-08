@@ -157,18 +157,18 @@ class EndGame
         next unless occupied_by_own_self?(column, player)
         
         current_square = Matrix[*@board.board].index(column)
-        #column.create_all_moves(current_square, @board)
+        column.create_valid_moves(current_square, @board)
         pieces << { piece: column, current_square: current_square }
       end
     end
   end
 
-  def create_player_moves(player)
-    pieces = find_player_pieces(player.color)
-    pieces.each do |obj|
-      obj[:piece].create_all_moves(obj[:current_square], @board)
-    end
-  end
+  # def create_player_moves(player)
+  #   pieces = find_player_pieces(player.color)
+  #   pieces.each do |obj|
+  #     obj[:piece].create_valid_moves(obj[:current_square], @board)
+  #   end
+  # end
 
   # Returns opponent's color
   def find_opponent_color(current_player)

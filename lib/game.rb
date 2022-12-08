@@ -101,23 +101,23 @@ class Game
     @current_player = @current_player == @blue_player ? @red_player : @blue_player
   end
 
-  def game_won?(player)
-    opponent = player == @blue_player ? @blue_player : @red_player
+  def game_won?(opponent)
     return false unless @end_game.checkmate?(opponent)
 
     puts checkmate_info(player)
     true
   end
 
-  def game_draw?(player)
-    return false unless @end_game.stalemate?(player)
+  def game_draw?(opponent)
+    return false unless @end_game.stalemate?(opponent)
 
     puts stalemate_info
     true
   end
 
   def game_end?(player)
-    game_draw?(player) || game_won?(player)
+    opponent = player == @blue_player ? @red_player : @blue_player
+    game_draw?(opponent) || game_won?(opponent)
   end
 end
 
@@ -125,8 +125,8 @@ board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 board.setup_board
-# game.play_game
-game.setup_players
+game.play_game
+# game.setup_players
 # end_game.create_player_moves(game.blue_player)
 # board.find_available_piece_coordinates(game.blue_player, end_game)
 # board.move('d8', 'h4')
@@ -150,12 +150,4 @@ game.setup_players
 # end_game.create_player_moves(game.red_player)
 # board.find_available_piece_coordinates(game.red_player, end_game)
 # board.move('h2', 'h3')
-# board.display
-board.move('a7', 'b3')
-board.board[6][2].create_valid_moves([6, 2], board)
-puts "moves -> #{board.board[6][2].valid_moves}"
-board.display
-
-# board.board[5][0].create_valid_moves([5, 0], board)
-# puts "moves -> #{board.board[5][0].valid_moves}"
 # board.display
