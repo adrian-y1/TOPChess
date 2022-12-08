@@ -24,46 +24,52 @@ class Pawn
 
   # Creates all possible moves for the Pawn
   def create_all_moves(square, board)
+    valid_moves = []
     red_movement_copy = Marshal.load(Marshal.dump(@red_movement))
     blue_movement_copy = Marshal.load(Marshal.dump(@blue_movement))
-    two_square_move(square, board)
+    valid_moves << one_square_move(square, board)
+    valid_moves << two_square_move(square, board)
     if @color == :red
-      red_movement_copy.each { |move| create_diagonal_moves(square, board, move) }
+      red_movement_copy.each { |move| valid_moves << create_diagonal_moves(square, board, move) }
     else
-      blue_movement_copy.each { |move| create_diagonal_moves(square, board, move) }
+      blue_movement_copy.each { |move| valid_moves << create_diagonal_moves(square, board, move) }
     end
-    @valid_moves
+    valid_moves.reject!(&:empty?)
+  end
+
+  def create_valid_moves(square, board)
+    @valid_moves = create_all_moves(square, board)
   end
 
   # Creates one square possible move for the Pawn depending on it's color
   def one_square_move(square, board)
     next_square = @color == :red ? [square[0] + -1, square[1]] : [square[0] + 1, square[1]]
-    return @valid_moves unless inside_board?(next_square)
+    return [] unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
-    board_square == ' ' ? @valid_moves.push([next_square]) : @valid_moves
+    board_square == ' ' ? [next_square] : []
   end
 
   # Creates 2 possible square moves for the Pawn if it's on it's starting position
   def two_square_move(square, board)
-    one_square_move(square, board)
+    one_move = one_square_move(square, board)
     next_square = create_second_square(square)
-    return @valid_moves unless inside_board?(next_square)
+    return [] unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
-    board_square == ' ' && !@valid_moves.empty? ? @valid_moves.push([next_square]) : @valid_moves
+    board_square == ' ' && !one_move.empty? ? [next_square] : []
   end
 
   # Creates possible diagonal square capture if there's an opponent's piece on
   # the forward diagonal squares of a pawn
   def create_diagonal_moves(square, board, move)
     next_square = [square[0] + move[0], square[1] + move[1]]
-    return @valid_moves unless inside_board?(next_square)
+    return[] unless inside_board?(next_square)
 
     board_square = board.board[next_square[0]][next_square[1]]
 
     @attacking_squares << [next_square]
-    occupied_by_opponent?(board_square, @color) ? @valid_moves.push([next_square]) : @valid_moves
+    occupied_by_opponent?(board_square, @color) ? [next_square] : []
   end
 
   # Creates the 2nd square for the Pawn if it's on starting position

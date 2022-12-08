@@ -20,6 +20,7 @@ class King
   end
 
   def create_all_moves(square, board)
+    valid_moves = []
     movement_copy = Marshal.load(Marshal.dump(@movement))
     movement_copy.each do |move|
       next_square = [square[0] + move[0], square[1] + move[1]]
@@ -31,9 +32,14 @@ class King
         next
       end
 
-      @valid_moves.push([next_square])
+      valid_moves.push([next_square])
       next if occupied_by_opponent?(board_square, @color)
     end
-    @valid_moves
+    valid_moves
+  end
+
+  def create_valid_moves(square, board)
+    @valid_moves = create_all_moves(square, board)
+    @attacking_squares = @valid_moves
   end
 end

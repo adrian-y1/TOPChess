@@ -107,6 +107,7 @@ class Board
     pieces = game_end.find_player_pieces(player.color)
     remove_illegal_moves(player, game_end, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
+    puts "#{player.color} -> #{pieces_square}"
     pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
   end
 

@@ -40,11 +40,17 @@ class Rook
 
   # Creates the left, right, top and bottom moves for the Rook
   def create_all_moves(square, board)
+    valid_moves = []
     movement_copy = Marshal.load(Marshal.dump(@movement))
     movement_copy.each do |move|
       new_moves = create_directional_moves(square, move, board)
-      @valid_moves << new_moves unless new_moves.empty?
+      valid_moves << new_moves unless new_moves.empty?
     end
-    @valid_moves
+    valid_moves
+  end
+
+  def create_valid_moves(square, board)
+    @valid_moves = create_all_moves(square, board)
+    @attacking_squares = @valid_moves
   end
 end

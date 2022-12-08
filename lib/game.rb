@@ -125,11 +125,37 @@ board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 board.setup_board
-game.play_game
+# game.play_game
+game.setup_players
+# end_game.create_player_moves(game.blue_player)
+# board.find_available_piece_coordinates(game.blue_player, end_game)
 # board.move('d8', 'h4')
+# board.display
+# end_game.create_player_moves(game.red_player)
+# board.find_available_piece_coordinates(game.red_player, end_game)
+# board.move('a2', 'a4')
+# board.display
+# end_game.create_player_moves(game.blue_player)
+# board.find_available_piece_coordinates(game.blue_player, end_game)
+# board.move('b8', 'c6')
+# board.display
+# end_game.create_player_moves(game.red_player)
+# board.find_available_piece_coordinates(game.red_player, end_game)
+# board.move('b1', 'a3')
+# board.display
+# end_game.create_player_moves(game.blue_player)
+# board.find_available_piece_coordinates(game.blue_player, end_game)
+# board.move('a7', 'a5')
+# board.display
+# end_game.create_player_moves(game.red_player)
+# board.find_available_piece_coordinates(game.red_player, end_game)
 # board.move('h2', 'h3')
 # board.display
-# one_sq = board.board[5][7].one_square_move([5, 7], board)
-# puts "One -> #{one_sq}"
-# two_sq = board.board[5][7].two_square_move([5, 7], board)
-# puts "Two -> #{two_sq}"
+board.move('a7', 'b3')
+board.board[6][2].create_valid_moves([6, 2], board)
+puts "moves -> #{board.board[6][2].valid_moves}"
+board.display
+
+# board.board[5][0].create_valid_moves([5, 0], board)
+# puts "moves -> #{board.board[5][0].valid_moves}"
+# board.display
