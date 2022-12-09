@@ -40,6 +40,7 @@ class Game
     piece_position = get_piece_position(player)
     destination = get_piece_move(player)
     @board.move(piece_position, destination)
+    promotion(player)
     @board.display
   end
 
@@ -97,6 +98,13 @@ class Game
     @current_player = @red_player
   end
 
+  def promotion(player)
+    return unless @board.promotion_available?(player)
+
+    chosen_piece = get_promotion_piece(player)
+    @board.make_promotion(player, chosen_piece)
+  end
+
   def switch_turn
     @current_player = @current_player == @blue_player ? @red_player : @blue_player
   end
@@ -125,23 +133,13 @@ end
 board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
-#board.setup_board
-# game.play_game
-game.setup_players
-
-board.board[7][0] = Rook.new(:red)
-board.board[6][0] = Rook.new(:red)
-board.board[7][4] = King.new(:blue)
-#board.board[7][1] = Pawn.new(:blue)
-board.display
-board.board[7][0].create_valid_moves([7, 0], board)
-board.board[6][0].create_valid_moves([6, 0], board)
-board.board[7][4].create_valid_moves([7, 4], board)
-opps = end_game.find_player_pieces(:blue)
-#end_game.remove_guarded_king_moves(game.blue_player, opps)
-# remove = board.remove_illegal_moves(game.blue_player, end_game, opps)
-# p remove
-puts "Rook1 -> #{board.board[7][0].attacking_squares}"
-puts "Rook2 -> #{board.board[6][0].attacking_squares}"
-puts "King -> #{board.board[7][4].attacking_squares}"
-p end_game.move_to_safe_position?(game.blue_player)
+board.setup_board
+# def promotion_info
+#   puts "\nPlayer #{:red.to_s.bold}, your Pawn at location #{'a8'.bold} has reached Promotion.".yellow
+#   <<~HERODOC
+    
+#     #{"Please choose one of the following pieces to promote your Pawn to: \n#{'Queen, Rook, Bishop, Knight'.bold}".yellow}
+#   HERODOC
+# end
+# puts promotion_info
+game.play_game

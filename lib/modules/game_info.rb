@@ -5,7 +5,7 @@ require 'colorize'
 # Module that handles all game information such as errors, instructions etc
 module GameInfo
   def position_info(player)
-    "\nPlayer #{player.color.to_s.bold}, please enter the position of the piece you want to move (e.g. a8):".colorize(player.color)
+    "\nPlayer #{player.color.to_s.capitalize.bold}, please enter the position of the piece you want to move (e.g. a8):".colorize(player.color)
   end
 
   def position_error
@@ -17,7 +17,7 @@ module GameInfo
   end
 
   def move_info(player, piece_position)
-    "\nPlayer #{player.color.to_s.bold}, please enter the position where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
+    "\nPlayer #{player.color.to_s.capitalize.bold}, please enter the position where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
   end
 
   def piece_moves_info(piece_moves_coordinates)
@@ -29,10 +29,10 @@ module GameInfo
   end
 
   def promotion_info(player, pawn_coordinates)
-    puts "Player #{player.color.to_s.bold}, your Pawn at location #{pawn_coordinates.to_s.bold} has reached Promotion.".colorize(player.color)
+    puts "\nPlayer #{player.color.to_s.capitalize.bold}, your Pawn at location #{pawn_coordinates.to_s.bold} has reached Promotion.".yellow
     <<~HERODOC
-      Please choose one of the following pieces to promote your Pawn to:
-      #{'Queen, Rook, Bishop, Knight'.bold}
+
+      #{"Please choose one of the following pieces to promote your Pawn to: \n#{'Queen, Rook, Bishop, Knight'.bold}".yellow}
     HERODOC
   end
 
@@ -42,7 +42,7 @@ module GameInfo
 
   def checkmate_info(opponent)
     player = opponent.color == :red ? :blue : :red
-    "Congratulations, player #{player.to_s.bold}! You have checkmated your opponent.".green
+    "Congratulations, Player #{player.to_s.capitalize.bold}! You have checkmated your opponent.".green
   end
 
   def stalemate_info
@@ -50,6 +50,6 @@ module GameInfo
   end
 
   def in_check_info(player, opponent)
-    "#{"Check!".bold} Player #{player.color.to_s.bold} has put Player #{opponent.color.to_s.bold}'s King check.".yellow
+    "#{"Check!".bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
   end
 end
