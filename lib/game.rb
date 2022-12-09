@@ -137,10 +137,11 @@ board.display
 board.board[7][0].create_valid_moves([7, 0], board)
 board.board[6][0].create_valid_moves([6, 0], board)
 board.board[7][4].create_valid_moves([7, 4], board)
-opps = end_game.find_player_pieces(:red)
-end_game.remove_guarded_king_moves(game.blue_player, opps)
-
-p board.board[7][0].attacking_squares
-p board.board[6][0].attacking_squares
-p board.board[7][4].attacking_squares
+opps = end_game.find_player_pieces(:blue)
+#end_game.remove_guarded_king_moves(game.blue_player, opps)
+# remove = board.remove_illegal_moves(game.blue_player, end_game, opps)
+# p remove
+puts "Rook1 -> #{board.board[7][0].attacking_squares}"
+puts "Rook2 -> #{board.board[6][0].attacking_squares}"
+puts "King -> #{board.board[7][4].attacking_squares}"
 p end_game.move_to_safe_position?(game.blue_player)

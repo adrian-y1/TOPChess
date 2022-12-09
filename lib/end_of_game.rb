@@ -71,9 +71,9 @@ class EndGame
 
   # Checks if the King can move to a safe position
   def move_to_safe_position?(player)
-    opponent = find_opponent_color(player)
-    opponent_pieces = find_player_pieces(opponent)
-    valid_king_moves = remove_guarded_king_moves(player, opponent_pieces)
+    player_pieces = find_player_pieces(player.color)
+    @board.remove_illegal_moves(player, self, player_pieces)
+    valid_king_moves = player_pieces.find { |obj| obj[:piece].is_a?(King) }[:piece].valid_moves
     !valid_king_moves.empty?
   end
 
@@ -102,21 +102,6 @@ class EndGame
     checking_piece.map do |obj|
       obj if obj[:piece].is_a?(Queen) || obj[:piece].is_a?(Rook) || obj[:piece].is_a?(Bishop)
     end
-  end
-
-  # Removes any king's moves that are guarded by opponent and
-  # any moves that can capture an opponent's piece but are defended by another piece
-  def remove_guarded_king_moves(player, opponent_pieces)
-    player_king = find_player_king(player)[:piece]
-    opponent_pieces.each do |obj|
-      player_king.valid_moves.each do |moves_arr|
-        moves_arr.each do |move|
-          moves_arr.delete(move) if move == obj[:current_square] && obj[:piece].defended
-          moves_arr.delete(move) if obj[:piece].attacking_squares.any? { |sq| sq.include?(move) }
-        end
-      end
-    end
-    player_king.valid_moves.reject!(&:empty?)
   end
 
   # Returns an array of hashes of class instances of the piece(s) checking
