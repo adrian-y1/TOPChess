@@ -134,12 +134,9 @@ board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 board.setup_board
-# def promotion_info
-#   puts "\nPlayer #{:red.to_s.bold}, your Pawn at location #{'a8'.bold} has reached Promotion.".yellow
-#   <<~HERODOC
-    
-#     #{"Please choose one of the following pieces to promote your Pawn to: \n#{'Queen, Rook, Bishop, Knight'.bold}".yellow}
-#   HERODOC
-# end
-# puts promotion_info
-game.play_game
+board.move('c7', 'c5')
+board.move('b2', 'b5')
+board.display
+# game.play_game
+game.setup_players
+p board.en_passant_available?(game.red_player, end_game)

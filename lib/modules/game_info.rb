@@ -46,10 +46,10 @@ module GameInfo
   end
 
   def stalemate_info
-    "Stalemate! The game has ended in a draw.".light_yellow
+    'Stalemate! The game has ended in a draw.'.light_yellow
   end
 
   def in_check_info(player, opponent)
-    "#{"Check!".bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
+    "#{'Check!'.bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
   end
 end

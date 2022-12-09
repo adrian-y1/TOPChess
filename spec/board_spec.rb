@@ -177,7 +177,9 @@ describe Board do
       it "changes the blue queen's valid moves array and removes the illegal moves" do
         player_pieces = game_end.find_player_pieces(blue_player.color)
         valid_moves = [[[2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4]]]
-        expect { board.remove_illegal_moves(blue_player, game_end, player_pieces) }.to change(blue_queen, :valid_moves).to valid_moves
+        expect do
+          board.remove_illegal_moves(blue_player, game_end, player_pieces)
+        end.to change(blue_queen, :valid_moves).to valid_moves
       end
     end
 
@@ -190,7 +192,9 @@ describe Board do
       it "changes the blue King's valid moves array and removes the illegal moves" do
         player_pieces = game_end.find_player_pieces(blue_player.color)
         valid_moves = [[[2, 4]], [[4, 4]], [[3, 5]], [[2, 5]]]
-        expect { board.remove_illegal_moves(blue_player, game_end, player_pieces) }.to change(blue_king, :valid_moves).to valid_moves
+        expect do
+          board.remove_illegal_moves(blue_player, game_end, player_pieces)
+        end.to change(blue_king, :valid_moves).to valid_moves
       end
     end
   end
@@ -205,7 +209,7 @@ describe Board do
       end
 
       it 'returns 10 available piece coordinates to move (b8, g8, a7, b7, c7, d7, e7, f7, g7, h7)' do
-        available_coordinates = "b8, g8, a7, b7, c7, d7, e7, f7, g7, h7"
+        available_coordinates = 'b8, g8, a7, b7, c7, d7, e7, f7, g7, h7'
         find_available_coordinates = board.find_available_piece_coordinates(blue_player, game_end)
         expect(find_available_coordinates).to eq(available_coordinates)
       end
@@ -240,25 +244,25 @@ describe Board do
         board.setup_board
         board.move('d1', 'b5')
       end
-      
+
       it "returns coordinates of all the piece's moves" do
         pieces = board.find_available_piece_coordinates(red_player, game_end)
-        piece_moves_coordinates = "a5, c5, d5, e5, f5, g5, h5, b6, b7, b4, b3, a6, a4, c6, d7, c4, d3"
+        piece_moves_coordinates = 'a5, c5, d5, e5, f5, g5, h5, b6, b7, b4, b3, a6, a4, c6, d7, c4, d3'
         find_move_coordinates = board.find_valid_piece_move_coordinates('b5')
         expect(find_move_coordinates).to eq(piece_moves_coordinates)
       end
     end
 
-    context "when a piece cannot make any legal moves" do
+    context 'when a piece cannot make any legal moves' do
       before do
         board.setup_board
         board.move('d1', 'b5')
       end
 
-      it "returns empty str" do
+      it 'returns empty str' do
         pieces = board.find_available_piece_coordinates(blue_player, game_end)
         find_move_coordinates = board.find_valid_piece_move_coordinates('d7')
-        expect(find_move_coordinates).to eq("")
+        expect(find_move_coordinates).to eq('')
       end
     end
   end

@@ -30,7 +30,7 @@ class Knight
       board_square = board.board[next_square[0]][next_square[1]]
       if occupied_by_own_self?(board_square, @color)
         board_square.defended = true
-        next valid_moves 
+        next valid_moves
       end
 
       valid_moves.push([next_square])

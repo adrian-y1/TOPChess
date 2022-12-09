@@ -28,7 +28,9 @@ class Board
     piece_square = find_coordinates_index(piece_coordinates)
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[piece_square[0]][piece_square[1]]
-    @board[destination_square[0]][destination_square[1]].move_counter += 1 if @board[destination_square[0]][destination_square[1]].is_a?(Pawn)
+    if @board[destination_square[0]][destination_square[1]].is_a?(Pawn)
+      @board[destination_square[0]][destination_square[1]].move_counter += 1
+    end
     remove_piece(piece_square)
   end
 
@@ -52,13 +54,10 @@ class Board
     "#{column[1]}#{8 - square[0]}"
   end
 
-  # TODO
+  # Creates the promotion
   def make_promotion(player, chosen_piece)
-    # create a new object with the chosen piece e.g. Piece.new(player.color)
     promotion_piece = create_chosen_piece(player, chosen_piece.capitalize)
-    # Find promotable pawn
     promotable_pawn = find_promotable_pawn(player)
-    # Set that new piece object to the position of the promotable pawn
     @board[promotable_pawn[0]][promotable_pawn[1]] = promotion_piece
   end
 
@@ -133,6 +132,32 @@ class Board
     end
     game_end.board = self
     player_pieces.each { |obj| obj[:piece].valid_moves.reject!(&:empty?) }
+  end
+
+  # Checks if En Passant is available for right or left side
+  def en_passant_available?(player, game_end)
+    row = player.color == :blue ? 4 : 3
+    player_pawns = game_end.find_player_pieces(player.color).select { |obj| obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row }
+    opponent = game_end.find_opponent_color(player)
+    opponent_pawns = game_end.find_player_pieces(opponent).map { |obj| obj[:piece] }
+    return false if player_pawns.empty?
+
+    directional_en_passant?(player_pawns, opponent_pawns, row, -1) or
+      directional_en_passant?(player_pawns, opponent_pawns, row, 1)
+  end
+
+  # Checks if En Passant is available in a given direction (left or right)
+  def directional_en_passant?(player_pawns, opponent_pawns, row, direction)
+    player_pawns.each do |pawn|
+      direction_sq = @board[row][pawn[:current_square][1] + direction]
+      next unless inside_board?([row, pawn[:current_square][1] + 1]) && direction_sq != ' '
+
+      if direction_sq.move_counter == 1 && opponent_pawns.include?(direction_sq)
+        puts "En Passant Available for #{direction}"
+        return true
+      end
+    end
+    false
   end
 
   def display

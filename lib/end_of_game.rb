@@ -140,7 +140,7 @@ class EndGame
     @board.board.each_with_object([]) do |row, pieces|
       row.each do |column|
         next unless occupied_by_own_self?(column, player)
-        
+
         current_square = Matrix[*@board.board].index(column)
         column.create_valid_moves(current_square, @board)
         pieces << { piece: column, current_square: current_square }

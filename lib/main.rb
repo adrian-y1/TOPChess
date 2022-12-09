@@ -12,7 +12,5 @@ require 'colorize'
 
 board = Board.new
 
-
 player1 = Player.new(:blue)
 player2 = Player.new(:red)
-
