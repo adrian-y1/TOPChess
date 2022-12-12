@@ -12,26 +12,30 @@ require 'matrix'
 # Class the defines the board of the game and it's respective methods
 class Board
   attr_accessor :board
-  attr_reader :pieces
+  attr_reader :last_pawn_position
 
   include ValidateMoves
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
     @removed_pieces = []
-    @pieces = {}
+    @last_pawn_position = nil
   end
 
   # Given the position of a piece, move that piece to the given destination
   # Once moved, change it's previous position to empty str
-  def move(piece_coordinates, destination)
-    piece_square = find_coordinates_index(piece_coordinates)
-    destination_square = find_coordinates_index(destination)
-    @board[destination_square[0]][destination_square[1]] = @board[piece_square[0]][piece_square[1]]
-    if @board[destination_square[0]][destination_square[1]].is_a?(Pawn)
-      @board[destination_square[0]][destination_square[1]].move_counter += 1
-    end
-    remove_piece(piece_square)
+  def move(start, stop)
+    start_sq = find_coordinates_index(start)
+    stop_sq = find_coordinates_index(stop)
+    @board[stop_sq[0]][stop_sq[1]] = @board[start_sq[0]][start_sq[1]]
+    @last_pawn_position = two_square_move?(start_sq, stop_sq) ? @board[stop_sq[0]][stop_sq[1]] : nil
+    remove_piece(start_sq)
+  end
+
+  # Checks if a Pawn has moved 2 squares forward
+  def two_square_move?(start, destination)
+    difference = (start[0] - destination[0]).abs
+    difference == 2
   end
 
   # Checks if a given square can be moved to
@@ -132,32 +136,6 @@ class Board
     end
     game_end.board = self
     player_pieces.each { |obj| obj[:piece].valid_moves.reject!(&:empty?) }
-  end
-
-  # Checks if En Passant is available for right or left side
-  def en_passant_available?(player, game_end)
-    row = player.color == :blue ? 4 : 3
-    player_pawns = game_end.find_player_pieces(player.color).select { |obj| obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row }
-    opponent = game_end.find_opponent_color(player)
-    opponent_pawns = game_end.find_player_pieces(opponent).map { |obj| obj[:piece] }
-    return false if player_pawns.empty?
-
-    directional_en_passant?(player_pawns, opponent_pawns, row, -1) or
-      directional_en_passant?(player_pawns, opponent_pawns, row, 1)
-  end
-
-  # Checks if En Passant is available in a given direction (left or right)
-  def directional_en_passant?(player_pawns, opponent_pawns, row, direction)
-    player_pawns.each do |pawn|
-      direction_sq = @board[row][pawn[:current_square][1] + direction]
-      next unless inside_board?([row, pawn[:current_square][1] + 1]) && direction_sq != ' '
-
-      if direction_sq.move_counter == 1 && opponent_pawns.include?(direction_sq)
-        puts "En Passant Available for #{direction}"
-        return true
-      end
-    end
-    false
   end
 
   def display
