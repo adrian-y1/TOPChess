@@ -276,7 +276,7 @@ describe Board do
         expect(two_move).to be true
       end
     end
-    
+
     context 'given start square [1, 2] and destination square [2, 2]' do
       it 'returns false' do
         start = [1, 2]
@@ -292,6 +292,131 @@ describe Board do
         destination = [6, 4]
         two_move = board.two_square_move?(start, destination)
         expect(two_move).to be false
+      end
+    end
+  end
+
+  describe '#adjacent_en_passant?' do
+    let(:blue_pawn) { Pawn.new(:blue) }
+    let(:red_pawn) { Pawn.new(:red) }
+
+    context "when blue Pawn can use En Passant to capture opponent's Pawn on the right" do
+      before do
+        board.board[1][3] = blue_pawn
+        board.board[6][4] = red_pawn
+        board.move('d7', 'd4')
+        board.move('e2', 'e4')
+      end
+
+      it 'returns true' do
+        player_pawns = [{ piece: blue_pawn, current_square: [4, 3] }]
+        right_en_passant = board.adjacent_en_passant?(player_pawns, 4, 1)
+        expect(right_en_passant).to be true
+      end
+    end
+
+    context "when blue Pawn can use En Passant to capture opponent's Pawn on the left" do
+      before do
+        board.board[1][5] = blue_pawn
+        board.board[6][4] = red_pawn
+        board.move('f7', 'f4')
+        board.move('e2', 'e4')
+      end
+
+      it 'returns true' do
+        player_pawns = [{ piece: blue_pawn, current_square: [4, 5] }]
+        left_en_passant = board.adjacent_en_passant?(player_pawns, 4, -1)
+        expect(left_en_passant).to be true
+      end
+    end
+
+    context "when blue Pawn cannot capture opponent's pawn on the right via En Passant" do
+      before do
+        board.board[1][5] = blue_pawn
+        board.board[6][4] = red_pawn
+        board.move('f7', 'f3')
+        board.move('e2', 'e4')
+      end
+
+      it 'returns false' do
+        player_pawns = [{ piece: blue_pawn, current_square: [4, 5] }]
+        right_en_passant = board.adjacent_en_passant?(player_pawns, 4, 1)
+        expect(right_en_passant).to be false
+      end
+    end
+
+    context "when blue Pawn cannot capture opponent's pawn on the left via En Passant" do
+      before do
+        board.board[1][3] = blue_pawn
+        board.board[6][4] = red_pawn
+        board.move('d7', 'd5')
+        board.move('e2', 'e4')
+      end
+
+      it 'returns false' do
+        player_pawns = [{ piece: blue_pawn, current_square: [4, 3] }]
+        left_en_passant = board.adjacent_en_passant?(player_pawns, 4, -1)
+        expect(left_en_passant).to be false
+      end
+    end
+
+    context "when red Pawn can use En Passant to capture opponent's Pawn on the left" do
+      before do
+        board.board[6][4] = red_pawn
+        board.board[1][3] = blue_pawn
+        board.move('e2', 'e5')
+        board.move('d7', 'd5')
+      end
+
+      it 'returns true' do
+        player_pawns = [{ piece: red_pawn, current_square: [3, 4] }]
+        left_en_passant = board.adjacent_en_passant?(player_pawns, 3, -1)
+        expect(left_en_passant).to be true
+      end
+    end
+
+    context "when red Pawn can use En Passant to capture opponent's Pawn on the right" do
+      before do
+        board.board[6][4] = red_pawn
+        board.board[1][5] = blue_pawn
+        board.move('e2', 'e5')
+        board.move('f7', 'f5')
+      end
+
+      it 'returns true' do
+        player_pawns = [{ piece: red_pawn, current_square: [3, 4] }]
+        right_en_passant = board.adjacent_en_passant?(player_pawns, 3, 1)
+        expect(right_en_passant).to be true
+      end
+    end
+
+    context "when red Pawn cannot capture opponent's pawn on the right via En Passant" do
+      before do
+        board.board[1][3] = blue_pawn
+        board.board[6][4] = red_pawn
+        board.move('d7', 'd5')
+        board.move('e2', 'e4')
+      end
+
+      it 'returns false' do
+        player_pawns = [{ piece: red_pawn, current_square: [3, 4] }]
+        right_en_passant = board.adjacent_en_passant?(player_pawns, 3, 1)
+        expect(right_en_passant).to be false
+      end
+    end
+
+    context "when red Pawn cannot capture opponent's pawn on the left via En Passant" do
+      before do
+        board.board[6][4] = red_pawn
+        board.board[1][5] = blue_pawn
+        board.move('e2', 'e5')
+        board.move('f7', 'f5')
+      end
+
+      it 'returns true' do
+        player_pawns = [{ piece: red_pawn, current_square: [3, 4] }]
+        left_en_passant = board.adjacent_en_passant?(player_pawns, 3, -1)
+        expect(left_en_passant).to be false
       end
     end
   end

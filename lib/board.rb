@@ -12,7 +12,6 @@ require 'matrix'
 # Class the defines the board of the game and it's respective methods
 class Board
   attr_accessor :board
-  attr_reader :last_pawn_position
 
   include ValidateMoves
 
