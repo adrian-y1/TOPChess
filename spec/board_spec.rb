@@ -300,7 +300,7 @@ describe Board do
     let(:blue_pawn) { Pawn.new(:blue) }
     let(:red_pawn) { Pawn.new(:red) }
 
-    context "when blue Pawn can use En Passant to capture opponent's Pawn on the right" do
+    context "when En Passant is available for blue player on the right square" do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -315,7 +315,7 @@ describe Board do
       end
     end
 
-    context "when blue Pawn can use En Passant to capture opponent's Pawn on the left" do
+    context "when En Passant is available for blue player on the left square" do
       before do
         board.board[1][5] = blue_pawn
         board.board[6][4] = red_pawn
@@ -330,7 +330,7 @@ describe Board do
       end
     end
 
-    context "when blue Pawn cannot capture opponent's pawn on the right via En Passant" do
+    context "when En Passant is not available for blue player on the right square" do
       before do
         board.board[1][5] = blue_pawn
         board.board[6][4] = red_pawn
@@ -345,7 +345,7 @@ describe Board do
       end
     end
 
-    context "when blue Pawn cannot capture opponent's pawn on the left via En Passant" do
+    context "when En Passant is not available for blue player on the left square" do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -360,7 +360,7 @@ describe Board do
       end
     end
 
-    context "when red Pawn can use En Passant to capture opponent's Pawn on the left" do
+    context "when En Passant is available for red player on the left square" do
       before do
         board.board[6][4] = red_pawn
         board.board[1][3] = blue_pawn
@@ -375,7 +375,7 @@ describe Board do
       end
     end
 
-    context "when red Pawn can use En Passant to capture opponent's Pawn on the right" do
+    context "when En Passant is available for red player on the right square" do
       before do
         board.board[6][4] = red_pawn
         board.board[1][5] = blue_pawn
@@ -390,7 +390,7 @@ describe Board do
       end
     end
 
-    context "when red Pawn cannot capture opponent's pawn on the right via En Passant" do
+    context "when En Passant is not available for red player on the right square" do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -405,7 +405,7 @@ describe Board do
       end
     end
 
-    context "when red Pawn cannot capture opponent's pawn on the left via En Passant" do
+    context "when En Passant is not available for red player on the right square" do
       before do
         board.board[6][4] = red_pawn
         board.board[1][5] = blue_pawn
@@ -413,10 +413,74 @@ describe Board do
         board.move('f7', 'f5')
       end
 
-      it 'returns true' do
+      it 'returns false' do
         player_pawns = [{ piece: red_pawn, current_square: [3, 4] }]
         left_en_passant = board.adjacent_en_passant?(player_pawns, 3, -1)
         expect(left_en_passant).to be false
+      end
+    end
+  end
+
+  describe '#en_passant_available?' do
+    let(:game_end) { EndGame.new(board) }
+    let(:red_player) { Player.new(:red) }
+    let(:blue_player) { Player.new(:blue) }
+
+    before do
+      board.setup_board
+    end
+
+    context "when En Passant is available for the red player" do
+      before do
+        board.move('b2', 'b4')
+        board.move('h7', 'h5')
+        board.move('b4', 'b5')
+        board.move('c7', 'c5')
+      end
+
+      it 'returns true' do
+        en_passant = board.en_passant_available?(red_player, game_end)
+        expect(en_passant).to be true
+      end
+    end
+
+    context "when En Passant is not available for the red player" do
+      before do
+        board.move('b2', 'b4')
+        board.move('c7', 'c5')
+        board.move('b4', 'b5')
+      end
+
+      it 'returns false' do
+        en_passant = board.en_passant_available?(red_player, game_end)
+        expect(en_passant).to be false
+      end
+    end
+
+    context "when En Passant is available for the blue player" do
+      before do
+        board.move('h7', 'h5')
+        board.move('a2', 'a4')
+        board.move('h5', 'h4')
+        board.move('g2', 'g4')
+      end
+
+      it 'returns true' do
+        en_passant = board.en_passant_available?(blue_player, game_end)
+        expect(en_passant).to be true
+      end
+    end
+
+    context "when En Passant is not available for the blue player" do
+      before do
+        board.move('c7', 'c5')
+        board.move('b2', 'b4')
+        board.move('c5', 'c4')
+      end
+
+      it 'returns false' do
+        en_passant = board.en_passant_available?(blue_player, game_end)
+        expect(en_passant).to be false
       end
     end
   end
