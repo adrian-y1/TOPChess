@@ -33,6 +33,7 @@ class Game
       return if game_end?(@current_player)
 
       switch_turn
+      p @board.en_passant_available?(@current_player, @end_game)
     end
   end
 
@@ -134,4 +135,12 @@ board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 board.setup_board
-game.play_game
+# game.play_game
+game.setup_players
+board.move('c2', 'c4')
+board.move('h7', 'h5')
+board.move('c4', 'c5')
+board.move('d7', 'd5')
+board.display
+p board.en_passant_available?(game.red_player, end_game)
+p board.last_pawn_position

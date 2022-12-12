@@ -38,6 +38,27 @@ class Board
     difference == 2
   end
 
+  # Checks if En passant is available for the current player
+  def en_passant_available?(player, game_end)
+    row = player.color == :blue ? 4 : 3
+    player_pawns = game_end.find_player_pieces(player.color).find_all do |obj|
+      obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row
+    end
+    return false if player_pawns.empty? || @last_pawn_position.nil?
+
+    adjacent_en_passant?(player_pawns, row, -1) or
+      adjacent_en_passant?(player_pawns, row, 1)
+  end
+
+  # Checks for En Passant on a given direction (Left or Right)
+  def adjacent_en_passant?(player_pawns, row, next_col)
+    player_pawns.each do |pawn|
+      next_sq = @board[row][pawn[:current_square][1] + next_col]
+      return true if next_sq == @last_pawn_position
+    end
+    false
+  end
+
   # Checks if a given square can be moved to
   def free?(square, current_player)
     sq_index = find_coordinates_index(square)

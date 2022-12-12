@@ -16,6 +16,8 @@ class Pawn
     @colored_symbol = @symbol.colorize(color: @color)
     @valid_moves = []
     @attacking_squares = []
+    @blue_movement = [[1, -1], [1, 1]]
+    @red_movement = [[-1, -1], [-1, 1]]
     @defended = false
   end
 
