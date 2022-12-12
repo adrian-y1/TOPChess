@@ -266,4 +266,33 @@ describe Board do
       end
     end
   end
+
+  describe '#two_square_move?' do
+    context 'given start square [1, 2] and destination square [3, 2]' do
+      it 'returns true' do
+        start = [1, 2]
+        destination = [3, 2]
+        two_move = board.two_square_move?(start, destination)
+        expect(two_move).to be true
+      end
+    end
+    
+    context 'given start square [1, 2] and destination square [2, 2]' do
+      it 'returns false' do
+        start = [1, 2]
+        destination = [2, 2]
+        two_move = board.two_square_move?(start, destination)
+        expect(two_move).to be false
+      end
+    end
+
+    context 'given start square [6, 2] and destination square [6, 4]' do
+      it 'returns false' do
+        start = [6, 2]
+        destination = [6, 4]
+        two_move = board.two_square_move?(start, destination)
+        expect(two_move).to be false
+      end
+    end
+  end
 end
