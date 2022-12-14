@@ -484,4 +484,45 @@ describe Board do
       end
     end
   end
+
+  describe '#create_en_passant_move' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:red_player) { Player.new(:red) }
+
+    context "when given the blue player's Pawn's current square ([4, 2]) with left direction (-1)" do
+      it "returns the left diagonal square from the Pawn's current square ([5, 1])" do
+        current_square = [4, 2]
+        left_diagonal = [[5, 1]]
+        create_move = board.create_en_passant_move(blue_player, current_square, -1)
+        expect(create_move).to eq(left_diagonal)
+      end
+    end
+
+    context "when given the blue player's Pawn's current square ([4, 2]) with right direction (1)" do
+      it "returns the right diagonal square from the Pawn's current square ([5, 3])" do
+        current_square = [4, 2]
+        right_diagonal = [[5, 3]]
+        create_move = board.create_en_passant_move(blue_player, current_square, 1)
+        expect(create_move).to eq(right_diagonal)
+      end
+    end
+
+    context "when given the red player's Pawn's current square ([3, 4]) with left direction (-1)" do
+      it "returns the left diagonal square from the Pawn's current square ([2, 3])" do
+        current_square = [3, 4]
+        left_diagonal = [[2, 3]]
+        create_move = board.create_en_passant_move(red_player, current_square, -1)
+        expect(create_move).to eq(left_diagonal)
+      end
+    end
+
+    context "when given the red player's Pawn's current square ([3, 4]) with right direction (1)" do
+      it "returns the right diagonal square from the Pawn's current square ([2, 5])" do
+        current_square = [3, 4]
+        right_diagonal = [[2, 5]]
+        create_move = board.create_en_passant_move(red_player, current_square, 1)
+        expect(create_move).to eq(right_diagonal)
+      end
+    end
+  end
 end
