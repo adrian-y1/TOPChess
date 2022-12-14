@@ -65,6 +65,21 @@ class Board
     false
   end
 
+  # Stores the En Passant move inside the Pawn's valid_moves and en_passant
+  def store_en_passant(player, game_end, player_pieces)
+    return unless en_passant_available?(player, game_end)
+
+    last_pawn_square = Matrix[*board].index(@last_pawn_moved)
+    player_pawns = find_player_pawns(player_pieces, last_pawn_square)
+
+    player_pawns.each do |pawn|
+      direction = last_pawn_square[1] - pawn[:current_square][1]
+      new_move = create_en_passant_move(player, pawn[:current_square], direction)
+      pawn[:piece].en_passant = new_move
+      pawn[:piece].valid_moves.push(new_move) if new_move
+    end
+  end
+
   # Finds current player's pawns who can make the En Passant move
   def find_player_pawns(player_pieces, last_pawn_square)
     player_pieces.find_all do |obj|
