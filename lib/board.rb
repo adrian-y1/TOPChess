@@ -12,27 +12,34 @@ require 'matrix'
 # Class the defines the board of the game and it's respective methods
 class Board
   attr_accessor :board
-
+  attr_reader :last_pawn_moved
   include ValidateMoves
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
     @removed_pieces = []
-    @last_pawn_position = nil
+    @last_pawn_moved = nil
   end
 
   # Given the position of a piece, move that piece to the given destination
   # Once moved, change it's previous position to empty str
-  def move(start, stop)
-    start_sq = find_coordinates_index(start)
-    stop_sq = find_coordinates_index(stop)
-    @board[stop_sq[0]][stop_sq[1]] = @board[start_sq[0]][start_sq[1]]
-    @last_pawn_position = two_square_move?(start_sq, stop_sq) ? @board[stop_sq[0]][stop_sq[1]] : nil
-    remove_piece(start_sq)
+  # Also handles en passant capture and updates the last pawn moved
+  def move(start, destination)
+    start_square = find_coordinates_index(start)
+    destination_square = find_coordinates_index(destination)
+    @board[destination_square[0]][destination_square[1]] = @board[start_square[0]][start_square[1]]
+    temp_pawn = @last_pawn_moved
+    update_last_pawn(start_square, destination_square)
+    remove_piece(start_square)
+  end
+
+  # Updates the @last_pawn_moved variable
+  def update_last_pawn(start, destination)
+    @last_pawn_moved = moved_two_squares?(start, destination) ? @board[destination[0]][destination[1]] : nil
   end
 
   # Checks if a Pawn has moved 2 squares forward
-  def two_square_move?(start, destination)
+  def moved_two_squares?(start, destination)
     difference = (start[0] - destination[0]).abs
     difference == 2
   end
@@ -43,7 +50,7 @@ class Board
     player_pawns = game_end.find_player_pieces(player.color).find_all do |obj|
       obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row
     end
-    return false if player_pawns.empty? || @last_pawn_position.nil?
+    return false if player_pawns.empty? || @last_pawn_moved.nil?
 
     adjacent_en_passant?(player_pawns, row, -1) or
       adjacent_en_passant?(player_pawns, row, 1)
@@ -53,9 +60,15 @@ class Board
   def adjacent_en_passant?(player_pawns, row, next_col)
     player_pawns.each do |pawn|
       next_sq = @board[row][pawn[:current_square][1] + next_col]
-      return true if next_sq == @last_pawn_position
+      return true if next_sq == @last_pawn_moved
     end
     false
+  end
+
+  # Creates the diagonal En Passant move
+  def create_en_passant_move(player, square, direction)
+    row_offset = (player.color == :blue ? 1 : -1)
+    [[square[0] + row_offset, square[1] + direction]]
   end
 
   # Checks if a given square can be moved to
