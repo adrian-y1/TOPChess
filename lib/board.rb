@@ -65,6 +65,13 @@ class Board
     false
   end
 
+  # Finds current player's pawns who can make the En Passant move
+  def find_player_pawns(player_pieces, last_pawn_square)
+    player_pieces.find_all do |obj|
+      [-1, 1].any? { |next_col| obj[:piece] == @board[last_pawn_square[0]][last_pawn_square[1] + next_col] }
+    end
+  end
+
   # Creates the diagonal En Passant move
   def create_en_passant_move(player, square, direction)
     row_offset = (player.color == :blue ? 1 : -1)
