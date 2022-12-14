@@ -13,6 +13,7 @@ require 'matrix'
 class Board
   attr_accessor :board
   attr_reader :last_pawn_moved
+
   include ValidateMoves
 
   def initialize
@@ -43,27 +44,6 @@ class Board
   def moved_two_squares?(start, destination)
     difference = (start[0] - destination[0]).abs
     difference == 2
-  end
-
-  # Checks if En passant is available for the current player
-  def en_passant_available?(player, game_end)
-    row = player.color == :blue ? 4 : 3
-    player_pawns = game_end.find_player_pieces(player.color).find_all do |obj|
-      obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row
-    end
-    return false if player_pawns.empty? || @last_pawn_moved.nil?
-
-    adjacent_en_passant?(player_pawns, row, -1) or
-      adjacent_en_passant?(player_pawns, row, 1)
-  end
-
-  # Checks for En Passant on a given direction (Left or Right)
-  def adjacent_en_passant?(player_pawns, row, next_col)
-    player_pawns.each do |pawn|
-      next_sq = @board[row][pawn[:current_square][1] + next_col]
-      return true if next_sq == @last_pawn_moved
-    end
-    false
   end
 
   # Removes the en passant captured piece
@@ -101,6 +81,27 @@ class Board
   def create_en_passant_move(player, square, direction)
     row_offset = (player.color == :blue ? 1 : -1)
     [[square[0] + row_offset, square[1] + direction]]
+  end
+
+  # Checks if En passant is available for the current player
+  def en_passant_available?(player, game_end)
+    row = player.color == :blue ? 4 : 3
+    player_pawns = game_end.find_player_pieces(player.color).find_all do |obj|
+      obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row
+    end
+    return false if player_pawns.empty? || @last_pawn_moved.nil?
+
+    adjacent_en_passant?(player_pawns, row, -1) or
+      adjacent_en_passant?(player_pawns, row, 1)
+  end
+
+  # Checks for En Passant on a given direction (Left or Right)
+  def adjacent_en_passant?(player_pawns, row, next_col)
+    player_pawns.each do |pawn|
+      next_sq = @board[row][pawn[:current_square][1] + next_col]
+      return true if next_sq == @last_pawn_moved
+    end
+    false
   end
 
   # Checks if a given square can be moved to

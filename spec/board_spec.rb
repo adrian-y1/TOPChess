@@ -525,4 +525,44 @@ describe Board do
       end
     end
   end
+
+  describe '#store_en_passant' do
+    let(:game_end) { EndGame.new(board) }
+    let(:red_pawn) { Pawn.new(:red) }
+    let(:blue_pawn) { Pawn.new(:blue) }
+    
+    context "when the blue Pawn can make an En Passant move" do
+      let(:blue_player) { Player.new(:blue) }
+
+      before do
+        board.board[1][0] = blue_pawn
+        board.board[6][1] = red_pawn
+        board.move('a7', 'a4')
+        board.move('b2', 'b4')
+      end
+
+      it "adds the En Passant move to the blue Pawn's valid moves" do
+        player_pieces = game_end.find_player_pieces(blue_player.color)
+        new_valid_moves = [[[5, 0]], [[5, 1]]]
+        expect { board.store_en_passant(blue_player, game_end, player_pieces) }.to change { blue_pawn.valid_moves }.to new_valid_moves
+      end
+    end
+
+    context "when the red Pawn can make an En Passant move" do
+      let(:red_player) { Player.new(:red) }
+      
+      before do
+        board.board[6][4] = red_pawn
+        board.board[1][5] = blue_pawn
+        board.move('e2', 'e5')
+        board.move('f7', 'f5')
+      end
+
+      it "adds the En Passant move to the red Pawn's valid moves" do
+        player_pieces = game_end.find_player_pieces(red_player.color)
+        new_valid_moves = [[[2, 4]], [[2, 5]]]
+        expect { board.store_en_passant(red_player, game_end, player_pieces) }.to change { red_pawn.valid_moves }.to new_valid_moves
+      end
+    end
+  end
 end
