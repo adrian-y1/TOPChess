@@ -30,6 +30,7 @@ class Board
     @board[destination_square[0]][destination_square[1]] = @board[start_square[0]][start_square[1]]
     temp_pawn = @last_pawn_moved
     update_last_pawn(start_square, destination_square)
+    en_passant_capture(destination_square, temp_pawn)
     remove_piece(start_square)
   end
 
@@ -63,6 +64,15 @@ class Board
       return true if next_sq == @last_pawn_moved
     end
     false
+  end
+
+  # Removes the en passant captured piece
+  def en_passant_capture(destination_indx, temp_pawn)
+    destination = @board[destination_indx[0]][destination_indx[1]]
+    temp_pawn_indx = Matrix[*@board].index(temp_pawn)
+    return unless destination.is_a?(Pawn) && destination.en_passant && destination.en_passant.include?(destination_indx)
+
+    remove_piece(temp_pawn_indx)
   end
 
   # Stores the En Passant move inside the Pawn's valid_moves and en_passant
@@ -163,6 +173,7 @@ class Board
   # Returns user friendly coordinates for available pieces to move
   def find_available_piece_coordinates(player, game_end)
     pieces = game_end.find_player_pieces(player.color)
+    store_en_passant(player, game_end, pieces)
     remove_illegal_moves(player, game_end, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
     pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
