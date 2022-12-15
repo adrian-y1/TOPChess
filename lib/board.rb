@@ -12,7 +12,7 @@ require 'matrix'
 # Class the defines the board of the game and it's respective methods
 class Board
   attr_accessor :board
-  attr_reader :last_pawn_moved
+  attr_reader :removed_pieces
 
   include ValidateMoves
 
@@ -30,9 +30,15 @@ class Board
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[start_square[0]][start_square[1]]
     temp_pawn = @last_pawn_moved
+    update_move_counter(destination_square)
     update_last_pawn(start_square, destination_square)
     en_passant_capture(destination_square, temp_pawn)
     remove_piece(start_square)
+  end
+
+  def update_move_counter(destination_square)
+    destination = @board[destination_square[0]][destination_square[1]]
+    destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
   # Updates the @last_pawn_moved variable

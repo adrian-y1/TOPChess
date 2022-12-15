@@ -12,16 +12,16 @@ module GameInfo
     "\n#{'Invalid input!'.bold} Please choose from the list of available pieces:".light_red
   end
 
-  def pieces_info(piece_coordinates)
-    "#{"Available Pieces (#{piece_coordinates.split(' ').length})".bold} -> #{piece_coordinates.to_s.bold}"
+  def pieces_info(player, piece_coordinates)
+    "#{"Available Pieces (#{piece_coordinates.split(' ').length})".bold} -> #{piece_coordinates.to_s.bold}".colorize(player.color)
   end
 
   def move_info(player, piece_position)
     "\nPlayer #{player.color.to_s.capitalize.bold}, please enter the position where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
   end
 
-  def piece_moves_info(piece_moves_coordinates)
-    "#{'Available Moves'.bold} -> #{piece_moves_coordinates.to_s.bold}"
+  def piece_moves_info(player, piece_moves_coordinates)
+    "#{'Available Moves'.bold} -> #{piece_moves_coordinates.to_s.bold}".colorize(player.color)
   end
 
   def move_error
