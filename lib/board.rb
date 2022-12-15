@@ -41,14 +41,15 @@ class Board
     destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
-  def can_castle?(player, player_pieces)
+  def can_castle?(player, player_pieces, game_end)
     row = player.color == :blue ? 0 : 7
     king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
     rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
     return false unless king && rooks.any?
 
     rooks.any? do |rook|
-      castle_path_clear?(row, rook[:current_square][1], king[:current_square][1])
+      castle_path_clear?(row, rook[:current_square][1], king[:current_square][1]) &&
+        !castle_path_in_check?(player, game_end, row, rook[:current_square][1], king[:current_square])
     end
   end
 
@@ -60,18 +61,25 @@ class Board
     end
   end
 
-  def no_piece_inbetween?(player, player_pieces)
-    player_king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
-    player_rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
-    return false if player_king.nil? || player_rooks.nil?
+  def find_castle_path(row, rook_col, king_col)
+    path = []
+    if king_col > rook_col
+      (1 + rook_col...king_col).each { |col| path << [row, col] }
+    else
+      (1 + king_col...rook_col).each { |col| path << [row, col] }
+    end
+    path
+  end
 
-    player_rooks.any? do |rook|
-      if player_king[:current_square][1] > rook[:current_square][1]
-        # go down from player_king[:current_square][1] - 1 square to rook[:current_square][1] + 1
-        @board[row][rook[:current_square][1] + 1...player_king[:current_square][1]].all? {|square| square == ' ' }
-      else
-        @board[row][player_king[:current_square][1] + 1...rook[:current_square][1]].all? {|square| square == ' ' }
-      end
+  def castle_path_in_check?(player, game_end, row, rook_col, king_square)
+    return true if game_end.king_in_check?(player)
+
+    opponent = game_end.find_opponent_color(player)
+    opponent_pieces = game_end.find_player_pieces(opponent)
+    opponent_moves = opponent_pieces.map { |obj| obj[:piece].valid_moves.flatten(1) }
+    opponent_moves.any? do |move|
+      path = find_castle_path(row, rook_col, king_square[1])
+      path.any? { |square| move.include?(square) }
     end
   end
 
@@ -214,6 +222,7 @@ class Board
   # Returns user friendly coordinates for available pieces to move
   def find_available_piece_coordinates(player, game_end)
     pieces = game_end.find_player_pieces(player.color)
+    p can_castle?(player, pieces, game_end)
     store_en_passant(player, game_end, pieces)
     remove_illegal_moves(player, game_end, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact

@@ -35,10 +35,9 @@ class EndGame
   def king_in_check?(player)
     player_king = find_player_king(player)[:current_square]
     opponent = find_opponent_color(player)
-    opponent_pieces = find_player_pieces(opponent)
+    opponent_pieces = find_player_pieces(opponent).find_all { |obj| !obj[:piece].valid_moves.nil? }
     opponent_pieces.any? { |obj| obj[:piece].valid_moves.flatten(1).include?(player_king) }
   end
-
   # When there are more than 1 piece checking the King,
   # this method checks if any of those pieces can be captured by the King
   def capturable_by_king?(player, checking_piece)

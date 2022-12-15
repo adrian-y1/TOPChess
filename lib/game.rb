@@ -134,11 +134,13 @@ board = Board.new
 end_game = EndGame.new(board)
 game = Game.new(board, end_game)
 board.setup_board
-#game.play_game
-game.setup_players
-board.move('g1', 'g5')
-board.move('f1', 'f5')
-player_pieces = end_game.find_player_pieces(:red)
-p board.can_castle?(game.red_player, player_pieces)
-board.display
+game.play_game
+# game.setup_players
+# board.move('b1', 'b5')
+# board.move('c1', 'c5')
+# board.move('d1', 'd5')
+# board.move('g8', 'a3')
+# player_pieces = end_game.find_player_pieces(:red)
+# p board.can_castle?(game.red_player, player_pieces, end_game)
+# board.display
 
