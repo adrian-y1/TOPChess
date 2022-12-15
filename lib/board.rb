@@ -41,6 +41,40 @@ class Board
     destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
+  def can_castle?(player, player_pieces)
+    row = player.color == :blue ? 0 : 7
+    king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
+    rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
+    return false unless king && rooks.any?
+
+    rooks.any? do |rook|
+      castle_path_clear?(row, rook[:current_square][1], king[:current_square][1])
+    end
+  end
+
+  def castle_path_clear?(row, rook_col, king_col)
+    if king_col > rook_col
+      @board[row][rook_col + 1...king_col].all? { |square| square == ' ' }
+    else
+      @board[row][king_col + 1...rook_col].all? { |square| square == ' ' }
+    end
+  end
+
+  def no_piece_inbetween?(player, player_pieces)
+    player_king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
+    player_rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
+    return false if player_king.nil? || player_rooks.nil?
+
+    player_rooks.any? do |rook|
+      if player_king[:current_square][1] > rook[:current_square][1]
+        # go down from player_king[:current_square][1] - 1 square to rook[:current_square][1] + 1
+        @board[row][rook[:current_square][1] + 1...player_king[:current_square][1]].all? {|square| square == ' ' }
+      else
+        @board[row][player_king[:current_square][1] + 1...rook[:current_square][1]].all? {|square| square == ' ' }
+      end
+    end
+  end
+
   # Updates the @last_pawn_moved variable
   def update_last_pawn(start, destination)
     @last_pawn_moved = moved_two_squares?(start, destination) ? @board[destination[0]][destination[1]] : nil

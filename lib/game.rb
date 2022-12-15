@@ -136,7 +136,9 @@ game = Game.new(board, end_game)
 board.setup_board
 #game.play_game
 game.setup_players
-board.move('a8', 'a5')
-board.move('a7', 'a6')
+board.move('g1', 'g5')
+board.move('f1', 'f5')
+player_pieces = end_game.find_player_pieces(:red)
+p board.can_castle?(game.red_player, player_pieces)
 board.display
 
