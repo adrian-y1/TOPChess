@@ -798,5 +798,105 @@ describe Board do
     let(:blue_player) { Player.new(:blue) }
     let(:red_player) { Player.new(:red) }
     let(:end_game_manager) { EndGameManager.new(board) }
+
+    context "when a castling is available for blue player" do
+      before do
+        board.setup_board
+        board.move('g8', 'g6')
+        board.move('f8', 'f6')
+      end
+
+      it 'returns a single array of the Rook and King' do
+        player_pieces = end_game_manager.find_player_pieces(:blue)
+        rook = { piece: board.board[0][7], current_square: [0, 7] }
+        king = { piece: board.board[0][4], current_square: [0, 4] }
+        castling_pieces = [[rook, king]]
+        find_pieces = board.find_castling_pieces(blue_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq(castling_pieces)
+      end
+    end
+
+    context "when a castling is not available for blue player" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns empty array' do
+        player_pieces = end_game_manager.find_player_pieces(:blue)
+        find_pieces = board.find_castling_pieces(blue_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq([])
+      end
+    end
+
+    context "when blue player can make 2 castling moves" do
+      before do
+        board.setup_board
+        board.move('g8', 'g6')
+        board.move('f8', 'f6')
+        board.move('b8', 'b6')
+        board.move('c8', 'c6')
+        board.move('d8', 'd6')
+      end
+
+      it 'returns 2 arrays for both Rook King combos' do
+        player_pieces = end_game_manager.find_player_pieces(:blue)
+        rook1 = { piece: board.board[0][7], current_square: [0, 7] }
+        rook2 = { piece: board.board[0][0], current_square: [0, 0] }
+        king = { piece: board.board[0][4], current_square: [0, 4] }
+        castling_pieces = [[rook2, king], [rook1, king]]
+        find_pieces = board.find_castling_pieces(blue_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq(castling_pieces)
+      end
+    end
+
+    context "when a castling is available for red player" do
+      before do
+        board.setup_board
+        board.move('g1', 'g4')
+        board.move('f1', 'f4')
+      end
+
+      it 'returns a single array of the Rook and King' do
+        player_pieces = end_game_manager.find_player_pieces(:red)
+        rook = { piece: board.board[7][7], current_square: [7, 7] }
+        king = { piece: board.board[7][4], current_square: [7, 4] }
+        castling_pieces = [[rook, king]]
+        find_pieces = board.find_castling_pieces(red_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq(castling_pieces)
+      end
+    end
+
+    context "when a castling is not available for red player" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns empty array' do
+        player_pieces = end_game_manager.find_player_pieces(:red)
+        find_pieces = board.find_castling_pieces(red_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq([])
+      end
+    end
+
+    context "when red player can make 2 castling moves" do
+      before do
+        board.setup_board
+        board.move('g1', 'g4')
+        board.move('f1', 'f4')
+        board.move('b1', 'b4')
+        board.move('c1', 'c4')
+        board.move('d1', 'd4')
+      end
+
+      it 'returns 2 arrays for both Rook King combos' do
+        player_pieces = end_game_manager.find_player_pieces(:red)
+        rook1 = { piece: board.board[7][7], current_square: [7, 7] }
+        rook2 = { piece: board.board[7][0], current_square: [7, 0] }
+        king = { piece: board.board[7][4], current_square: [7, 4] }
+        castling_pieces = [[rook2, king], [rook1, king]]
+        find_pieces = board.find_castling_pieces(red_player, player_pieces, end_game_manager)
+        expect(find_pieces).to eq(castling_pieces)
+      end
+    end
   end
 end
