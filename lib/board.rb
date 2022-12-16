@@ -42,15 +42,24 @@ class Board
   end
 
   def can_castle?(player, player_pieces, game_end)
+    castling_pieces = find_castling_pieces(player, player_pieces, game_end)
+    castling_pieces.empty? ? false : true
+  end
+
+  def find_castling_pieces(player, player_pieces, game_end)
     row = player.color == :blue ? 0 : 7
     king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
     rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
-    return false unless king && rooks.any?
+    return [] unless king && rooks.any?
 
-    rooks.any? do |rook|
-      castle_path_clear?(row, rook[:current_square][1], king[:current_square][1]) &&
+    castling_pieces = []
+    rooks.each do |rook|
+      if castle_path_clear?(row, rook[:current_square][1], king[:current_square][1]) &&
         !castle_path_in_check?(player, game_end, row, rook[:current_square][1], king[:current_square])
+        castling_pieces << [rook, king]
+      end
     end
+    castling_pieces
   end
 
   def castle_path_clear?(row, rook_col, king_col)
