@@ -24,24 +24,43 @@ class Board
 
   # Given the position of a piece, move that piece to the given destination
   # Once moved, change it's previous position to empty str
-  # Also handles en passant capture and updates the last pawn moved
+  # Also handles en passant capture, updates @last_pawn_moved & move_counter & handles castle_swap
   def move(start, destination)
     start_square = find_coordinates_index(start)
     destination_square = find_coordinates_index(destination)
     @board[destination_square[0]][destination_square[1]] = @board[start_square[0]][start_square[1]]
     temp_pawn = @last_pawn_moved
+    castle_swap(start_square, destination_square)
     update_move_counter(destination_square)
     update_last_pawn(start_square, destination_square)
     en_passant_capture(destination_square, temp_pawn)
     remove_piece(start_square)
   end
 
+  # Updates the move counter for King & Rook for Castling
   def update_move_counter(destination_square)
     destination = @board[destination_square[0]][destination_square[1]]
     destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
-  def create_castling_move(player, player_pieces, end_game_manager)
+  # Moves the Rook over to the corresponding castling square
+  def castle_swap(start, destination)
+    destination_square = @board[destination[0]][destination[1]]
+    return unless destination_square.is_a?(King)
+
+    row = destination_square.color == :blue ? 0 : 7
+    row_coordinates = row.zero? ? '8' : '1'
+    squares_moved = start[1] - destination[1]
+    case squares_moved
+    when 2
+      move("a#{row_coordinates}", "d#{row_coordinates}")
+    when -2
+      move("h#{row_coordinates}", "f#{row_coordinates}")
+    end
+  end
+
+  # Store the castling move
+  def store_castling_move(player, player_pieces, end_game_manager)
     return unless can_castle?(player, player_pieces, end_game_manager)
 
     row = player.color == :blue ? 0 : 7
@@ -53,10 +72,12 @@ class Board
     end
   end
 
+  # Checks if the current player can Castle
   def can_castle?(player, player_pieces, end_game_manager)
     find_castling_pieces(player, player_pieces, end_game_manager).any?
   end
 
+  # Finds the Castling piece combo (if any)
   def find_castling_pieces(player, player_pieces, end_game_manager)
     row = player.color == :blue ? 0 : 7
     king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
@@ -73,11 +94,13 @@ class Board
     castling_pieces
   end
 
+  # checks if path between King and Rook is empty
   def castle_path_clear?(row, rook_col, king_col)
     squares = king_col > rook_col ? (rook_col + 1...king_col) : (king_col + 1...rook_col)
     squares.all? { |col| @board[row][col] == ' ' }
   end
 
+  # Finds the path of squares from King to Rook (vice versa)
   def find_castle_path(row, rook_col, king_col)
     path = []
     if king_col > rook_col
@@ -88,6 +111,7 @@ class Board
     path
   end
 
+  # Checks if any square in the path from King-Rook or Rook-King is in check
   def castle_path_in_check?(player, end_game_manager, row, rook_col, king_square)
     return true if end_game_manager.king_in_check?(player)
 
@@ -239,8 +263,8 @@ class Board
   # Returns user friendly coordinates for available pieces to move
   def find_available_piece_coordinates(player, end_game_manager)
     pieces = end_game_manager.find_player_pieces(player.color)
-    p can_castle?(player, pieces, end_game_manager)
     store_en_passant(player, end_game_manager, pieces)
+    store_castling_move(player, pieces, end_game_manager)
     remove_illegal_moves(player, end_game_manager, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
     pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
