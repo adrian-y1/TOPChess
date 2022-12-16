@@ -4,7 +4,7 @@ require_relative '../lib/game_pieces/rook'
 require_relative '../lib/game_pieces/queen'
 require_relative '../lib/game_pieces/bishop'
 require_relative './board_setup'
-require_relative './end_of_game'
+require_relative './end_game_manager'
 require_relative '../lib/modules/validate_moves'
 require 'colorize'
 require 'matrix'
@@ -41,12 +41,12 @@ class Board
     destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
-  def can_castle?(player, player_pieces, game_end)
-    castling_pieces = find_castling_pieces(player, player_pieces, game_end)
+  def can_castle?(player, player_pieces, end_game_manager)
+    castling_pieces = find_castling_pieces(player, player_pieces, end_game_manager)
     castling_pieces.empty? ? false : true
   end
 
-  def find_castling_pieces(player, player_pieces, game_end)
+  def find_castling_pieces(player, player_pieces, end_game_manager)
     row = player.color == :blue ? 0 : 7
     king = player_pieces.find { |obj| obj[:piece].is_a?(King) && obj[:piece].move_counter.zero? }
     rooks = player_pieces.find_all { |obj| obj[:piece].is_a?(Rook) && obj[:piece].move_counter.zero? }
@@ -55,7 +55,7 @@ class Board
     castling_pieces = []
     rooks.each do |rook|
       if castle_path_clear?(row, rook[:current_square][1], king[:current_square][1]) &&
-        !castle_path_in_check?(player, game_end, row, rook[:current_square][1], king[:current_square])
+        !castle_path_in_check?(player, end_game_manager, row, rook[:current_square][1], king[:current_square])
         castling_pieces << [rook, king]
       end
     end
@@ -77,11 +77,11 @@ class Board
     path
   end
 
-  def castle_path_in_check?(player, game_end, row, rook_col, king_square)
-    return true if game_end.king_in_check?(player)
+  def castle_path_in_check?(player, end_game_manager, row, rook_col, king_square)
+    return true if end_game_manager.king_in_check?(player)
 
-    opponent = game_end.find_opponent_color(player)
-    opponent_pieces = game_end.find_player_pieces(opponent)
+    opponent = end_game_manager.find_opponent_color(player)
+    opponent_pieces = end_game_manager.find_player_pieces(opponent)
     opponent_moves = opponent_pieces.map { |obj| obj[:piece].valid_moves.flatten(1) }
     opponent_moves.any? do |move|
       path = find_castle_path(row, rook_col, king_square[1])
@@ -110,8 +110,8 @@ class Board
   end
 
   # Stores the En Passant move inside the Pawn's valid_moves and en_passant
-  def store_en_passant(player, game_end, player_pieces)
-    return unless en_passant_available?(player, game_end)
+  def store_en_passant(player, end_game_manager, player_pieces)
+    return unless en_passant_available?(player, end_game_manager)
 
     last_pawn_square = Matrix[*board].index(@last_pawn_moved)
     player_pawns = find_player_pawns(player_pieces, last_pawn_square)
@@ -138,9 +138,9 @@ class Board
   end
 
   # Checks if En passant is available for the current player
-  def en_passant_available?(player, game_end)
+  def en_passant_available?(player, end_game_manager)
     row = player.color == :blue ? 4 : 3
-    player_pawns = game_end.find_player_pieces(player.color).find_all do |obj|
+    player_pawns = end_game_manager.find_player_pieces(player.color).find_all do |obj|
       obj[:piece].is_a?(Pawn) && obj[:current_square][0] == row
     end
     return false if player_pawns.empty? || @last_pawn_moved.nil?
@@ -226,11 +226,11 @@ class Board
   end
 
   # Returns user friendly coordinates for available pieces to move
-  def find_available_piece_coordinates(player, game_end)
-    pieces = game_end.find_player_pieces(player.color)
-    p can_castle?(player, pieces, game_end)
-    store_en_passant(player, game_end, pieces)
-    remove_illegal_moves(player, game_end, pieces)
+  def find_available_piece_coordinates(player, end_game_manager)
+    pieces = end_game_manager.find_player_pieces(player.color)
+    p can_castle?(player, pieces, end_game_manager)
+    store_en_passant(player, end_game_manager, pieces)
+    remove_illegal_moves(player, end_game_manager, pieces)
     pieces_square = pieces.map { |obj| obj[:current_square] unless obj[:piece].valid_moves.empty? }.compact
     pieces_square.map { |square| square_index_to_coordinates(square) }.join(', ')
   end
@@ -243,20 +243,20 @@ class Board
   end
 
   # Removes illegal moves that place the King in check from each piece's valid moves
-  def remove_illegal_moves(player, game_end, player_pieces)
+  def remove_illegal_moves(player, end_game_manager, player_pieces)
     player_pieces.each do |obj|
       obj[:piece].valid_moves.reverse_each do |moves_arr|
         moves_arr.reverse_each do |move|
           temp_board = Marshal.load(Marshal.dump(self))
-          game_end.board = temp_board
+          end_game_manager.board = temp_board
           current_sq = obj[:current_square]
           temp_board.board[move[0]][move[1]] = temp_board.board[current_sq[0]][current_sq[1]]
           temp_board.board[current_sq[0]][current_sq[1]] = ' '
-          moves_arr.delete(move) if game_end.king_in_check?(player)
+          moves_arr.delete(move) if end_game_manager.king_in_check?(player)
         end
       end
     end
-    game_end.board = self
+    end_game_manager.board = self
     player_pieces.each { |obj| obj[:piece].valid_moves.reject!(&:empty?) }
   end
 

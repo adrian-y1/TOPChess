@@ -8,11 +8,11 @@ require_relative '../lib/game_pieces/knight'
 require_relative '../lib/game_pieces/pawn'
 require_relative '../lib/game_pieces/king'
 require_relative '../lib/game_pieces/bishop'
-require_relative '../lib/end_of_game'
+require_relative '../lib/end_game_manager'
 require 'colorize'
 
-describe EndGame do
-  subject(:end_of_game) { described_class.new(game_board) }
+describe EndGameManager do
+  subject(:end_game_manager) { described_class.new(game_board) }
 
   let(:game_board) { Board.new }
 
@@ -31,7 +31,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be true
       end
     end
@@ -43,7 +43,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be false
       end
     end
@@ -57,7 +57,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be true
       end
     end
@@ -69,7 +69,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be false
       end
     end
@@ -83,7 +83,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be false
       end
     end
@@ -97,7 +97,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be true
       end
     end
@@ -111,7 +111,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be false
       end
     end
@@ -124,7 +124,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        checkmate = end_of_game.checkmate?(blue_player)
+        checkmate = end_game_manager.checkmate?(blue_player)
         expect(checkmate).to be true
       end
     end
@@ -142,7 +142,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        check = end_of_game.king_in_check?(blue_player)
+        check = end_game_manager.king_in_check?(blue_player)
         expect(check).to be true
       end
     end
@@ -154,7 +154,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        check = end_of_game.king_in_check?(blue_player)
+        check = end_game_manager.king_in_check?(blue_player)
         expect(check).to be false
       end
     end
@@ -172,7 +172,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        stalemate = end_of_game.stalemate?(blue_player)
+        stalemate = end_game_manager.stalemate?(blue_player)
         expect(stalemate).to be false
       end
     end
@@ -184,7 +184,7 @@ describe EndGame do
       end
 
       it 'returns true' do
-        stalemate = end_of_game.stalemate?(blue_player)
+        stalemate = end_game_manager.stalemate?(blue_player)
         expect(stalemate).to be true
       end
     end
@@ -196,7 +196,7 @@ describe EndGame do
       end
 
       it 'returns false' do
-        stalemate = end_of_game.stalemate?(blue_player)
+        stalemate = end_game_manager.stalemate?(blue_player)
         expect(stalemate).to be false
       end
     end

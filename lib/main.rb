@@ -7,7 +7,7 @@ require_relative './game_pieces/knight'
 require_relative './board'
 require_relative './board_setup'
 require_relative './player'
-require_relative './end_of_game'
+require_relative './end_game_manager'
 require 'colorize'
 
 board = Board.new

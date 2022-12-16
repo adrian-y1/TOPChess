@@ -9,7 +9,7 @@ require_relative './game_pieces/knight'
 require_relative './board_setup'
 require_relative './board'
 require_relative './player'
-require_relative './end_of_game'
+require_relative './end_game_manager'
 require_relative './modules/game_info'
 require 'colorize'
 
@@ -19,9 +19,9 @@ class Game
 
   include GameInfo
 
-  def initialize(board, end_game)
+  def initialize(board, end_game_manager)
     @board = board
-    @end_game = end_game
+    @end_game_manager = end_game_manager
   end
 
   def play_game
@@ -45,7 +45,7 @@ class Game
   end
 
   def get_piece_position(player)
-    piece_coordinates = @board.find_available_piece_coordinates(player, @end_game)
+    piece_coordinates = @board.find_available_piece_coordinates(player, @end_game_manager)
     puts position_info(player)
     puts pieces_info(player, piece_coordinates)
     loop do
@@ -110,14 +110,14 @@ class Game
   end
 
   def game_won?(opponent)
-    return false unless @end_game.checkmate?(opponent)
+    return false unless @end_game_manager.checkmate?(opponent)
 
     puts checkmate_info(opponent)
     true
   end
 
   def game_draw?(opponent)
-    return false unless @end_game.stalemate?(opponent)
+    return false unless @end_game_manager.stalemate?(opponent)
 
     puts stalemate_info
     true
@@ -125,14 +125,14 @@ class Game
 
   def game_end?(player)
     opponent = player == @blue_player ? @red_player : @blue_player
-    puts in_check_info(player, opponent) if @end_game.king_in_check?(opponent)
+    puts in_check_info(player, opponent) if @end_game_manager.king_in_check?(opponent)
     game_draw?(opponent) || game_won?(opponent)
   end
 end
 
 board = Board.new
-end_game = EndGame.new(board)
-game = Game.new(board, end_game)
+end_game_manager = EndGame.new(board)
+game = Game.new(board, end_game_manager)
 board.setup_board
 game.play_game
 # game.setup_players
@@ -140,7 +140,7 @@ game.play_game
 # board.move('c1', 'c5')
 # board.move('d1', 'd5')
 # board.move('g8', 'a3')
-# player_pieces = end_game.find_player_pieces(:red)
-# p board.can_castle?(game.red_player, player_pieces, end_game)
+# player_pieces = end_game_manager.find_player_pieces(:red)
+# p board.can_castle?(game.red_player, player_pieces, end_game_manager)
 # board.display
 

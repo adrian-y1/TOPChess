@@ -3,8 +3,8 @@
 require_relative '../lib/modules/validate_moves'
 require 'matrix'
 
-# Class that determines wins, draws, losses
-class EndGame
+# Class that manages wins, draws, losses, player moves etc
+class EndGameManager
   attr_accessor :board
 
   include ValidateMoves
