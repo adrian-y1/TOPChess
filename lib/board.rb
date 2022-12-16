@@ -41,9 +41,20 @@ class Board
     destination.move_counter += 1 if destination.is_a?(Rook) || destination.is_a?(King)
   end
 
-  def can_castle?(player, player_pieces, end_game_manager)
+  def create_castling_move(player, player_pieces, end_game_manager)
+    return unless can_castle?(player, player_pieces, end_game_manager)
+
+    row = player.color == :blue ? 0 : 7
     castling_pieces = find_castling_pieces(player, player_pieces, end_game_manager)
-    castling_pieces.empty? ? false : true
+    castling_pieces.each do |piece_data|
+      column = piece_data[0][:current_square][1]
+      castling_column = column.zero? ? 2 : 6
+      piece_data[1][:piece].valid_moves << [[row, castling_column]]
+    end
+  end
+
+  def can_castle?(player, player_pieces, end_game_manager)
+    find_castling_pieces(player, player_pieces, end_game_manager).any?
   end
 
   def find_castling_pieces(player, player_pieces, end_game_manager)
@@ -55,7 +66,7 @@ class Board
     castling_pieces = []
     rooks.each do |rook|
       if castle_path_clear?(row, rook[:current_square][1], king[:current_square][1]) &&
-        !castle_path_in_check?(player, end_game_manager, row, rook[:current_square][1], king[:current_square])
+         !castle_path_in_check?(player, end_game_manager, row, rook[:current_square][1], king[:current_square])
         castling_pieces << [rook, king]
       end
     end

@@ -131,16 +131,22 @@ class Game
 end
 
 board = Board.new
-end_game_manager = EndGame.new(board)
+end_game_manager = EndGameManager.new(board)
 game = Game.new(board, end_game_manager)
 board.setup_board
-game.play_game
-# game.setup_players
-# board.move('b1', 'b5')
-# board.move('c1', 'c5')
-# board.move('d1', 'd5')
-# board.move('g8', 'a3')
-# player_pieces = end_game_manager.find_player_pieces(:red)
-# p board.can_castle?(game.red_player, player_pieces, end_game_manager)
-# board.display
+#game.play_game
+game.setup_players
+board.move('c8', 'c6')
+board.move('d8', 'd6')
+board.move('f8', 'f6')
+board.move('g8', 'g6')
+board.move('b1', 'b5')
+board.move('c1', 'c5')
+board.move('d1', 'd5')
+board.move('f1', 'f5')
+board.move('g1', 'g5')
+board.move('b8', 'c3')
+player_pieces = end_game_manager.find_player_pieces(:red)
+board.create_castling_move(game.red_player, player_pieces, end_game_manager)
+board.display
 
