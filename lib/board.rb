@@ -54,11 +54,8 @@ class Board
   end
 
   def castle_path_clear?(row, rook_col, king_col)
-    if king_col > rook_col
-      @board[row][rook_col + 1...king_col].all? { |square| square == ' ' }
-    else
-      @board[row][king_col + 1...rook_col].all? { |square| square == ' ' }
-    end
+    squares = king_col > rook_col ? (rook_col + 1...king_col) : (king_col + 1...rook_col)
+    squares.all? { |col| @board[row][col] == ' ' }
   end
 
   def find_castle_path(row, rook_col, king_col)

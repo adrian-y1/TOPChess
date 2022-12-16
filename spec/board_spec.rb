@@ -565,4 +565,232 @@ describe Board do
       end
     end
   end
+
+  describe '#can_castle?' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:red_player) { Player.new(:red) }
+    let(:game_end) { EndGame.new(board) }
+
+    context "when blue player can make kingside castling" do
+      before do
+        board.setup_board
+        board.move('g8', 'h6')
+        board.move('f8', 'f5')
+      end
+
+      it 'returns true' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be true
+      end
+    end
+
+    context "when blue player's kingside castling's in between squares are occupied" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when blue player can make queenside castling" do
+      before do
+        board.setup_board
+        board.move('b8', 'c6')
+        board.move('c8', 'b6')
+        board.move('d8', 'a6')
+      end
+
+      it 'returns true' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be true
+      end
+    end
+
+    context "when blue player's queenside castling's in between squares are occupied" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when blue player's in between castling squares are being attacked" do
+      before do
+        board.setup_board
+        board.move('b8', 'c4')
+        board.move('c8', 'b4')
+        board.move('d8', 'a4')
+        board.move('b1', 'c6')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when blue player's King is in check" do
+      before do
+        board.setup_board
+        board.move('b8', 'c4')
+        board.move('c8', 'b4')
+        board.move('d8', 'a4')
+        board.move('b1', 'f6')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when blue player's King has moved but is at the original square" do
+      before do
+        board.move('e8', 'e6')
+        board.move('e6', 'e8')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when blue player's Rook has moved but is at the original square" do
+      before do
+        board.move('a8', 'a6')
+        board.move('a6', 'a8')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:blue)
+        castle = board.can_castle?(blue_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player can make kingside castling" do
+      before do
+        board.setup_board
+        board.move('g1', 'h3')
+        board.move('f1', 'f4')
+      end
+
+      it 'returns true' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be true
+      end
+    end
+
+    context "when red player's kingside castling's in between squares are occupied" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player can make queenside castling" do
+      before do
+        board.setup_board
+        board.move('b1', 'c4')
+        board.move('c1', 'b4')
+        board.move('d1', 'a4')
+      end
+
+      it 'returns true' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be true
+      end
+    end
+
+    context "when red player's queenside castling's in between squares are occupied" do
+      before do
+        board.setup_board
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player's in between castling squares are being attacked" do
+      before do
+        board.setup_board
+        board.move('b1', 'c5')
+        board.move('c1', 'b5')
+        board.move('d1', 'a5')
+        board.move('b8', 'c3')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player's King is in check" do
+      before do
+        board.setup_board
+        board.move('b1', 'c5')
+        board.move('c1', 'b5')
+        board.move('d1', 'a5')
+        board.move('b8', 'f3')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player's King has moved but is at the original square" do
+      before do
+        board.move('e1', 'e3')
+        board.move('e3', 'e1')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+
+    context "when red player's Rook has moved but is at the original square" do
+      before do
+        board.move('a1', 'a3')
+        board.move('a3', 'a1')
+      end
+
+      it 'returns false' do
+        player_pieces = game_end.find_player_pieces(:red)
+        castle = board.can_castle?(red_player, player_pieces, game_end)
+        expect(castle).to be false
+      end
+    end
+  end
 end
