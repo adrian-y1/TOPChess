@@ -899,4 +899,68 @@ describe Board do
       end
     end
   end
+
+  describe '#store_castling_move' do
+    let(:blue_player) { Player.new(:blue) }
+    let(:red_player) { Player.new(:red) }
+    let(:end_game_manager) { EndGameManager.new(board) }
+
+    context "when Castling is available for blue player" do
+      before do
+        board.setup_board
+        board.move('g8', 'g4')
+        board.move('f8', 'f4')
+      end
+
+      it "adds the Castling move to the blue King's valid moves" do
+        player_pieces = end_game_manager.find_player_pieces(:blue)
+        new_valid_moves = [[[0, 5]], [[0, 6]]]
+        king = board.board[0][4]
+        expect { board.store_castling_move(blue_player, player_pieces, end_game_manager) }.to change { king.valid_moves }.to new_valid_moves
+      end
+    end
+
+    context "when Castling is not available for blue player" do
+      before do
+        board.setup_board
+        board.move('g8', 'g4')
+        board.move('f8', 'f4')
+        board.move('g1', 'h6')
+      end
+
+      it "returns nil" do
+        player_pieces = end_game_manager.find_player_pieces(:blue)
+        expect(board.store_castling_move(blue_player, player_pieces, end_game_manager)).to eq nil
+      end
+    end
+
+    context "when Castling is available for red player" do
+      before do
+        board.setup_board
+        board.move('g1', 'g4')
+        board.move('f1', 'f4')
+      end
+
+      it "adds the Castling move to the blue King's valid moves" do
+        player_pieces = end_game_manager.find_player_pieces(:red)
+        new_valid_moves = [[[7, 5]], [[7, 6]]]
+        king = board.board[7][4]
+        expect { board.store_castling_move(red_player, player_pieces, end_game_manager) }.to change { king.valid_moves }.to new_valid_moves
+      end
+    end
+
+    context "when Castling is not available for blue player" do
+      before do
+        board.setup_board
+        board.move('g1', 'g4')
+        board.move('f1', 'f4')
+        board.move('g8', 'h3')
+      end
+
+      it "returns nil" do
+        player_pieces = end_game_manager.find_player_pieces(:red)
+        expect(board.store_castling_move(red_player, player_pieces, end_game_manager)).to eq nil
+      end
+    end
+  end
 end
