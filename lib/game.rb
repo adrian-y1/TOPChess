@@ -78,7 +78,6 @@ class Game
       user_input = gets.chomp
       promotion_piece = verify_promotion_piece(user_input)
       return promotion_piece if promotion_piece
-
       puts promotion_error
     end
   end
@@ -135,18 +134,5 @@ end_game_manager = EndGameManager.new(board)
 game = Game.new(board, end_game_manager)
 board.setup_board
 game.play_game
-# game.setup_players
-# board.move('c8', 'c6')
-# board.move('d8', 'd6')
-# board.move('f8', 'f6')
-# board.move('g8', 'g6')
-# board.move('b1', 'b5')
-# board.move('c1', 'c5')
-# board.move('d1', 'd5')
-# board.move('f1', 'f5')
-# board.move('g1', 'g5')
-# board.move('e1', 'g1')
-# player_pieces = end_game_manager.find_player_pieces(:red)
-# board.create_castling_move(game.red_player, player_pieces, end_game_manager)
-# board.display
+
 

@@ -52,4 +52,12 @@ module GameInfo
   def in_check_info(player, opponent)
     "#{'Check!'.bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
   end
+
+  def get_filename_info
+    "Enter a name for the file (max 10 characters):".light_yellow
+  end
+
+  def get_filename_error
+    "Invalid Input!".light_red
+  end
 end
