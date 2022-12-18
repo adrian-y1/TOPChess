@@ -300,7 +300,7 @@ describe Board do
     let(:blue_pawn) { Pawn.new(:blue) }
     let(:red_pawn) { Pawn.new(:red) }
 
-    context "when En Passant is available for blue player on the right square" do
+    context 'when En Passant is available for blue player on the right square' do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -315,7 +315,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is available for blue player on the left square" do
+    context 'when En Passant is available for blue player on the left square' do
       before do
         board.board[1][5] = blue_pawn
         board.board[6][4] = red_pawn
@@ -330,7 +330,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for blue player on the right square" do
+    context 'when En Passant is not available for blue player on the right square' do
       before do
         board.board[1][5] = blue_pawn
         board.board[6][4] = red_pawn
@@ -345,7 +345,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for blue player on the left square" do
+    context 'when En Passant is not available for blue player on the left square' do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -360,7 +360,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is available for red player on the left square" do
+    context 'when En Passant is available for red player on the left square' do
       before do
         board.board[6][4] = red_pawn
         board.board[1][3] = blue_pawn
@@ -375,7 +375,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is available for red player on the right square" do
+    context 'when En Passant is available for red player on the right square' do
       before do
         board.board[6][4] = red_pawn
         board.board[1][5] = blue_pawn
@@ -390,7 +390,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for red player on the right square" do
+    context 'when En Passant is not available for red player on the right square' do
       before do
         board.board[1][3] = blue_pawn
         board.board[6][4] = red_pawn
@@ -405,7 +405,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for red player on the right square" do
+    context 'when En Passant is not available for red player on the right square' do
       before do
         board.board[6][4] = red_pawn
         board.board[1][5] = blue_pawn
@@ -430,7 +430,7 @@ describe Board do
       board.setup_board
     end
 
-    context "when En Passant is available for the red player" do
+    context 'when En Passant is available for the red player' do
       before do
         board.move('b2', 'b4')
         board.move('h7', 'h5')
@@ -444,7 +444,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for the red player" do
+    context 'when En Passant is not available for the red player' do
       before do
         board.move('b2', 'b4')
         board.move('c7', 'c5')
@@ -457,7 +457,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is available for the blue player" do
+    context 'when En Passant is available for the blue player' do
       before do
         board.move('h7', 'h5')
         board.move('a2', 'a4')
@@ -471,7 +471,7 @@ describe Board do
       end
     end
 
-    context "when En Passant is not available for the blue player" do
+    context 'when En Passant is not available for the blue player' do
       before do
         board.move('c7', 'c5')
         board.move('b2', 'b4')
@@ -530,8 +530,8 @@ describe Board do
     let(:end_game_manager) { EndGameManager.new(board) }
     let(:red_pawn) { Pawn.new(:red) }
     let(:blue_pawn) { Pawn.new(:blue) }
-    
-    context "when the blue Pawn can make an En Passant move" do
+
+    context 'when the blue Pawn can make an En Passant move' do
       let(:blue_player) { Player.new(:blue) }
 
       before do
@@ -544,13 +544,15 @@ describe Board do
       it "adds the En Passant move to the blue Pawn's valid moves" do
         player_pieces = end_game_manager.find_player_pieces(blue_player.color)
         new_valid_moves = [[[5, 0]], [[5, 1]]]
-        expect { board.store_en_passant(blue_player, end_game_manager, player_pieces) }.to change { blue_pawn.valid_moves }.to new_valid_moves
+        expect { board.store_en_passant(blue_player, end_game_manager, player_pieces) }.to change {
+                                                                                             blue_pawn.valid_moves
+                                                                                           }.to new_valid_moves
       end
     end
 
-    context "when the red Pawn can make an En Passant move" do
+    context 'when the red Pawn can make an En Passant move' do
       let(:red_player) { Player.new(:red) }
-      
+
       before do
         board.board[6][4] = red_pawn
         board.board[1][5] = blue_pawn
@@ -561,7 +563,9 @@ describe Board do
       it "adds the En Passant move to the red Pawn's valid moves" do
         player_pieces = end_game_manager.find_player_pieces(red_player.color)
         new_valid_moves = [[[2, 4]], [[2, 5]]]
-        expect { board.store_en_passant(red_player, end_game_manager, player_pieces) }.to change { red_pawn.valid_moves }.to new_valid_moves
+        expect { board.store_en_passant(red_player, end_game_manager, player_pieces) }.to change {
+                                                                                            red_pawn.valid_moves
+                                                                                          }.to new_valid_moves
       end
     end
   end
@@ -571,7 +575,7 @@ describe Board do
     let(:red_player) { Player.new(:red) }
     let(:end_game_manager) { EndGameManager.new(board) }
 
-    context "when blue player can make kingside castling" do
+    context 'when blue player can make kingside castling' do
       before do
         board.setup_board
         board.move('g8', 'h6')
@@ -597,7 +601,7 @@ describe Board do
       end
     end
 
-    context "when blue player can make queenside castling" do
+    context 'when blue player can make queenside castling' do
       before do
         board.setup_board
         board.move('b8', 'c6')
@@ -682,7 +686,7 @@ describe Board do
       end
     end
 
-    context "when red player can make kingside castling" do
+    context 'when red player can make kingside castling' do
       before do
         board.setup_board
         board.move('g1', 'h3')
@@ -708,7 +712,7 @@ describe Board do
       end
     end
 
-    context "when red player can make queenside castling" do
+    context 'when red player can make queenside castling' do
       before do
         board.setup_board
         board.move('b1', 'c4')
@@ -799,7 +803,7 @@ describe Board do
     let(:red_player) { Player.new(:red) }
     let(:end_game_manager) { EndGameManager.new(board) }
 
-    context "when a castling is available for blue player" do
+    context 'when a castling is available for blue player' do
       before do
         board.setup_board
         board.move('g8', 'g6')
@@ -816,7 +820,7 @@ describe Board do
       end
     end
 
-    context "when a castling is not available for blue player" do
+    context 'when a castling is not available for blue player' do
       before do
         board.setup_board
       end
@@ -828,7 +832,7 @@ describe Board do
       end
     end
 
-    context "when blue player can make 2 castling moves" do
+    context 'when blue player can make 2 castling moves' do
       before do
         board.setup_board
         board.move('g8', 'g6')
@@ -849,7 +853,7 @@ describe Board do
       end
     end
 
-    context "when a castling is available for red player" do
+    context 'when a castling is available for red player' do
       before do
         board.setup_board
         board.move('g1', 'g4')
@@ -866,7 +870,7 @@ describe Board do
       end
     end
 
-    context "when a castling is not available for red player" do
+    context 'when a castling is not available for red player' do
       before do
         board.setup_board
       end
@@ -878,7 +882,7 @@ describe Board do
       end
     end
 
-    context "when red player can make 2 castling moves" do
+    context 'when red player can make 2 castling moves' do
       before do
         board.setup_board
         board.move('g1', 'g4')
@@ -905,7 +909,7 @@ describe Board do
     let(:red_player) { Player.new(:red) }
     let(:end_game_manager) { EndGameManager.new(board) }
 
-    context "when Castling is available for blue player" do
+    context 'when Castling is available for blue player' do
       before do
         board.setup_board
         board.move('g8', 'g4')
@@ -916,11 +920,13 @@ describe Board do
         player_pieces = end_game_manager.find_player_pieces(:blue)
         new_valid_moves = [[[0, 5]], [[0, 6]]]
         king = board.board[0][4]
-        expect { board.store_castling_move(blue_player, player_pieces, end_game_manager) }.to change { king.valid_moves }.to new_valid_moves
+        expect { board.store_castling_move(blue_player, player_pieces, end_game_manager) }.to change {
+                                                                                                king.valid_moves
+                                                                                              }.to new_valid_moves
       end
     end
 
-    context "when Castling is not available for blue player" do
+    context 'when Castling is not available for blue player' do
       before do
         board.setup_board
         board.move('g8', 'g4')
@@ -928,13 +934,13 @@ describe Board do
         board.move('g1', 'h6')
       end
 
-      it "returns nil" do
+      it 'returns nil' do
         player_pieces = end_game_manager.find_player_pieces(:blue)
         expect(board.store_castling_move(blue_player, player_pieces, end_game_manager)).to eq nil
       end
     end
 
-    context "when Castling is available for red player" do
+    context 'when Castling is available for red player' do
       before do
         board.setup_board
         board.move('g1', 'g4')
@@ -945,11 +951,13 @@ describe Board do
         player_pieces = end_game_manager.find_player_pieces(:red)
         new_valid_moves = [[[7, 5]], [[7, 6]]]
         king = board.board[7][4]
-        expect { board.store_castling_move(red_player, player_pieces, end_game_manager) }.to change { king.valid_moves }.to new_valid_moves
+        expect { board.store_castling_move(red_player, player_pieces, end_game_manager) }.to change {
+                                                                                               king.valid_moves
+                                                                                             }.to new_valid_moves
       end
     end
 
-    context "when Castling is not available for blue player" do
+    context 'when Castling is not available for blue player' do
       before do
         board.setup_board
         board.move('g1', 'g4')
@@ -957,7 +965,7 @@ describe Board do
         board.move('g8', 'h3')
       end
 
-      it "returns nil" do
+      it 'returns nil' do
         player_pieces = end_game_manager.find_player_pieces(:red)
         expect(board.store_castling_move(red_player, player_pieces, end_game_manager)).to eq nil
       end

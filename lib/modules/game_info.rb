@@ -54,10 +54,18 @@ module GameInfo
   end
 
   def get_filename_info
-    "Enter a name for the file (max 10 characters):".light_yellow
+    'Enter a name for the file (max 10 characters):'.light_yellow
   end
 
   def get_filename_error
-    "Invalid Input!".light_red
+    'Invalid Input!'.light_red
+  end
+
+  def get_load_game_info
+    'Enter the full name of the saved game you want to load:'.light_yellow
+  end
+
+  def load_files(files)
+    "All Saved Games -> #{files}"
   end
 end

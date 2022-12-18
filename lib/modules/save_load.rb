@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../game_info'
+require_relative '../modules/game_info'
 require 'yaml'
 
 # Module that deals with saving and loading the game
@@ -14,15 +14,20 @@ module SaveLoad
   def save_game(game, user_input)
     return unless save_game?(user_input)
 
-    # Create saved_games directiory if it doesn't exist
-    Dir.mkdir('saved_games') unless Dir.exists?('saved_games')
+    Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
 
-    # Get filename from user
     filename = get_filename
 
-    File.open("saved_games/#{filename}.yml", "w") do |f|
+    File.open("saved_games/#{filename}.yml", 'w') do |f|
       YAML.dump(game, f)
     end
+  end
+
+  def load_game
+    filename = get_load_filename
+    permitted_classes = [Symbol, Game, Board, BoardSetup, Rook, Pawn, Bishop, Queen, King, Knight,
+                         EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
+    YAML.safe_load(File.read("saved_games/#{filename}"), permitted_classes: permitted_classes, aliases: true)
   end
 
   def get_filename
@@ -31,6 +36,19 @@ module SaveLoad
       user_input = gets.strip
       filename = verify_filename(user_input)
       return filename if filename
+
+      puts get_filename_error
+    end
+  end
+
+  def get_load_filename
+    puts get_load_game_info
+    saved_games = Dir.glob('saved_games/**/*').select { |f| File.file?(f) }
+    puts load_files(saved_games.map { |f| File.basename(f) }.join(', '))
+
+    loop do
+      user_input = gets.strip
+      return user_input if verify_filename(user_input) && File.exist?("saved_games/#{user_input}")
 
       puts get_filename_error
     end

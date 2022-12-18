@@ -11,12 +11,14 @@ require_relative './board'
 require_relative './player'
 require_relative './end_game_manager'
 require_relative './modules/game_info'
+require_relative './modules/save_load'
 require 'colorize'
 
 # contains everything needed to setup the game
 class Game
   attr_reader :board, :blue_player, :red_player
 
+  include SaveLoad
   include GameInfo
 
   def initialize(board, end_game_manager)
@@ -26,7 +28,7 @@ class Game
 
   def play_game
     # puts game_rules
-    setup_players
+    setup_players # <- the problem
     @board.display
     loop do
       play_turn(@current_player)
@@ -51,6 +53,7 @@ class Game
     loop do
       user_input = gets.chomp
       @piece_position = verify_position(user_input, piece_coordinates)
+      exit if save_game(self, user_input)
       return @piece_position if @piece_position
 
       puts position_error
@@ -78,6 +81,7 @@ class Game
       user_input = gets.chomp
       promotion_piece = verify_promotion_piece(user_input)
       return promotion_piece if promotion_piece
+
       puts promotion_error
     end
   end
@@ -134,5 +138,3 @@ end_game_manager = EndGameManager.new(board)
 game = Game.new(board, end_game_manager)
 board.setup_board
 game.play_game
-
-
