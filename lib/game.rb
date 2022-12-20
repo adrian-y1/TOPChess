@@ -26,9 +26,18 @@ class Game
     @end_game_manager = end_game_manager
   end
 
+  def launch_game
+    choice = get_choice
+    setup_players
+    if choice == '1'
+      play_game
+    elsif choice == '2'
+      load_game.play_game
+    end
+  end
+
   def play_game
     # puts game_rules
-    setup_players # <- the problem
     @board.display
     loop do
       play_turn(@current_player)
@@ -44,6 +53,16 @@ class Game
     @board.move(piece_position, destination)
     promotion(player)
     @board.display
+  end
+
+  def get_choice 
+    puts choice_info
+    loop do
+      choice = gets.strip
+      return choice if verify_choice(choice)
+
+      puts choice_error
+    end
   end
 
   def get_piece_position(player)
@@ -95,6 +114,10 @@ class Game
     user_input if user_input.length == 2 && piece_coordinates.include?(user_input)
   end
 
+  def verify_choice(choice)
+    choice if choice == '1' || choice == '2'
+  end
+
   def setup_players
     @blue_player = Player.new(:blue)
     @red_player = Player.new(:red)
@@ -137,4 +160,4 @@ board = Board.new
 end_game_manager = EndGameManager.new(board)
 game = Game.new(board, end_game_manager)
 board.setup_board
-game.play_game
+game.launch_game

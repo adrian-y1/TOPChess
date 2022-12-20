@@ -15,7 +15,7 @@ module SaveLoad
     return unless save_game?(user_input)
 
     Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
-
+    
     filename = get_filename
 
     File.open("saved_games/#{filename}.yml", 'w') do |f|
@@ -32,6 +32,8 @@ module SaveLoad
 
   def get_filename
     puts get_filename_info
+    saved_games = Dir.glob('saved_games/**/*').select { |f| File.file?(f) }
+    puts load_files(saved_games.map { |f| File.basename(f) }.join(', ')) unless saved_games.empty?
     loop do
       user_input = gets.strip
       filename = verify_filename(user_input)
@@ -44,17 +46,21 @@ module SaveLoad
   def get_load_filename
     puts get_load_game_info
     saved_games = Dir.glob('saved_games/**/*').select { |f| File.file?(f) }
-    puts load_files(saved_games.map { |f| File.basename(f) }.join(', '))
+    puts load_files(saved_games.map { |f| File.basename(f) }.join(', ')) unless saved_games.empty?
 
     loop do
       user_input = gets.strip
-      return user_input if verify_filename(user_input) && File.exist?("saved_games/#{user_input}")
+      return user_input if verify_loaded_filename(user_input)
 
       puts get_filename_error
     end
   end
 
   def verify_filename(filename)
-    filename if filename.length.between?(1, 10)
+    filename if filename.length.between?(1, 10) && !filename.include?('.') && !File.exist?("saved_games/#{filename}.yml")
+  end
+
+  def verify_loaded_filename(filename)
+    filename if filename.length.between?(1, 10) && File.exist?("saved_games/#{filename}")
   end
 end
