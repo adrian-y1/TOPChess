@@ -70,10 +70,18 @@ module GameInfo
   end
 
   def choice_info
-    "Enter 1 to start a new game, enter 2 to load a saved game:".bold.light_yellow
+    'Enter 1 to start a new game, enter 2 to load a saved game:'.bold.light_yellow
   end
 
   def choice_error
     "\nInvalid Input! Please enter 1 to start a new game or 2 to load a saved game:".bold.light_red
+  end
+  
+  def saving_loading(action)
+    puts "#{action} Game...\n\n"
+    sleep(1)
+    return if action == "Loading"
+    puts "Exiting Program..."
+    sleep(0.5)
   end
 end

@@ -38,6 +38,7 @@ class Game
 
   def play_game
     # puts game_rules
+    @board.setup_board
     @board.display
     loop do
       play_turn(@current_player)
@@ -55,7 +56,7 @@ class Game
     @board.display
   end
 
-  def get_choice 
+  def get_choice
     puts choice_info
     loop do
       choice = gets.strip
@@ -86,6 +87,7 @@ class Game
     loop do
       user_input = gets.chomp
       @move_position = verify_position(user_input, piece_move_coordinates)
+      exit if save_game(self, user_input)
       return @move_position if @move_position
 
       puts move_error
@@ -115,7 +117,7 @@ class Game
   end
 
   def verify_choice(choice)
-    choice if choice == '1' || choice == '2'
+    choice if %w[1 2].include?(choice)
   end
 
   def setup_players
@@ -156,8 +158,7 @@ class Game
   end
 end
 
-board = Board.new
-end_game_manager = EndGameManager.new(board)
-game = Game.new(board, end_game_manager)
-board.setup_board
-game.launch_game
+# board = Board.new
+# end_game_manager = EndGameManager.new(board)
+# game = Game.new(board, end_game_manager)
+# game.launch_game

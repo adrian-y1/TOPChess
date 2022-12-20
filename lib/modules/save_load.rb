@@ -15,9 +15,9 @@ module SaveLoad
     return unless save_game?(user_input)
 
     Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
-    
-    filename = get_filename
 
+    filename = get_filename
+    saving_loading("Saving")
     File.open("saved_games/#{filename}.yml", 'w') do |f|
       YAML.dump(game, f)
     end
@@ -27,6 +27,7 @@ module SaveLoad
     filename = get_load_filename
     permitted_classes = [Symbol, Game, Board, BoardSetup, Rook, Pawn, Bishop, Queen, King, Knight,
                          EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
+    saving_loading("Loading")
     YAML.safe_load(File.read("saved_games/#{filename}"), permitted_classes: permitted_classes, aliases: true)
   end
 
@@ -57,7 +58,9 @@ module SaveLoad
   end
 
   def verify_filename(filename)
-    filename if filename.length.between?(1, 10) && !filename.include?('.') && !File.exist?("saved_games/#{filename}.yml")
+    if filename.length.between?(1, 10) && !filename.include?('.') && !File.exist?("saved_games/#{filename}.yml")
+      filename
+    end
   end
 
   def verify_loaded_filename(filename)
