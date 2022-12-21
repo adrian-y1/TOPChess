@@ -29,6 +29,7 @@ class Game
   def launch_game
     choice = get_choice
     setup_players
+    @board.setup_board
     if choice == '1'
       play_game
     elsif choice == '2'
@@ -38,7 +39,6 @@ class Game
 
   def play_game
     # puts game_rules
-    @board.setup_board
     @board.display
     loop do
       play_turn(@current_player)

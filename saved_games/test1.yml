@@ -1,0 +1,800 @@
+--- !ruby/object:Game
+board: &18 !ruby/object:Board
+  board:
+  - - !ruby/object:Rook
+      symbol: " ♜ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♜ \e[0m"
+      valid_moves: &1 []
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      defended: false
+      attacking_squares: *1
+      move_counter: 0
+    - !ruby/object:Knight
+      symbol: " ♞ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♞ \e[0m"
+      movement:
+      - - -2
+        - -1
+      - - -2
+        - 1
+      - - -1
+        - 2
+      - - -1
+        - -2
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - 2
+        - 1
+      - - 2
+        - -1
+      valid_moves: &2
+      - - - 2
+          - 2
+      - - - 2
+          - 0
+      defended: true
+      attacking_squares: *2
+    - !ruby/object:Bishop
+      symbol: " ♝ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♝ \e[0m"
+      valid_moves: &3 []
+      movement:
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *3
+    - !ruby/object:Queen
+      symbol: " ♛ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♛ \e[0m"
+      valid_moves: &4 []
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *4
+    - !ruby/object:King
+      symbol: " ♚ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♚ \e[0m"
+      movement:
+      - - -1
+        - 0
+      - - -1
+        - -1
+      - - 0
+        - -1
+      - - 1
+        - -1
+      - - 1
+        - 0
+      - - 1
+        - 1
+      - - 0
+        - 1
+      - - -1
+        - 1
+      valid_moves: &5 []
+      defended: true
+      attacking_squares: *5
+      move_counter: 0
+    - !ruby/object:Bishop
+      symbol: " ♝ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♝ \e[0m"
+      valid_moves: &6 []
+      movement:
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *6
+    - !ruby/object:Knight
+      symbol: " ♞ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♞ \e[0m"
+      movement:
+      - - -2
+        - -1
+      - - -2
+        - 1
+      - - -1
+        - 2
+      - - -1
+        - -2
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - 2
+        - 1
+      - - 2
+        - -1
+      valid_moves: &7
+      - - - 2
+          - 7
+      - - - 2
+          - 5
+      defended: true
+      attacking_squares: *7
+    - !ruby/object:Rook
+      symbol: " ♜ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♜ \e[0m"
+      valid_moves: &8
+      - - - 1
+          - 7
+        - - 2
+          - 7
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      defended: false
+      attacking_squares: *8
+      move_counter: 0
+  - - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 0
+      - - - 3
+          - 0
+      attacking_squares:
+      - - - 2
+          - 1
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 1
+      - - - 3
+          - 1
+      attacking_squares:
+      - - - 2
+          - 0
+      - - - 2
+          - 2
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 2
+      - - - 3
+          - 2
+      attacking_squares:
+      - - - 2
+          - 1
+      - - - 2
+          - 3
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 3
+      - - - 3
+          - 3
+      attacking_squares:
+      - - - 2
+          - 2
+      - - - 2
+          - 4
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 4
+      - - - 3
+          - 4
+      attacking_squares:
+      - - - 2
+          - 3
+      - - - 2
+          - 5
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 5
+      - - - 3
+          - 5
+      attacking_squares:
+      - - - 2
+          - 4
+      - - - 2
+          - 6
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 2
+          - 6
+      - - - 3
+          - 6
+      attacking_squares:
+      - - - 2
+          - 5
+      - - - 2
+          - 7
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - &17 !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :blue
+      colored_symbol: "\e[0;34;49m ♟ \e[0m"
+      valid_moves:
+      - - - 4
+          - 7
+      attacking_squares:
+      - - - 4
+          - 6
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+  - - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 3
+          - 0
+      attacking_squares:
+      - - - 3
+          - 1
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 1
+      - - - 4
+          - 1
+      attacking_squares:
+      - - - 5
+          - 2
+      - - - 5
+          - 0
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 2
+      - - - 4
+          - 2
+      attacking_squares:
+      - - - 5
+          - 3
+      - - - 5
+          - 1
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 3
+      - - - 4
+          - 3
+      attacking_squares:
+      - - - 5
+          - 4
+      - - - 5
+          - 2
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 4
+      - - - 4
+          - 4
+      attacking_squares:
+      - - - 5
+          - 5
+      - - - 5
+          - 3
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 5
+      - - - 4
+          - 5
+      attacking_squares:
+      - - - 5
+          - 6
+      - - - 5
+          - 4
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 6
+      - - - 4
+          - 6
+      attacking_squares:
+      - - - 5
+          - 7
+      - - - 5
+          - 5
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+    - !ruby/object:Pawn
+      symbol: " ♟ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♟ \e[0m"
+      valid_moves:
+      - - - 5
+          - 7
+      - - - 4
+          - 7
+      attacking_squares:
+      - - - 5
+          - 6
+      blue_movement:
+      - - 1
+        - -1
+      - - 1
+        - 1
+      red_movement:
+      - - -1
+        - 1
+      - - -1
+        - -1
+      en_passant:
+      defended: true
+  - - !ruby/object:Rook
+      symbol: " ♜ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♜ \e[0m"
+      valid_moves: &9
+      - - - 6
+          - 0
+        - - 5
+          - 0
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      defended: false
+      attacking_squares: *9
+      move_counter: 0
+    - !ruby/object:Knight
+      symbol: " ♞ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♞ \e[0m"
+      movement:
+      - - -2
+        - -1
+      - - -2
+        - 1
+      - - -1
+        - 2
+      - - -1
+        - -2
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - 2
+        - 1
+      - - 2
+        - -1
+      valid_moves: &10
+      - - - 5
+          - 0
+      - - - 5
+          - 2
+      defended: true
+      attacking_squares: *10
+    - !ruby/object:Bishop
+      symbol: " ♝ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♝ \e[0m"
+      valid_moves: &11 []
+      movement:
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *11
+    - !ruby/object:Queen
+      symbol: " ♛ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♛ \e[0m"
+      valid_moves: &12 []
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *12
+    - !ruby/object:King
+      symbol: " ♚ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♚ \e[0m"
+      movement:
+      - - -1
+        - 0
+      - - -1
+        - -1
+      - - 0
+        - -1
+      - - 1
+        - -1
+      - - 1
+        - 0
+      - - 1
+        - 1
+      - - 0
+        - 1
+      - - -1
+        - 1
+      valid_moves: &13 []
+      defended: true
+      attacking_squares: *13
+      move_counter: 0
+    - !ruby/object:Bishop
+      symbol: " ♝ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♝ \e[0m"
+      valid_moves: &14 []
+      movement:
+      - - -1
+        - -1
+      - - 1
+        - -1
+      - - -1
+        - 1
+      - - 1
+        - 1
+      defended: true
+      attacking_squares: *14
+    - !ruby/object:Knight
+      symbol: " ♞ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♞ \e[0m"
+      movement:
+      - - -2
+        - -1
+      - - -2
+        - 1
+      - - -1
+        - 2
+      - - -1
+        - -2
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - 2
+        - 1
+      - - 2
+        - -1
+      valid_moves: &15
+      - - - 5
+          - 5
+      - - - 5
+          - 7
+      defended: true
+      attacking_squares: *15
+    - !ruby/object:Rook
+      symbol: " ♜ "
+      color: :red
+      colored_symbol: "\e[0;31;49m ♜ \e[0m"
+      valid_moves: &16 []
+      movement:
+      - - 0
+        - -1
+      - - 0
+        - 1
+      - - -1
+        - 0
+      - - 1
+        - 0
+      defended: false
+      attacking_squares: *16
+      move_counter: 0
+  removed_pieces: []
+  last_pawn_moved: *17
+end_game_manager: !ruby/object:EndGameManager
+  board: *18
+blue_player: !ruby/object:Player
+  color: :blue
+red_player: &19 !ruby/object:Player
+  color: :red
+current_player: *19
+piece_position:
+move_position: h5

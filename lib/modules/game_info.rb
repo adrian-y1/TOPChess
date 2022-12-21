@@ -89,9 +89,9 @@ module GameInfo
     <<~HERODOC 
       #{"Captured Pieces".bold.magenta}
 
-      #{"Player Blue:".bold.blue} #{captured_pieces.select { |h| h[:color] == :red }.map { |h| h[:type] }.join('').bold.red}
+      #{"Player Blue ->".bold.blue}#{captured_pieces.select { |h| h[:color] == :red }.map { |h| h[:symbol] }.join('').bold.red}
 
-      #{"Player Red:".bold.red} #{captured_pieces.select { |h| h[:color] == :blue }.map { |h| h[:type] }.join('').bold.blue}
+      #{"Player Red  ->".bold.red}#{captured_pieces.select { |h| h[:color] == :blue }.map { |h| h[:symbol] }.join('').bold.blue}
 
     HERODOC
   end
