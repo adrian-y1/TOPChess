@@ -84,4 +84,16 @@ module GameInfo
     puts "Exiting Program..."
     sleep(0.5)
   end
+
+  def captured_pieces_info(captured_pieces)
+    <<~HERODOC 
+      #{"Captured Pieces".bold.magenta}
+
+      #{"Player Blue:".bold.blue} #{captured_pieces.select { |h| h[:color] == :red }.map { |h| h[:type] }.join('').bold.red}
+
+      #{"Player Red:".bold.red} #{captured_pieces.select { |h| h[:color] == :blue }.map { |h| h[:type] }.join('').bold.blue}
+
+    HERODOC
+  end
+
 end

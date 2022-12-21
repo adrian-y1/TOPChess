@@ -6,6 +6,7 @@ require_relative '../lib/game_pieces/bishop'
 require_relative './board_setup'
 require_relative './end_game_manager'
 require_relative '../lib/modules/validate_moves'
+require_relative '../lib/modules/game_info'
 require 'colorize'
 require 'matrix'
 
@@ -15,6 +16,7 @@ class Board
   attr_reader :removed_pieces
 
   include ValidateMoves
+  include GameInfo
 
   def initialize
     @board = Array.new(8) { Array.new(8) { ' ' } }
@@ -297,15 +299,16 @@ class Board
   end
 
   def display
+    puts
     letters = '   A  B  C  D  E  F  G  H'
-    puts letters
     @board.each_index do |r|
       print "#{8 - r} "
       @board[r].each_index do |c|
         square = @board[r][c] == ' ' ? "#{@board[r][c]}  " : @board[r][c].colored_symbol
         change_square_bg(r, c, square)
       end
-      print " #{8 - r}\n"
+      print "       "
+      puts captured_pieces_info(@removed_pieces).lines[r]
     end
     puts letters
   end
@@ -314,7 +317,7 @@ class Board
 
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(start, destination)
-    @removed_pieces << { type: destination.class, color: destination.color } if destination != ' '
+    @removed_pieces << { color: destination.color, type: destination.colored_symbol} if destination != ' '
     @board[start[0]][start[1]] = ' '
   end
 

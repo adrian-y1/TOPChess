@@ -54,7 +54,6 @@ class Game
     @board.move(piece_position, destination)
     promotion(player)
     @board.display
-    p @board.removed_pieces
   end
 
   def get_choice
