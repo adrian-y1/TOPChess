@@ -34,6 +34,9 @@ class Game
       play_game
     elsif choice == '2'
       load_game.play_game
+    elsif choice == '3'
+      puts game_rules
+      launch_game if exit_game_rules
     end
   end
 
@@ -63,6 +66,16 @@ class Game
       return choice if verify_choice(choice)
 
       puts choice_error
+    end
+  end
+
+  def exit_game_rules
+    puts game_rules_input_info
+    loop do
+      input = gets.strip
+      return input if input.downcase == 'q'
+
+      puts game_rules_input_error
     end
   end
 
@@ -118,7 +131,7 @@ class Game
   end
 
   def verify_choice(choice)
-    choice if %w[1 2].include?(choice)
+    choice if %w[1 2 3].include?(choice)
   end
 
   def setup_players

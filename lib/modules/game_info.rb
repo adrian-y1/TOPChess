@@ -4,8 +4,33 @@ require 'colorize'
 
 # Module that handles all game information such as errors, instructions etc
 module GameInfo
+
+  def intro
+    "\nWELCOME TO CHESS".bold.cyan
+  end
+
+  def game_rules
+    <<~HERODOC
+    \nGame Instructions:
+    #{"[1]".cyan} Player #{"Red".red} & #{"Blue".blue} take turns. #{"Red".red} starts.
+    #{"[2]".cyan} The current player must first enter the coordinates of the piece they want to move (e.g. a2)
+    #{"[3]".cyan} The current player will then be asked to enter the coordinates of where they want their chosen piece to move (e.g. a4)
+    #{"[4]".cyan} When Promotion is available, you will be asked to enter the name of the piece you want to promote to
+    #{"[5]".cyan} Castling & En Passant's legal moves will be added directly to their corresponding pieces(s)
+    #{"[6]".cyan} There are currently 2 ways for the game to end: Stalemate (draw) or Checkmate (win)
+    HERODOC
+  end
+
+  def game_rules_input_info
+    "Enter".light_yellow + " [Q] ".cyan + "to go back:".light_yellow
+  end
+
+  def game_rules_input_error
+    "Invalid Input! Enter".light_red + " [Q] ".cyan + "to go back:".light_red
+  end
+
   def position_info(player)
-    "\nPlayer #{player.color.to_s.capitalize.bold}, please enter the position of the piece you want to move (e.g. a8):".colorize(player.color)
+    "\nPlayer #{player.color.to_s.capitalize.bold}, enter the coordinates of the piece you want to move:".colorize(player.color)
   end
 
   def position_error
@@ -17,7 +42,7 @@ module GameInfo
   end
 
   def move_info(player, piece_position)
-    "\nPlayer #{player.color.to_s.capitalize.bold}, please enter the position where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
+    "\nPlayer #{player.color.to_s.capitalize.bold}, enter the coordinates where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
   end
 
   def piece_moves_info(player, piece_moves_coordinates)
@@ -25,7 +50,7 @@ module GameInfo
   end
 
   def move_error
-    "\n#{'Invalid Input!'.bold} Please choose from the list of available piece moves:".light_red
+    "\n#{'Invalid Input!'.bold} Please choose from the list of piece's available moves:".light_red
   end
 
   def promotion_info(player, pawn_coordinates)
@@ -66,15 +91,17 @@ module GameInfo
   end
 
   def load_files(files)
-    "All Saved Games -> #{files}".light_yellow
+    "All Saved Games (#{files.split(' ').length}) -> #{files}".light_yellow
   end
 
   def choice_info
-    'Enter 1 to start a new game, enter 2 to load a saved game:'.bold.light_yellow
+    puts 'Enter one of the following options to begin:'.bold.light_yellow
+    print "#{"[1]".cyan} #{"Start New Game".light_yellow}\n#{"[2]".cyan} #{"Load Saved Game".light_yellow}\n"
+    "#{"[3]".cyan} #{"Game Instructions & Structure".light_yellow}"
   end
 
   def choice_error
-    "\nInvalid Input! Please enter 1 to start a new game or 2 to load a saved game:".bold.light_red
+    "\nInvalid Input! Please enter 1 to start a new game or 2 to load a saved game:".light_red
   end
   
   def saving_loading(action)
