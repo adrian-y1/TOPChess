@@ -28,13 +28,14 @@ class Board
   def move(start, destination)
     start_square = find_coordinates_index(start)
     destination_square = find_coordinates_index(destination)
+    temp_destination = @board[destination_square[0]][destination_square[1]]
     @board[destination_square[0]][destination_square[1]] = @board[start_square[0]][start_square[1]]
     temp_pawn = @last_pawn_moved
     castle_swap(start_square, destination_square)
     update_move_counter(destination_square)
     update_last_pawn(start_square, destination_square)
     en_passant_capture(destination_square, temp_pawn)
-    remove_piece(start_square)
+    remove_piece(start_square, temp_destination)
   end
 
   # Updates the move counter for King & Rook for Castling
@@ -141,7 +142,7 @@ class Board
     temp_pawn_indx = Matrix[*@board].index(temp_pawn)
     return unless destination.is_a?(Pawn) && destination.en_passant && destination.en_passant.include?(destination_indx)
 
-    remove_piece(temp_pawn_indx)
+    remove_piece(temp_pawn_indx, temp_pawn)
   end
 
   # Stores the En Passant move inside the Pawn's valid_moves and en_passant
@@ -312,9 +313,9 @@ class Board
   private
 
   # Removes the pieces at the given index and stores it in an array of removed pieces
-  def remove_piece(index)
-    @removed_pieces.push(@board[index[0]][index[1]])
-    @board[index[0]][index[1]] = ' '
+  def remove_piece(start, destination)
+    @removed_pieces << { type: destination.class, color: destination.color } if destination != ' '
+    @board[start[0]][start[1]] = ' '
   end
 
   def change_square_bg(row, column, square)
