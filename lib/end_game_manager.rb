@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/modules/validate_moves'
+require_relative '../lib/modules/game_info'
 require 'matrix'
 
 # Class that manages wins, draws, losses, player moves etc
@@ -8,6 +9,7 @@ class EndGameManager
   attr_accessor :board
 
   include ValidateMoves
+  include GameInfo
 
   def initialize(board)
     @board = board
@@ -146,6 +148,20 @@ class EndGameManager
         pieces << { piece: column, current_square: current_square }
       end
     end
+  end
+
+  # Checks if user wants to forfeit
+  def forfeited?(user_input)
+    user_input == 'forfeit'
+  end
+
+  # Displays winner after forfeit
+  def apply_forfeit(player, user_input)
+    return unless forfeited?(user_input)
+
+    opponent = find_opponent_color(player)
+    puts forfeit_win(opponent)
+    forfeited?(user_input)
   end
 
   # Returns opponent's color

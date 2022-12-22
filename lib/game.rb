@@ -93,7 +93,7 @@ class Game
     loop do
       user_input = gets.chomp
       @piece_position = verify_position(user_input, piece_coordinates)
-      exit if save_game(self, user_input)
+      exit if save_game(self, user_input) || @end_game_manager.apply_forfeit(player, user_input)
       return @piece_position if @piece_position
 
       puts position_error
@@ -107,7 +107,6 @@ class Game
     loop do
       user_input = gets.chomp
       @move_position = verify_position(user_input, piece_move_coordinates)
-      exit if save_game(self, user_input)
       return @move_position if @move_position
 
       puts move_error

@@ -11,21 +11,24 @@ module GameInfo
   def game_rules
     <<~HERODOC
       \n#{'Game Instructions:'.bold.yellow}
-      #{'[1]'.bold.cyan} #{'Player'.bold.green} #{'Red'.red} #{'&'.bold.green} #{'Blue'.blue} #{'take turns.'.bold.green} #{'Red'.red} #{'starts'.bold.green}
+      #{'[1]'.bold.cyan} #{'Player'.bold.green} #{'Red'.bold.red} #{'&'.bold.green} #{'Blue'.bold.blue} #{'take turns.'.bold.green} #{'Red'.bold.red} #{'starts'.bold.green}
       #{'[2]'.bold.cyan} #{'Player must first enter the coordinates of the piece they want to move (e.g. a2)'.bold.green}
       #{'[3]'.bold.cyan} #{'The Player will then be asked to enter the coordinates of where they want their chosen piece to move (e.g. a4)'.bold.green}
       #{'[4]'.bold.cyan} #{'When Promotion is available, a prompt will be given to choose a promotion piece'.bold.green}
       #{'[5]'.bold.cyan} #{"Castling & En Passant's legal moves will be added directly to their corresponding pieces(s)".bold.green}
-      #{'[6]'.bold.cyan} #{'There are currently 2 ways for the game to end:'.bold.green} #{'Stalemate (draw)'.bold.yellow} #{'or'.bold.green} #{'Checkmate (win)'.bold.green}
+      #{'[6]'.bold.cyan} #{'There are currently 3 ways for the game to end:'.bold.green} #{'Stalemate (draw)'.bold.yellow}#{','.bold.green} #{'Checkmate & Resignation (win)'.bold.cyan}
+      #{'[7]'.bold.cyan} #{'To save a file, type'.bold.green} #{'[save]'.bold.cyan} #{"when picking a piece's coordinates".bold.green}
+      #{'[8]'.bold.cyan} #{'To forfeit a game, type'.bold.green} #{'[forfeit]'.bold.cyan} #{"when picking a piece's coordinates".bold.green}
 
       #{'Game Features:'.bold.light_yellow}
       #{'[1]'.bold.cyan} #{'Castling'.bold.green}
-      #{'[2]'.bold.cyan} #{'Check, Checkmate & Stalemate'.bold.green}
-      #{'[3]'.bold.cyan} #{'En Passant'.bold.green}
-      #{'[4]'.bold.cyan} #{'Promotion'.bold.green}
-      #{'[5]'.bold.cyan} #{'Save Game'.bold.green}
-      #{'[6]'.bold.cyan} #{'Load Saved Game'.bold.green}
-      #{'[7]'.bold.cyan} #{'Captured Pieces'.bold.green}
+      #{'[2]'.bold.cyan} #{'Check'.bold.green}
+      #{'[3]'.bold.cyan} #{'Checkmate, Resignation & Stalemate'.bold.green}
+      #{'[4]'.bold.cyan} #{'En Passant'.bold.green}
+      #{'[5]'.bold.cyan} #{'Promotion'.bold.green}
+      #{'[6]'.bold.cyan} #{'Save Game'.bold.green}
+      #{'[7]'.bold.cyan} #{'Load Saved Game'.bold.green}
+      #{'[8]'.bold.cyan} #{'Captured Pieces'.bold.green}
 
     HERODOC
   end
@@ -76,7 +79,7 @@ module GameInfo
 
   def checkmate_info(opponent)
     player = opponent.color == :red ? :blue : :red
-    "Congratulations, Player #{player.to_s.capitalize.bold}! You have checkmated your opponent.".green
+    "\n#{'Congratulations, Player'.bold.green} #{player.to_s.capitalize.bold.colorize(player)}#{'! You have checkmated your opponent.'.bold.green}"
   end
 
   def stalemate_info
@@ -84,7 +87,7 @@ module GameInfo
   end
 
   def in_check_info(player, opponent)
-    "#{'Check!'.bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
+    "\n#{'Check!'.bold} Player #{player.color.to_s.capitalize.bold} has put Player #{opponent.color.to_s.capitalize.bold}'s King check.".yellow
   end
 
   def get_filename_info
@@ -131,6 +134,10 @@ module GameInfo
       #{'Player Red  ->'.bold.red}#{captured_pieces.select { |h| h[:color] == :blue }.map { |h| h[:symbol] }.join('').bold.blue}
 
     HERODOC
+  end
+
+  def forfeit_win(player)
+    "\n#{'Congratulations, Player'.bold.green} #{player.to_s.capitalize.bold.colorize(player)}#{'! Your opponent has forfeited the match.'.bold.green}"
   end
 
   def clear_screen
