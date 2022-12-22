@@ -17,7 +17,7 @@ module SaveLoad
     Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
 
     filename = get_filename
-    saving_loading("Saving")
+    saving_loading('Saving')
     File.open("saved_games/#{filename}.yml", 'w') do |f|
       YAML.dump(game, f)
     end
@@ -26,8 +26,8 @@ module SaveLoad
   def load_game
     filename = get_load_filename
     permitted_classes = [Symbol, Game, Board, BoardSetup, Rook, Pawn, Bishop, Queen, King, Knight,
-      EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
-    saving_loading("Loading")
+                         EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
+    saving_loading('Loading')
     clear_screen
     YAML.safe_load(File.read("saved_games/#{filename}"), permitted_classes: permitted_classes, aliases: true)
   end

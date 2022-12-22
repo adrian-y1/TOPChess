@@ -307,7 +307,7 @@ class Board
         square = @board[r][c] == ' ' ? "#{@board[r][c]}  " : @board[r][c].colored_symbol
         change_square_bg(r, c, square)
       end
-      print "       "
+      print '       '
       puts captured_pieces_info(@removed_pieces).lines[r]
     end
     puts letters
@@ -317,7 +317,7 @@ class Board
 
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(start, destination)
-    @removed_pieces << { color: destination.color, symbol: destination.colored_symbol} if destination != ' '
+    @removed_pieces << { color: destination.color, symbol: destination.colored_symbol } if destination != ' '
     @board[start[0]][start[1]] = ' '
   end
 
