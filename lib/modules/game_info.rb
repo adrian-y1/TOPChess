@@ -6,23 +6,33 @@ require 'colorize'
 module GameInfo
 
   def intro
-    "\nWELCOME TO CHESS".bold.cyan
+    "\n\n\nWELCOME TO CHESS".bold.green
   end
 
   def game_rules
     <<~HERODOC
-    \nGame Instructions:
-    #{"[1]".cyan} Player #{"Red".red} & #{"Blue".blue} take turns. #{"Red".red} starts.
-    #{"[2]".cyan} The current player must first enter the coordinates of the piece they want to move (e.g. a2)
-    #{"[3]".cyan} The current player will then be asked to enter the coordinates of where they want their chosen piece to move (e.g. a4)
-    #{"[4]".cyan} When Promotion is available, you will be asked to enter the name of the piece you want to promote to
-    #{"[5]".cyan} Castling & En Passant's legal moves will be added directly to their corresponding pieces(s)
-    #{"[6]".cyan} There are currently 2 ways for the game to end: Stalemate (draw) or Checkmate (win)
+    \n#{"Game Instructions:".bold.yellow}
+    #{"[1]".bold.cyan} #{"Player".bold.green} #{"Red".red} #{"&".bold.green} #{"Blue".blue} #{"take turns.".bold.green} #{"Red".red} #{"starts".bold.green}
+    #{"[2]".bold.cyan} #{"Player must first enter the coordinates of the piece they want to move (e.g. a2)".bold.green}
+    #{"[3]".bold.cyan} #{"The Player will then be asked to enter the coordinates of where they want their chosen piece to move (e.g. a4)".bold.green}
+    #{"[4]".bold.cyan} #{"When Promotion is available, a prompt will be given to choose a promotion piece".bold.green}
+    #{"[5]".bold.cyan} #{"Castling & En Passant's legal moves will be added directly to their corresponding pieces(s)".bold.green}
+    #{"[6]".bold.cyan} #{"There are currently 2 ways for the game to end:".bold.green} #{"Stalemate (draw)".bold.yellow} #{"or".bold.green} #{"Checkmate (win)".bold.green}
+
+    #{"Game Features:".bold.light_yellow}
+    #{"[1]".bold.cyan} #{"Castling".bold.green}
+    #{"[2]".bold.cyan} #{"Check, Checkmate & Stalemate".bold.green}
+    #{"[3]".bold.cyan} #{"En Passant".bold.green}
+    #{"[4]".bold.cyan} #{"Promotion".bold.green}
+    #{"[5]".bold.cyan} #{"Save Game".bold.green}
+    #{"[6]".bold.cyan} #{"Load Saved Game".bold.green}
+    #{"[7]".bold.cyan} #{"Captured Pieces".bold.green}
+
     HERODOC
   end
 
   def game_rules_input_info
-    "Enter".light_yellow + " [Q] ".cyan + "to go back:".light_yellow
+    "Enter".light_yellow + " [Q] ".bold.cyan + "to go back:".light_yellow
   end
 
   def game_rules_input_error
@@ -95,7 +105,7 @@ module GameInfo
   end
 
   def choice_info
-    puts 'Enter one of the following options to begin:'.bold.light_yellow
+    puts "\nEnter one of the following options to begin:".bold.light_yellow
     print "#{"[1]".cyan} #{"Start New Game".light_yellow}\n#{"[2]".cyan} #{"Load Saved Game".light_yellow}\n"
     "#{"[3]".cyan} #{"Game Instructions & Structure".light_yellow}"
   end
@@ -123,4 +133,7 @@ module GameInfo
     HERODOC
   end
 
+  def clear_screen
+    system 'clear'
+  end
 end

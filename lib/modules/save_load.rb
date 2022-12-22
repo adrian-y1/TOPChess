@@ -26,8 +26,9 @@ module SaveLoad
   def load_game
     filename = get_load_filename
     permitted_classes = [Symbol, Game, Board, BoardSetup, Rook, Pawn, Bishop, Queen, King, Knight,
-                         EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
+      EndGameManager, GameInfo, ValidateMoves, Player, SaveLoad]
     saving_loading("Loading")
+    clear_screen
     YAML.safe_load(File.read("saved_games/#{filename}"), permitted_classes: permitted_classes, aliases: true)
   end
 

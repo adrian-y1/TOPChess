@@ -27,14 +27,19 @@ class Game
   end
 
   def launch_game
+    clear_screen
     choice = get_choice
     setup_players
     @board.setup_board
     if choice == '1'
+      clear_screen
       play_game
     elsif choice == '2'
+      clear_screen
       load_game.play_game
     elsif choice == '3'
+      clear_screen
+      puts intro
       puts game_rules
       launch_game if exit_game_rules
     end
@@ -56,6 +61,8 @@ class Game
     destination = get_piece_move(player)
     @board.move(piece_position, destination)
     promotion(player)
+    puts
+    clear_screen
     @board.display
   end
 
