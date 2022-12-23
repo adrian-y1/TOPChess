@@ -58,6 +58,10 @@ module SaveLoad
     end
   end
 
+  def empty_dir?
+    Dir.glob('saved_games/**/*').empty?
+  end
+
   def verify_filename(filename)
     if filename.length.between?(1, 10) && !filename.include?('.') && !File.exist?("saved_games/#{filename}.yml")
       filename

@@ -36,6 +36,7 @@ class Game
       play_game
     elsif choice == '2'
       clear_screen
+      launch_game if exit_loaded_games
       load_game.play_game
     elsif choice == '3'
       clear_screen
@@ -84,6 +85,12 @@ class Game
 
       puts game_rules_input_error
     end
+  end
+
+  def exit_loaded_games
+    return unless empty_dir?
+    puts empty_dir_info
+    exit_game_rules
   end
 
   def get_piece_position(player)

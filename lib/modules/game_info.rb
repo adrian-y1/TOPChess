@@ -113,7 +113,7 @@ module GameInfo
   end
 
   def choice_error
-    "\nInvalid Input! Please enter 1 to start a new game or 2 to load a saved game:".light_red
+    "\nInvalid Input! Please choose one of the above options:".light_red
   end
 
   def saving_loading(action)
@@ -142,5 +142,9 @@ module GameInfo
 
   def clear_screen
     system 'clear'
+  end
+  
+  def empty_dir_info
+    "\nThere are 0 saved files!\n".bold.cyan
   end
 end
