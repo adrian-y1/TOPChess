@@ -544,9 +544,10 @@ describe Board do
       it "adds the En Passant move to the blue Pawn's valid moves" do
         player_pieces = end_game_manager.find_player_pieces(blue_player.color)
         new_valid_moves = [[[5, 0]], [[5, 1]]]
-        expect { board.store_en_passant(blue_player, end_game_manager, player_pieces) }.to change {
-                                                                                             blue_pawn.valid_moves
-                                                                                           }.to new_valid_moves
+        expect do
+          board.store_en_passant(blue_player, end_game_manager,
+                                 player_pieces)
+        end.to change(blue_pawn, :valid_moves).to new_valid_moves
       end
     end
 
@@ -563,9 +564,10 @@ describe Board do
       it "adds the En Passant move to the red Pawn's valid moves" do
         player_pieces = end_game_manager.find_player_pieces(red_player.color)
         new_valid_moves = [[[2, 4]], [[2, 5]]]
-        expect { board.store_en_passant(red_player, end_game_manager, player_pieces) }.to change {
-                                                                                            red_pawn.valid_moves
-                                                                                          }.to new_valid_moves
+        expect do
+          board.store_en_passant(red_player, end_game_manager,
+                                 player_pieces)
+        end.to change(red_pawn, :valid_moves).to new_valid_moves
       end
     end
   end

@@ -15,6 +15,7 @@ describe Game do
     context 'when the game is being played' do
       before do
         allow(board).to receive(:display)
+        allow(game).to receive(:player_turn_info)
         allow(game).to receive(:play_turn)
         allow(game).to receive(:game_end?).and_return(false, true)
         allow(game).to receive(:switch_turn)
@@ -44,6 +45,7 @@ describe Game do
     context 'when the game has ended' do
       before do
         allow(board).to receive(:display)
+        allow(game).to receive(:player_turn_info)
         allow(game).to receive(:play_turn)
         allow(game).to receive(:game_end?).and_return(true)
       end

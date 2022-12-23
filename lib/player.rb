@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # frozen_srting_literal: true
 
 class Player

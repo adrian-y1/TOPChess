@@ -29,16 +29,17 @@ class Game
   def launch_game
     clear_screen
     choice = get_choice
-    setup_players
-    @board.setup_board
-    if choice == '1'
+    case choice
+    when '1'
+      setup_players
+      @board.setup_board
       clear_screen
       play_game
-    elsif choice == '2'
+    when '2'
       clear_screen
       launch_game if exit_loaded_games
       load_game.play_game
-    elsif choice == '3'
+    when '3'
       clear_screen
       puts intro
       puts game_rules
@@ -47,9 +48,9 @@ class Game
   end
 
   def play_game
-    # puts game_rules
     @board.display
     loop do
+      puts player_turn_info(@current_player)
       play_turn(@current_player)
       return if game_end?(@current_player)
 
@@ -89,6 +90,7 @@ class Game
 
   def exit_loaded_games
     return unless empty_dir?
+
     puts empty_dir_info
     exit_game_rules
   end
@@ -184,8 +186,3 @@ class Game
     game_draw?(opponent) || game_won?(opponent)
   end
 end
-
-board = Board.new
-end_game_manager = EndGameManager.new(board)
-game = Game.new(board, end_game_manager)
-game.launch_game

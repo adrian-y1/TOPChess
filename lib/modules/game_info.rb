@@ -42,7 +42,7 @@ module GameInfo
   end
 
   def position_info(player)
-    "\nPlayer #{player.color.to_s.capitalize.bold}, enter the coordinates of the piece you want to move:".colorize(player.color)
+    "\nEnter the coordinates of the piece you want to move:".bold.colorize(player.color)
   end
 
   def position_error
@@ -50,26 +50,26 @@ module GameInfo
   end
 
   def pieces_info(player, piece_coordinates)
-    "#{"Available Pieces (#{piece_coordinates.split(' ').length})".bold} -> #{piece_coordinates.to_s.bold}".colorize(player.color)
+    "#{"Available Pieces (#{piece_coordinates.split(' ').length})".bold} -> #{piece_coordinates}".colorize(player.color)
   end
 
   def move_info(player, piece_position)
-    "\nPlayer #{player.color.to_s.capitalize.bold}, enter the coordinates where you want your #{piece_position.to_s.bold} piece to move:".colorize(player.color)
+    "\nEnter the coordinates where you want your #{piece_position.to_s.bold} piece to move:".bold.colorize(player.color)
   end
 
   def piece_moves_info(player, piece_moves_coordinates)
-    "#{'Available Moves'.bold} -> #{piece_moves_coordinates.to_s.bold}".colorize(player.color)
+    "#{"Available Moves (#{piece_moves_coordinates.split(' ').length})".bold} -> #{piece_moves_coordinates}".colorize(player.color)
   end
 
   def move_error
     "\n#{'Invalid Input!'.bold} Please choose from the list of piece's available moves:".light_red
   end
 
-  def promotion_info(player, pawn_coordinates)
-    puts "\nPlayer #{player.color.to_s.capitalize.bold}, your Pawn at location #{pawn_coordinates.to_s.bold} has reached Promotion.".yellow
+  def promotion_info(_player, pawn_coordinates)
+    puts "\nYour Pawn at location #{pawn_coordinates.to_s.bold} has reached Promotion.".yellow
     <<~HERODOC
 
-      #{"Please choose one of the following pieces to promote your Pawn to: \n#{'Queen, Rook, Bishop, Knight'.bold}".yellow}
+      #{"Please choose one of the following pieces to promote your Pawn to:\n".bold.yellow}#{'Queen, Rook, Bishop, Knight'.yellow}
     HERODOC
   end
 
@@ -143,8 +143,12 @@ module GameInfo
   def clear_screen
     system 'clear'
   end
-  
+
   def empty_dir_info
     "\nThere are 0 saved files!\n".bold.cyan
+  end
+
+  def player_turn_info(current_player)
+    "\n#{current_player.color.to_s.capitalize}'s turn!".bold.colorize(current_player.color)
   end
 end
