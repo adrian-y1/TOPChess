@@ -9,9 +9,9 @@ This is a command-line interface Chess game created with Ruby as the final proje
 ## Overview
 Chess is a turn-based two-player strategy board game where players take turns moving their pieces with the ultimate goal of capturing their opponent's King via *checkmate* while also protecting their own. Chess has an abundant amount of rules that must be followed to play the game accordingly. For more details on rules of Chess please click [here](https://en.wikipedia.org/wiki/Chess).
 
-This CLI Chess game was created with [Ruby 3.1](https://www.ruby-lang.org/en/) whereby players enter commands in the CLI to perform the actions required to play the game including but no limited to; move one's piece, saving a game, promotion and many more. Full list of current features is listed further down in the document.
+This CLI Chess game was created with [Ruby 3.1](https://www.ruby-lang.org/en/) whereby players enter commands in the CLI to perform the actions required to play the game including but no limited to; moving one's piece, saving a game, promotion and many more. Full list of current features is listed further down in the document.
 
-Along with the game, [Rspec 3.11](https://rspec.info/) is used in order to create various tests for the game. The nature of the tests involves testing cirtical class methods with many different possible outcomes to ensure the game is error and bug free.
+Along with the game, [Rspec 3.11](https://rspec.info/) is used in order to create various tests for the game. The nature of the tests involves testing cirtical class methods with many different possible outcomes to ensure the game is running smoothly and properly.
 
 ## How To Play
 - Online
@@ -46,7 +46,7 @@ Another hardship i faced with this project was keeping the implementation modula
 ## Overcoming Difficulties
 Thorough planning before and during implementation helped me overcome many of the challenges i faced throughout the project. Simulating board movements on a virtual chess board ([lichess](https://lichess.org/editor)) assisted me in breaking down and calculating the possible movements for each game piece by visualing them. The En Passant move for the Pawn was the most challenging one to create as i had never known or heard about it before. I used online resources such as the [chess](https://www.chess.com/terms/en-passant) website to help me understand the move and often asked [The Odin Project's discord](https://discord.gg/V75WSQG) community for assistance and feedback on my logical approaches and implementations to the problem.
 
-To make sure i kept my program modular and clean to the best of my ability i seperated large features into their own class/methods. To ensure that each method was doing one thing at a time, i broke down my larger methods into smaller problems whereby creating methods that each focus on solving one problem at a time and combining all of them at the end. To assist me with this i used [RuboCop](https://github.com/rubocop/rubocop) and [Ruby docs](https://rubyapi.org/) to find shorthand notations for objects/methods.
+To make sure i kept my program modular and clean to the best of my ability i seperated large features into their own class/methods. To ensure that each method was doing one thing at a time, i broke down my larger methods into smaller problems whereby creating methods that each focus on solving one problem at a time and combining all of them at the end. To assist me with this i used [RuboCop](https://github.com/rubocop/rubocop) and [Ruby docs](https://rubyapi.org/) to find shorthand notations for objects/methods to make my code short and efficient while also keeping it readable.
 
 The larger my program got, the harder testing it became. Keeping my code modular and clean played a crucial part in making testing it easier. Creating dependency injections for objects also played a great role.
 
