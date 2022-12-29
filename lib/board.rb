@@ -304,7 +304,7 @@ class Board
     @board.each_index do |r|
       print "#{8 - r} "
       @board[r].each_index do |c|
-        square = @board[r][c] == ' ' ? "#{@board[r][c]}  " : @board[r][c].colored_symbol
+        square = find_square_contents(@board[r][c])
         change_square_bg(r, c, square)
       end
       print '       '
@@ -314,6 +314,14 @@ class Board
   end
 
   private
+
+  def find_square_contents(square)
+    if square.is_a?(String)
+      return square == " " ? "#{square}  " : " \u25CF "
+    else
+      return square.colored_symbol
+    end
+  end
 
   # Removes the pieces at the given index and stores it in an array of removed pieces
   def remove_piece(start, destination)
