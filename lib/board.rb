@@ -317,7 +317,7 @@ class Board
 
   def find_square_contents(square)
     if square.is_a?(String)
-      return square == " " ? "#{square}  " : " \u25CF "
+      return square == " " ? "#{square}  " : " \u25CF ".green
     else
       return square.colored_symbol
     end

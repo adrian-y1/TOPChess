@@ -111,6 +111,7 @@ class Game
 
   def get_piece_move(player)
     piece_move_coordinates = @board.find_valid_piece_move_coordinates(@piece_position)
+    display_piece_moves(piece_move_coordinates)   
     puts move_info(player, @piece_position)
     puts piece_moves_info(player, piece_move_coordinates)
     loop do
@@ -184,5 +185,12 @@ class Game
     opponent = player == @blue_player ? @red_player : @blue_player
     puts in_check_info(player, opponent) if @end_game_manager.king_in_check?(opponent)
     game_draw?(opponent) || game_won?(opponent)
+  end
+  
+  def display_piece_moves(piece_move_coordinates)
+    piece_move_indices = piece_move_coordinates.split(' ').map {|move| @board.find_coordinates_index(move) }
+    temp_board = Marshal.load(Marshal.dump(@board))
+    piece_move_indices.each { |move| temp_board.board[move[0]][move[1]] = " \u{25CF} " }
+    temp_board.display 
   end
 end
