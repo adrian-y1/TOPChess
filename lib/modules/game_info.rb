@@ -19,7 +19,7 @@ module GameInfo
       #{'[6]'.bold.cyan} #{'There are currently 3 ways for the game to end:'.bold.green} #{'Stalemate (draw)'.bold.yellow}#{','.bold.green} #{'Checkmate & Resignation (win)'.bold.cyan}
       #{'[7]'.bold.cyan} #{'To save a file, type'.bold.green} #{'[save]'.bold.cyan} #{"when picking a piece's coordinates".bold.green}
       #{'[8]'.bold.cyan} #{'To forfeit a game, type'.bold.green} #{'[forfeit]'.bold.cyan} #{"when picking a piece's coordinates".bold.green}
-      #{'[9]'.bold.cyan} #{"Valid piece moves are indicated with #{" \u25CF ".on_white} and #{" \u25CF ".on_black}".bold.green}
+      #{'[9]'.bold.cyan} #{"Valid piece moves are indicated with #{" \u25CF ".on_white} and #{" \u25CF ".on_black}. Captures indicated with #{"  ".on_green}".bold.green}
 
       #{'Game Features:'.bold.light_yellow}
       #{'[1]'.bold.cyan} #{'Castling'.bold.green}
@@ -30,7 +30,7 @@ module GameInfo
       #{'[6]'.bold.cyan} #{'Save Game'.bold.green}
       #{'[7]'.bold.cyan} #{'Load Saved Game'.bold.green}
       #{'[8]'.bold.cyan} #{'Captured Pieces'.bold.green}
-      #{'[9]'.bold.cyan} #{'Visual Indication of valid piece moves'.bold.green}
+      #{'[9]'.bold.cyan} #{'Visual Indication of valid piece moves & captures'.bold.green}
 
     HERODOC
   end

@@ -342,6 +342,7 @@ class Board
     end
   end
 
+  # Finds the bg color of a given piece's symbol with regex
   def find_piece_bg_color(square)
     return unless square.length == 17
 

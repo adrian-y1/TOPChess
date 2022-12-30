@@ -60,6 +60,7 @@ class Game
 
   def play_turn(player)
     piece_position = get_piece_position(player)
+    clear_screen
     destination = get_piece_move(player)
     @board.move(piece_position, destination)
     promotion(player)
@@ -187,6 +188,7 @@ class Game
     game_draw?(opponent) || game_won?(opponent)
   end
 
+  # Visually displays a player's valid moves
   def display_visual_piece_moves(piece_move_coordinates)
     piece_move_indices = piece_move_coordinates.split(' ').map { |move| @board.find_coordinates_index(move) }
     temp_board = Marshal.load(Marshal.dump(@board))

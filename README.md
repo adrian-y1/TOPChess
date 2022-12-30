@@ -37,6 +37,7 @@ Along with the game, [Rspec 3.11](https://rspec.info/) is used in order to creat
 - Captured Pieces displayed
 - Players notified when in *check*
 - Illegal moves automatically removed
+- Visual board indication of valid piece moves & captures
 
 ## Difficulties
 During the implementation of this project i was faced with many difficulties that challenged my ability to the fullest. One of the most challenging problems was figuring out how to calculate the legal movements for each game piece. However, the Pawn piece/class was by far the most difficult one to create due to it's unique set of moves that are unlike any of the other pieces. 
@@ -56,7 +57,6 @@ In the future i would like to further improve this project and create various ne
   - Draw By Agreement
   - Computer Player (AI)
   - Fifty-move rule
-  - Board visual indication of possible moves of the chosen piece
   - Improve Styling
 
 ## Conclusion
