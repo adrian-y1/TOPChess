@@ -165,7 +165,9 @@ class Board
   # Finds current player's pawns who can make the En Passant move
   def find_player_pawns(player_pieces, last_pawn_square)
     player_pieces.find_all do |obj|
-      [-1, 1].any? { |next_col| obj[:piece] == @board[last_pawn_square[0]][last_pawn_square[1] + next_col] }
+      [-1, 1].any? do |next_col|
+        obj[:piece] == @board[last_pawn_square[0]][last_pawn_square[1] + next_col] && obj[:piece].is_a?(Pawn)
+      end
     end
   end
 
@@ -317,9 +319,9 @@ class Board
 
   def find_square_contents(square)
     if square.is_a?(String)
-      return square == " " ? "#{square}  " : " \u25CF ".green
+      square == ' ' ? "#{square}  " : " \u25CF ".green
     else
-      return square.colored_symbol
+      square.colored_symbol
     end
   end
 
@@ -330,10 +332,21 @@ class Board
   end
 
   def change_square_bg(row, column, square)
+    square_bg = find_piece_bg_color(square)
+    return print square.on_green if square_bg == '42'
+
     if row.even?
       print column.even? ? square.on_white : square.on_black
     else
       print column.odd? ? square.on_white : square.on_black
     end
+  end
+
+  def find_piece_bg_color(square)
+    return unless square.length == 17
+
+    color_code = square.match(/\e\[(.*?)m/)[1]
+    color_parts = color_code.split(';')
+    background_color = color_parts[2]
   end
 end

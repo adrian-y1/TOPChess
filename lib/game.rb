@@ -111,7 +111,7 @@ class Game
 
   def get_piece_move(player)
     piece_move_coordinates = @board.find_valid_piece_move_coordinates(@piece_position)
-    display_piece_moves(piece_move_coordinates)   
+    display_visual_piece_moves(piece_move_coordinates)
     puts move_info(player, @piece_position)
     puts piece_moves_info(player, piece_move_coordinates)
     loop do
@@ -186,11 +186,18 @@ class Game
     puts in_check_info(player, opponent) if @end_game_manager.king_in_check?(opponent)
     game_draw?(opponent) || game_won?(opponent)
   end
-  
-  def display_piece_moves(piece_move_coordinates)
-    piece_move_indices = piece_move_coordinates.split(' ').map {|move| @board.find_coordinates_index(move) }
+
+  def display_visual_piece_moves(piece_move_coordinates)
+    piece_move_indices = piece_move_coordinates.split(' ').map { |move| @board.find_coordinates_index(move) }
     temp_board = Marshal.load(Marshal.dump(@board))
-    piece_move_indices.each { |move| temp_board.board[move[0]][move[1]] = " \u{25CF} " }
-    temp_board.display 
+    piece_move_indices.each do |move|
+      if temp_board.board[move[0]][move[1]].is_a?(String)
+        temp_board.board[move[0]][move[1]] = " \u{25CF} "
+      else
+        symbol = temp_board.board[move[0]][move[1]].colored_symbol
+        temp_board.board[move[0]][move[1]].colored_symbol = symbol.on_green
+      end
+    end
+    temp_board.display
   end
 end

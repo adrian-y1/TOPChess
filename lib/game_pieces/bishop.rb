@@ -4,8 +4,8 @@ require_relative '../modules/validate_moves'
 
 # Class that creates the Bishop
 class Bishop
-  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
-  attr_accessor :defended
+  attr_reader :color, :valid_moves, :attacking_squares
+  attr_accessor :defended, :colored_symbol
 
   include ValidateMoves
 

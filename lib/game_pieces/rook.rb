@@ -4,8 +4,8 @@ require_relative '../modules/validate_moves'
 
 # Class that creates the Rook
 class Rook
-  attr_reader :color, :colored_symbol, :valid_moves, :attacking_squares
-  attr_accessor :defended, :move_counter
+  attr_reader :color, :valid_moves, :attacking_squares
+  attr_accessor :defended, :move_counter, :colored_symbol
 
   include ValidateMoves
 
