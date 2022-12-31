@@ -4,7 +4,8 @@
 
 This is a command-line interface Chess game created with Ruby as the final project for [The Odin Project's Ruby course.](https://www.theodinproject.com/lessons/ruby-ruby-final-project)  
 
-<img alt="chess demo gif" src="demo/chess_demo.gif">
+<img alt="chess demo gif" src="demo/chess_demo2.gif"><br>
+*A quick GIF demonstration of the fastest checkmate*
 
 ## Overview
 Chess is a turn-based two-player strategy board game where players take turns moving their pieces with the ultimate goal of capturing their opponent's King via *checkmate* while also protecting their own. Chess has an abundant amount of rules that must be followed to play the game accordingly. For more details on rules of Chess please click [here](https://en.wikipedia.org/wiki/Chess).
